@@ -1,0 +1,48 @@
+[Writable]
+LogLevel = "INFO"
+
+[Service]
+HealthCheckInterval = "10s"
+Host = "localhost"
+Port = 59783
+ServerBindAddr = "" # if blank, uses default Go behavior https://golang.org/pkg/net/#Listen
+StartupMsg = "Started the file receiver microservice"
+RequestTimeout = "15s"
+MaxRequestSize = 0
+MaxResultCount = 0
+
+[Registry]
+Host = "localhost"
+Port = 8500
+Type = "consul"
+
+[SecretStore]
+Type = "vault"
+Protocol = "http"
+Host = "localhost"
+Port = 8200
+Path = "app-file-receiver-gateway/"
+TokenFile = "/tmp/edgex/secrets/app-file-receiver-gateway/secrets-token.json"
+RootCaCertPath = ""
+ServerName = ""
+[SecretStore.Authentication]
+  AuthType = "X-Vault-Token"
+
+[Trigger]
+Type="http"
+
+# App Service specific simple settings
+# Great for single string settings. For more complex structured custom configuration
+# See https://docs.edgexfoundry.org/2.0/microservices/application/AdvancedTopics/#custom-configuration
+[ApplicationSettings]
+# TODO: add documentation of variables to the README
+# for now folders are assumed to be flat
+BaseFileFolder="/tmp/bar"
+
+JobRepoHost="localhost"
+JobRepoPort="59784"
+
+TaskLauncherHost="localhost"
+TaskLauncherPort="59785"
+
+FileHostname="gateway"

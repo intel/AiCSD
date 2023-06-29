@@ -1,0 +1,51 @@
+{
+  "Complete": "Complete",
+  "Incomplete": "Incomplete",
+  "NoPipelineFound": "NoPipelineFound",
+  "PipelineError": "PipelineError",
+  "TransmissionFailed": "TransmissionFailed",
+  "FileErrored": "FileErrored",
+
+  "FileComplete": "FileComplete",
+  "FileIncomplete": "FileIncomplete",
+  "FileTransmissionFailed": "FileTransmissionFailed",
+  "FileArchivalFailed": "FileArchivalFailed",
+  "FileWriteFailed": "FileWriteFailed",
+  "FileInvalid": "FileInvalid",
+
+  "PipelineComplete": "PipelineComplete",
+  "PipelineProcessing": "PipelineProcessing",
+  "PipelineFailed": "PipelineFailed",
+  "FileNotFound": "FileNotFound",
+
+  "none": "none",
+  "file-watcher": "file-watcher",
+  "data-organizer": "data-organizer",
+  "file-sender-oem": "file-sender-oem",
+  "file-receiver-gateway": "file-receiver-gateway",
+  "task-launcher": "task-launcher",
+  "file-sender-gateway": "file-sender-gateway",
+  "file-receiver-oem": "file-receiver-oem",
+  "job-repository": "job-repository",
+
+  "ErrJobInvalid": "failed to validate job",
+  "ErrJobIdEmpty": "no job id specified",
+
+  "ErrPublishing": "failed to publish message to message bus",
+  "ErrRetrieving": "failed to retrieve job(s) from job repo",
+  "ErrJobsEmpty": "job repo is empty",
+  "ErrUpdating": "failed to update job from job repo",
+  "ErrHandleJob": "failed to handle job",
+  "ErrJobCreation": "failed to create job",
+  "ErrTransmitJob": "failed to transmit job",
+
+  "ErrFileTransmitting": "failed to transmit file",
+  "ErrFileWrite": "failed to write file",
+  "ErrFileArchiving": "failed to archive file",
+  "ErrFileInvalid": "failed to validate file",
+
+  "ErrJobNoMatchingTask": "no tasks could be matched to the input file name",
+  "ErrPipelineFailed": "an error occurred in the processing pipeline",
+
+  "ErrTranslating": "error translating field"
+}

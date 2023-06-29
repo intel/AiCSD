@@ -1,0 +1,50 @@
+<!-- Copyright 2023 Intel Corporation
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<div class="mat-elevation-z2 model-form">
+    <h2>Upload Model</h2>
+  
+    <form [formGroup]="modelForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Model Name</mat-label>
+        <input matInput formControlName="ModelName" type="text" required/>
+        <mat-error *ngIf="modelForm.get('ModelName').hasError('required')">Model name required</mat-error>
+        <mat-error *ngIf="modelForm.get('ModelName').hasError('maxlength')">Character limit exceeded</mat-error> 
+      </mat-form-field>
+
+      <br />
+      <label>Model Type: </label>
+      <mat-radio-group formControlName="ModelType" ngDefaultControl>
+        <mat-radio-button value="geti">Geti</mat-radio-button>
+        <mat-radio-button value="ovms">OpenVino Model Server(Ovms)</mat-radio-button>        
+      </mat-radio-group>
+      <br />
+
+      <mat-form-field>
+        <input matInput formControlName="ModelZip" type="file" (change)="onFileChange($event)" required/>
+        <mat-error *ngIf="modelForm.get('ModelZip').hasError('required')">Model zip file required</mat-error>
+        <mat-error *ngIf="modelForm.get('ModelZip').hasError('pattern')">Must be a zip file </mat-error>
+        <mat-hint>Require zip file, correct geti/ovms directory structure  must be followed </mat-hint>
+      </mat-form-field>
+  
+     <mat-divider></mat-divider>
+  
+     <div class="action-row" *ngIf="modelForm && !submitted">
+        <button type="submit" [disabled]="modelForm.invalid"
+                mat-raised-button color="primary"> Save
+        </button>
+        <a routerLink="/task" mat-raised-button aria-label="Cancel">Cancel</a>
+      </div>
+      <mat-spinner *ngIf="submitted"></mat-spinner>
+    </form>
+  </div>

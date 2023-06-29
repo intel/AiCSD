@@ -1,0 +1,2 @@
+# Base requirements for the deployment
+geti-sdk @ https://api.github.com/repos/openvinotoolkit/geti-sdk/tarball/releases/v1.0.x

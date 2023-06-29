@@ -1,0 +1,42 @@
+/* INTEL CONFIDENTIAL
+
+ Copyright (C) 2023 Intel Corporation
+
+ This software and the related documents are Intel copyrighted materials, and your use of them is governed by the express
+ license under which they were provided to you ("License"). Unless the License provides otherwise, you may not use, modify,
+ copy, publish, distribute, disclose or transmit this software or the related documents without Intel's prior written permission.
+
+ This software and the related documents are provided as is, with no express or implied warranties, other than those that are expressly stated in the License.*/
+
+.image-card {
+  max-width: 80%;
+  max-height: 60%;
+  margin: auto;
+}
+
+.mat-card-xl-image{
+  width: 400px;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.mat-button.mat-green {
+  background-color: green;
+}
+
+.mat-button.mat-red{
+  background-color: red;
+}
+
+.text-wrapping {
+  display: block; 
+  max-width: 80em; 
+  overflow: hidden;
+}
+
+@media screen and (max-width: 150em) {
+  .text-wrapping {
+    max-width: 50em; 
+  }
+}

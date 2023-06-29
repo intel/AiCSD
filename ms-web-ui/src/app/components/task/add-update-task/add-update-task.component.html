@@ -1,0 +1,70 @@
+<!-- Copyright 2023 Intel Corporation
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<div class="mat-elevation-z2 add-update-form">
+  <h2>{{isAdd ? "Add" : "Update"}} Task</h2>
+
+  <form [formGroup]="addUpdateForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="Description" type="text" required/>
+      <mat-error *ngIf="addUpdateForm.get('Description').hasError('required')">Task Description required</mat-error>
+      <mat-error *ngIf="addUpdateForm.get('Description').hasError('maxlength')">Character limit exceeded</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Pipeline</mat-label>
+      <mat-select formControlName="PipelineId"
+                  [required]="availablePipelines?.length > 0">
+        <mat-option *ngFor="let pipeline of availablePipelines" [value]="pipeline.subscriptionTopic">
+          {{pipeline.name}}: {{pipeline.description}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addUpdateForm.get('PipelineId').hasError('required')">You must select at least one pipeline.</mat-error>
+    </mat-form-field>
+
+    <div class="job-selector-field">
+      <label>Job Selector: </label>
+      <mat-radio-group formControlName="JobSelector">
+        <mat-radio-button *ngFor="let type of jobSelectorTypes" [value]="type"> {{type}} </mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="addUpdateForm.get('JobSelector').hasError('required')">Job Selector required</mat-error>
+    </div>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Filename</mat-label>
+      <input matInput formControlName="JobSelectorFile" type="text" required/>
+      <mat-error *ngIf="addUpdateForm.get('JobSelectorFile').hasError('required')">Task Description required</mat-error>
+      <mat-error *ngIf="addUpdateForm.get('JobSelectorFile').hasError('maxlength')">Character limit exceeded</mat-error>
+      <mat-hint>Example: test-image1.tiff</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Model Parameters</mat-label>
+      <textarea matInput formControlName="ModelParameters" class="model-params"></textarea>
+      <!-- model parameter format - {"paramter":"value"} -->
+      <mat-hint>Enter the model parameteres in following format &#123;	&quot;parameter&quot; &#58; &quot;value&quot; &#125; </mat-hint>
+      <mat-error *ngIf="addUpdateForm.get('ModelParameters').hasError('maxlength')">Character limit exceeded</mat-error>
+    </mat-form-field>
+
+    <mat-divider></mat-divider>
+
+    <div class="action-row" *ngIf="addUpdateForm && !submitted">
+      <button type="submit" [disabled]="addUpdateForm.invalid"
+              mat-raised-button color="primary"> Save
+      </button>
+      <a routerLink="/task" mat-raised-button aria-label="Cancel">Cancel</a>
+    </div>
+    <mat-spinner *ngIf="submitted"></mat-spinner>
+  </form>
+</div>

@@ -1,0 +1,56 @@
+<!-- Copyright 2023 Intel Corporation
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<h2 mat-dialog-title><strong>Input File:</strong> <br />{{ data.InputFile.Name }}</h2>
+<mat-dialog-content>
+<div class="mat-elevation-z4">
+  <table>
+    <tr>
+      <td>
+        <mat-form-field appearance="standard" class="table-filter">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" autocomplete="off" placeholder="Ex. file-1" [disabled]="!(allFiles?.length > 0)" #input>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>File Status</th>
+      <td aria-label="{{ file.Status }}" title="{{ file.Status }}" mat-cell *matCellDef="let file"><button mat-flat-button>{{ file.Status == 'FileComplete' ? '✅' : (file.Status == 'FileIncomplete' ? '🔄' : '❌') }}</button></td>
+    </ng-container>
+
+    <ng-container matColumnDef="path">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Output File Path</th>
+      <td aria-label="{{ file.ErrorDetails.Owner }}{{ file.ErrorDetails.Error }}" title="{{ file.ErrorDetails.Owner }} {{ file.ErrorDetails.Error }}" mat-cell *matCellDef="let file">{{ file.Name }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayCols"></tr>
+    <tr mat-row *matRowDef="let file; columns: displayCols;"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [colSpan]="displayCols.length">
+        <span>Job contains no output files !!</span>
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5,10,20,40]"
+    showFirstLastButtons
+    aria-label="Select page">
+  </mat-paginator>
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

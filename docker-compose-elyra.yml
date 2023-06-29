@@ -1,0 +1,22 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+version: '3.7'
+networks:
+  edgex-network:
+    driver: bridge
+services:
+  elyra:
+    image: aicsd/elyra:0.0.0-dev
+    ports:
+      - 8888:8888
+    networks:
+      edgex-network: {}
+    volumes:
+      - ./demos:/home/jovyan/work:rw
+    working_dir: "/home/jovyan/work"
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN}
+      

@@ -1,0 +1,19 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+version: '3.7'
+volumes:
+  portainer_data:
+  
+services:
+  portainer:
+    image:  portainer/portainer-ce
+    ports:
+      - "9000:9000"
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:z
+      - portainer_data:/data
+    restart: always

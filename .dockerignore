@@ -1,0 +1,9 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+# this greatly speeds up builds in case there are node_modules directories
+**/node_modules
+.git
+**/ssh_keys

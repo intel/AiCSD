@@ -1,0 +1,29 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+apiVersion: 1
+datasources:
+  - name: InfluxDB
+    type: influxdb
+    access: proxy
+    database: ${INFLUXDB_DB}
+    user: ${DOCKER_INFLUXDB_INIT_USERNAME}
+    url: http://influxdb:8086
+    isDefault: true
+    editable: true
+    basicAuth: true
+    basicAuthUser: ${DOCKER_INFLUXDB_INIT_USERNAME}
+    jsonData:
+      version: Flux
+      organization: ${DOCKER_INFLUXDB_INIT_ORG}
+      defaultBucket: ${DOCKER_INFLUXDB_INIT_BUCKET}
+      tlsSkipVerify: true
+      httpHeaderName1: "Authorization"
+    secureJsonData:
+      password:
+      token:
+      basicAuthPassword:
+      httpHeaderValue1: ${INFLUXDB_TOKEN}
+    version: 1

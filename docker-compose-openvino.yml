@@ -1,0 +1,31 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+version: '3.7'
+networks:
+  edgex-network:
+    driver: bridge
+services:
+  openvino:
+    image: openvino/model_server:latest
+    container_name: openvino
+    restart: always
+    user: '${UID}:${GID}'
+    networks:
+      edgex-network: {}
+    ports:
+      - '9001:9001'
+      - '9002:9002'
+    command: 
+      - '--config_path'
+      - '/models/config.json'
+      - '--port'
+      - '9001'
+      - '--rest_port'
+      - '9002'
+      - '--log_level'
+      - 'INFO'
+    volumes:
+      - ./models:/models

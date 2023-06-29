@@ -1,0 +1,52 @@
+[Writable]
+LogLevel = "INFO"
+  [Writable.InsecureSecrets]
+      [Writable.InsecureSecrets.DB]
+      path = "redisdb"
+        [Writable.InsecureSecrets.DB.Secrets]
+        username = ""
+        password = ""
+
+[Service]
+HealthCheckInterval = "10s"
+Host = "localhost"
+Port = 59784
+ServerBindAddr = "" # if blank, uses default Go behavior https://golang.org/pkg/net/#Listen
+StartupMsg = "Started the job repository microservice"
+RequestTimeout = "15s"
+MaxRequestSize = 0
+MaxResultCount = 0
+
+  [Service.CORSConfiguration]
+  EnableCORS = true
+  CORSAllowCredentials = false
+  CORSAllowedOrigin = "*"
+  CORSAllowedMethods = "GET, POST, PUT, PATCH, DELETE"
+  CORSAllowedHeaders = "Authorization, Accept, Accept-Language, Content-Language, Content-Type, X-Correlation-ID"
+  CORSExposeHeaders = "Cache-Control, Content-Language, Content-Length, Content-Type, Expires, Last-Modified, Pragma, X-Correlation-ID"
+  CORSMaxAge = 3600
+
+[Registry]
+Host = "localhost"
+Port = 8500
+Type = "consul"
+
+[SecretStore]
+Type = "vault"
+Protocol = "http"
+Host = "edgex-vault"
+Port = 8200
+Path = "app-job-repository/"
+TokenFile = "/tmp/edgex/secrets/app-job-repository/secrets-token.json"
+RootCaCertPath = ""
+ServerName = ""
+[SecretStore.Authentication]
+  AuthType = "X-Vault-Token"
+
+[Trigger]
+Type="http"
+
+[ApplicationSettings]
+RedisHost = "localhost"
+RedisPort = "6379"
+LocalizationFiles="./res/en.json,./res/zh.json"
