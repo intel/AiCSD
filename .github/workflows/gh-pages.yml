@@ -18,5 +18,6 @@ jobs:
         run: |
           pip install mkdocs
           pip install mkdocs-material
+          pip install mkdocs-swagger-ui-tag
       - name: Deploy
         run: mkdocs gh-deploy --force --clean --verbose
