@@ -5,8 +5,8 @@ For complete documentation on the AiCSD Reference Implementation, please visit [
 
 ## Quick Links
 
-- [Getting Started](https://intel.github.io/AiCSD/what-to-expect.html)
-- [Learn more about AiCSD](https://intel.github.io/AiCSD/general-info.html)
+- [Getting Started](https://intel.github.io/AiCSD/getting-started/what-to-expect.html)
+- [Learn more about AiCSD](https://intel.github.io/AiCSD/services/general-info.html)
 
 ## License
 
