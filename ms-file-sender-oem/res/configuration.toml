@@ -1,0 +1,59 @@
+[Writable]
+LogLevel = "INFO"
+
+[Service]
+HealthCheckInterval = "10s"
+Host = "localhost"
+Port = 59782
+ServerBindAddr = "" # if blank, uses default Go behavior https://golang.org/pkg/net/#Listen
+StartupMsg = "Started the file sender OEM microservice"
+RequestTimeout = "15s"
+MaxRequestSize = 0
+MaxResultCount = 0
+
+[Registry]
+Host = "localhost"
+Port = 8500
+Type = "consul"
+
+[SecretStore]
+Type = "vault"
+Protocol = "http"
+Host = "localhost"
+Port = 8200
+Path = "app-file-sender-oem/"
+TokenFile = "/tmp/edgex/secrets/app-file-sender-oem/secrets-token.json"
+RootCaCertPath = ""
+ServerName = ""
+[SecretStore.Authentication]
+  AuthType = "X-Vault-Token"
+[SecretStore.RuntimeTokenProvider]
+  Enabled = false
+  Protocol = "https"
+  Host = "localhost"
+  Port = 59841
+  TrustDomain = "edgexfoundry.org"
+  EndpointSocket = "/tmp/edgex/secrets/spiffe/public/api.sock"
+  RequiredSecrets = "redisdb"
+
+[Trigger]
+Type="http"
+
+# App Service specific simple settings
+# Great for single string settings. For more complex structured custom configuration
+# See https://docs.edgexfoundry.org/2.0/microservices/application/AdvancedTopics/#custom-configuration
+[ApplicationSettings]
+JobRepoHost="localhost"
+JobRepoPort="59784"
+
+FileReceiverHost="localhost"
+FileReceiverPort="59783"
+
+FileHostname="oem"
+RetryAttempts="20"
+RetryWaitTime="250ms"
+
+PrivateKeyPath=""
+JWTKeyPath=""
+JWTAlgorithm=""
+JWTDuration=""

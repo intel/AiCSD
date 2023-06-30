@@ -1,0 +1,6 @@
+service: "service.py:svc"
+labels:
+  owner: bentoml-team
+  project: gallery
+python:
+  requirements_txt: "requirements.txt"

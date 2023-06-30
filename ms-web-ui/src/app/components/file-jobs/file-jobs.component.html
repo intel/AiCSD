@@ -1,0 +1,141 @@
+<!-- Copyright 2023 Intel Corporation
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<div class="jumbotron bg-image-scope">
+  <h1 class="display-3">Jobs</h1>
+  <p class="text-justify">View and Manage Jobs</p>
+</div>
+
+<div class="mat-elevation-z4">
+  <table>
+    <tr>
+      <td>
+        <mat-form-field appearance="standard" class="table-filter">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+        </mat-form-field>
+      </td>
+      <td align="right"><a mat-raised-button (click)="toggleTableRows()" color="primary" >Expand All Input File Details</a></td>
+    </tr>
+  </table>
+
+  <table mat-table [dataSource]="dataSource" matSort matSortActive="LastUpdated" matSortDirection="desc" multiTemplateDataRows>
+    <ng-container matColumnDef="JobDetails">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let job">
+        <button mat-icon-button color="accent" aria-label="expand row" (click)="job.expandedFiles = !job.expandedFiles">
+          <mat-icon *ngIf="!job.expandedFiles">keyboard_arrow_down</mat-icon>
+          <mat-icon *ngIf="job.expandedFiles">keyboard_arrow_up</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Owner">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Owner</th>
+      <td mat-cell *matCellDef="let job"><b>{{job.Owner | titlecase}}</b></td>
+    </ng-container>
+
+    <ng-container matColumnDef="InputFileName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Input Files</th>
+      <td mat-cell *matCellDef="let job">
+        <div class="text-wrapping">{{job.InputFile.Name}}</div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Verification">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Manual Verification</th>
+      <td mat-cell *matCellDef="let job">
+        <mat-icon [ngStyle]="{'color' : getVerificationColor(job)}">{{ getVerificationIcon(job) }}</mat-icon>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Job Status</th>
+      <td mat-cell *matCellDef="let job" [ngStyle]="{'color' : getStatusColor(job)}">{{job.Status | titlecase}}    </td>
+    </ng-container>
+
+    <ng-container matColumnDef="PipelineDetailsStatus">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Pipeline Status</th>
+      <td mat-cell *matCellDef="let job">{{job.PipelineDetails.Status}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="PipelineDetailsQCFlags">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>QCFlags</th>
+      <td mat-cell *matCellDef="let job">{{job.PipelineDetails.QCFlags | titlecase}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Results">
+      <th mat-header-cell *matHeaderCellDef >Results</th>
+      <td mat-cell *matCellDef="let job">{{job.PipelineDetails.Results}}</td>
+    </ng-container>
+
+  <ng-container matColumnDef="ErrorDetails">
+      <th mat-header-cell *matHeaderCellDef >Error Details</th>
+      <ng-container *matCellDef="let job">
+        <td mat-cell *ngIf="job.ErrorDetails.Owner != ''; else noOutput">
+          {{job.ErrorDetails.Owner}}: {{job.ErrorDetails.Error}}
+      </td>
+      </ng-container>
+
+      <ng-container matColumnDef="LastUpdated">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Last Updated</th>
+        <td mat-cell *matCellDef="let job">{{job.LastUpdated / 1000000 | date:'medium'}}</td>
+      </ng-container>
+    <ng-template #noOutput><td>-</td></ng-template>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="OutputFileHost">
+      <th mat-header-cell *matHeaderCellDef>Output Files</th>
+      <ng-container *matCellDef="let job">
+      <td mat-cell *ngIf="(job.PipelineDetails.OutputFiles); else noOutput">
+        <div style="display: inline;">
+          <button mat-raised-button style="margin-right: 5px;" *ngIf="(job.Status == 'Complete'); else noOutput" color="primary" (click)="openImagesDialog(job)">View Images</button>
+          <button mat-raised-button style="margin-left: 5px;" color="primary" (click)="openFilesDialog(job)">Output Files : [{{job.PipelineDetails.OutputFiles.length}}] </button>
+        </div>
+      </td>
+      </ng-container>
+    </ng-container>
+
+    <!-- Expanded Content Column -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let job" [attr.colspan]="displayCols.length">
+          <div class="example-job-detail" [@detailExpand]="job.expandedFiles ? 'expanded' : 'collapsed'">
+              <!--<div class="example-job-description"><b>File Details for {{job.InputFile.Name}} -> </b></div>-->
+              <div class="example-job-details">
+                <pre>{{job.InputFile | json}}</pre>
+              </div>
+          </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayCols"></tr>
+    <tr mat-row *matRowDef="let job; columns: displayCols;"   class="example-job-row"
+      [class.example-expanded-row]="expandedFiles === job"
+      (click)="expandedFiles = expandedFiles === job ? null : job" >
+    </tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [colSpan]="displayCols.length">
+        <span>No jobs available !!</span>
+      </td>
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
+
+  <ng-template #noOutput><td>-</td></ng-template>
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10,20,40]"
+    showFirstLastButtons
+    aria-label="Select page">
+  </mat-paginator>
+</div>

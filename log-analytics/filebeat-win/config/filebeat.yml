@@ -1,0 +1,35 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+# ================================== Logging ===================================
+
+# Sets log level. The default log level is info.
+# Available log levels are: error, warning, info, debug
+logging.level: info
+# ============================== Filebeat inputs ===============================
+
+filebeat.inputs:
+
+# filestream is an input for collecting log messages from files.
+- type: filestream
+
+  # Unique ID among all inputs, an ID is required.
+  id: my-filestream-id
+
+  # Change to true to enable this input configuration.
+  enabled: true
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  paths:
+    - ..\..\logs\*.txt
+
+
+# ================================== Outputs ===================================
+# ---------------------------- Elasticsearch Output ----------------------------
+output.elasticsearch:
+ # Authentication credentials - either API key or username/password.
+ #api_key: "id:api_key"
+ username: "elastic"
+

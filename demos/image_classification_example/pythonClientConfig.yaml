@@ -1,0 +1,10 @@
+#actual Gateway IP address is required to replace ##.##.##.##, localhost or 0.0.0.0 will not work for openvino model server(ovms running on gateway) calls
+service:
+  POST_url: http://##.##.##.##
+  port: "3000"
+  service_func: classify        
+gateway_ip: "##.##.##.##" 
+mqtt:
+  topic: mqtt-export/pipeline/params
+  hostname: external-mqtt-broker #edgex external mqtt broker
+  port: 1883

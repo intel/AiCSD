@@ -1,0 +1,31 @@
+{
+  "cluster": [
+    "manage_index_templates",
+    "monitor",
+    "manage_ilm"
+  ],
+  "indices": [
+    {
+      "names": [
+        "logs-generic-default",
+        "filebeat-*"
+      ],
+      "privileges": [
+        "write",
+        "create",
+        "create_index",
+        "manage",
+        "manage_ilm"
+      ]
+    },
+    {
+      "names": [
+        "filebeat"
+      ],
+      "privileges": [
+        "write",
+        "manage"
+      ]
+    }
+  ]
+}

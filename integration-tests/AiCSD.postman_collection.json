@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "138917ef-8965-453d-9b2c-5a350941d64e",
+		"name": "aicsd",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Job Repo Get by Owner",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Job Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:59784/api/v1/job/2405dd93-2072-4046-a516-f27758545818",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59784",
+					"path": [
+						"api",
+						"v1",
+						"job",
+						"2405dd93-2072-4046-a516-f27758545818"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task - Only file",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"Description\": \"Generate Output File\",\r\n        \"JobSelector\": \"{ \\\"==\\\" : [ { \\\"var\\\" : \\\"InputFile.Name\\\" }, \\\"test-image1.tiff\\\" ] }\",\r\n        \"PipelineId\": \"only-file\",\r\n        \"ResultFileFolder\": \"/tmp/files/output\",\r\n        \"ModelParameters\": {\r\n            \"Brightness\": \"0\"\r\n        },\r\n        \"LastUpdated\": 0\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:59785/api/v1/task",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59785",
+					"path": [
+						"api",
+						"v1",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task - Only results",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"Description\": \"Generate Result\",\r\n        \"JobSelector\": \"{ \\\"in\\\" : [ \\\"test-image\\\", { \\\"var\\\" : \\\"InputFile.Name\\\" } ] }\",\r\n        \"PipelineId\": \"only-results\",\r\n        \"ResultFileFolder\": \"/tmp/files/output\",\r\n        \"ModelParameters\": {\r\n            \"Brightness\": \"0\"\r\n        },\r\n        \"LastUpdated\": 0\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:59785/api/v1/task",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59785",
+					"path": [
+						"api",
+						"v1",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task - File and Results",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"Description\": \"Generate File and Results\",\r\n        \"JobSelector\": \"{ \\\"==\\\" : [ { \\\"var\\\" : \\\"InputFile.Name\\\" }, \\\"test-image3.tiff\\\" ] }\",\r\n        \"PipelineId\": \"file-and-results\",\r\n        \"ResultFileFolder\": \"/tmp/files/output\",\r\n        \"ModelParameters\": {\r\n            \"Brightness\": \"0\"\r\n        },\r\n        \"LastUpdated\": 0\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:59785/api/v1/task",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59785",
+					"path": [
+						"api",
+						"v1",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Jobs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:59784/api/v1/job",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59784",
+					"path": [
+						"api",
+						"v1",
+						"job"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:59785/api/v1/task",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59785",
+					"path": [
+						"api",
+						"v1",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Job",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:59784/api/v1/job/6aa1565c-684d-46a4-a0f9-2f8808893f12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59784",
+					"path": [
+						"api",
+						"v1",
+						"job",
+						"6aa1565c-684d-46a4-a0f9-2f8808893f12"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

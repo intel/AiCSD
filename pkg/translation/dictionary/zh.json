@@ -1,0 +1,51 @@
+{
+  "Complete": "完全的",
+  "Incomplete": "不完整",
+  "NoPipelineFound": "未找到管道",
+  "PipelineError": "管道错误",
+  "TransmissionFailed": "传输失败",
+  "FileErrored": "文件错误",
+
+  "FileComplete": "文件完成",
+  "FileIncomplete": "文件不完整",
+  "FileTransmissionFailed": "文件传输失败",
+  "FileArchivalFailed": "文件归档失败",
+  "FileWriteFailed": "文件写入失败",
+  "FileInvalid": "文件无效",
+
+  "PipelineComplete": "管道完成",
+  "PipelineProcessing": "流水线处理",
+  "PipelineFailed": "管道失败",
+  "FileNotFound": "文件未找到",
+
+  "none": "没有任何",
+  "file-watcher": "文件观察者",
+  "data-organizer": "数据组织者",
+  "file-sender-oem": "文件发送器 oem",
+  "file-receiver-gateway": "文件接收网关",
+  "task-launcher": "t任务启动器",
+  "file-sender-gateway": "文件发送网关",
+  "file-receiver-oem": "文件接收器OEM",
+  "job-repository": "工作回购",
+
+  "ErrJobInvalid": "未能验证作业",
+  "ErrJobIdEmpty": "未指定作业 ID",
+
+  "ErrPublishing": "无法将消息发布到消息总线",
+  "ErrRetrieving": "未能从工作回购中检索工作",
+  "ErrJobsEmpty": "工作回购是空的",
+  "ErrUpdating": "无法从作业回购更新作业",
+  "ErrHandleJob": "处理工作失败",
+  "ErrJobCreation": "未能创建工作",
+  "ErrTransmitJob": "传输作业失败",
+
+  "ErrFileTransmitting": "传输文件失败",
+  "ErrFileWrite": "写入文件失败",
+  "ErrFileArchiving": "归档文件失败",
+  "ErrFileInvalid": "验证文件失败",
+
+  "ErrJobNoMatchingTask": "没有任务可以与输入文件名匹配",
+  "ErrPipelineFailed": "处理管道中发生错误",
+
+  "ErrTranslating": "翻译字段错误"
+}
