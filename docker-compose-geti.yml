@@ -1,0 +1,21 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+version: '3.7'
+networks:
+  edgex-network:
+    driver: bridge
+services:
+  geti-pipeline:
+    image: aicsd/geti-pipeline:0.0.0-dev
+    restart: always
+    user: 1000:1000
+    volumes:
+      - ${HOME}/data/gateway-files:/tmp/files
+      - ./models:/models
+    networks:
+      edgex-network: {}
+    ports:
+      - 127.0.0.1:8080:8080/tcp

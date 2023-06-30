@@ -1,0 +1,123 @@
+site_name: AiCSD Reference Implementation
+docs_dir: ./docs_src
+site_dir: ./docs
+copyright: 'Copyright &copy; 2023 Intel Corporation'
+use_directory_urls: false
+theme:
+  name: 'material'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  logo: 'images/logo-white-75px.png'
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - navigation.top
+    - toc.integrate
+  icon:
+    repo: fontawesome/brands/git-alt
+  custom_dir: ./docs_src/overrides
+repo_url: https://github.com/intel/AiCSD
+repo_name: intel/AiCSD
+plugins:
+  - search
+  - swagger-ui-tag:
+      syntaxHighlightTheme: monokai
+      supportedSubmitMethods: []
+      validatorUrl: none
+nav:
+  - Home:
+    - Overview: index.md
+  - Get Started:
+    - Prerequisites:
+      - What to Expect: ./getting-started/what-to-expect.md
+      - Set Up: ./getting-started/install-prereqs.md
+    - System Setup:
+      - Configure: ./getting-started/choose-config.md
+      - Build and Deploy: ./getting-started/system-setup.md
+    - Manage: 
+      - Start Workflow: ./getting-started/basic-workflow.md
+      - Tear Down: ./getting-started/tear-down.md
+    - Web UI:
+      - Workspace: ./getting-started/ms-web-ui-guide.md
+      - Tasks: ./getting-started/ms-web-ui-guide-tasks.md
+      - Jobs: ./getting-started/ms-web-ui-guide-jobs.md
+      - Model Upload: ./getting-started/ms-web-ui-guide-upload-model.md
+      - Dashboards: ./getting-started/ms-web-ui-guide-dashboards.md
+    - Get Help: 
+      - Troubleshooting: ./getting-started/troubleshooting.md
+  - Pipelines:
+    - Create a Pipeline: ./pipelines/pipeline-creation.md
+    - Intel Geti:
+      - Deployment: ./pipelines/geti/deployment.md
+    - Intel OpenVINO™ Model Server: 
+      - OVMS: ./pipelines/ovms/ovms.md  
+    - BentoML: 
+      - Overview: ./pipelines/bentoml/introduction-bentos.md
+      - Create Bentos: ./pipelines/bentoml/create-bentos.md
+      - Deploy Bentos: ./pipelines/bentoml/deploy-bentos.md
+      - Developer Guide for Bentos: ./pipelines/bentoml/developer-guide-bentos.md
+      - Image Classification Demo: ./pipelines/bentoml/image-classification-demo.md
+    - Elyra: 
+      - ML Pipeline Visual Editor Tool: ./pipelines/elyra/elyra.md
+  - Services:
+    - General Information: ./services/general-info.md
+    - OEM: 
+      - File Watcher: ./services/ms-file-watcher.md
+      - Data Organizer: ./services/ms-data-organizer.md
+      - File Sender OEM: ./services/ms-file-sender-oem.md
+      - File Receiver OEM: ./services/as-file-receiver-oem.md
+    - Gateway:
+      - Job Repository: ./services/ms-job-repository.md
+      - Web UI: ./services/ms-web-ui.md
+      - Receiver Gateway: ./services/ms-file-receiver-gateway.md
+      - Task Launcher: ./services/as-task-launcher.md
+      - File Sender Gateway: ./services/as-file-sender-gateway.md
+    - Pipelines: 
+      - Pipeline Simulator: ./services/as-pipeline-sim.md
+      - Pipeline Validator: ./services/as-pipeline-val.md
+    - Tests:
+      - Integration Tests: ./services/integration-tests.md
+  - Tools Suite: 
+    - Monitoring:
+      - Overview: ./monitoring/overview.md
+      - Telegraf: ./monitoring/telegraf.md
+      - InfluxDB: ./monitoring/influxdb.md
+      - Grafana: ./monitoring/grafana.md
+    - Log Analytics:
+      - Overview: ./log-analytics/overview.md
+      - Elasticsearch: ./log-analytics/elasticsearch.md
+      - Filebeat: ./log-analytics/filebeat.md
+      - Kibana: ./log-analytics/kibana.md
+    - Get Help: 
+      - Tools Troubleshooting: ./troubleshooting-tools.md
+  - Security: ./security/security-docs.md
+extra_javascript:
+  - 'https://unpkg.com/lunr/lunr.js'
+# Extensions
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - abbr
+  - pymdownx.snippets
+  - attr_list
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - toc:
+      permalink: true
+extra_css:
+  - ./stylesheets/index.css
+  - https://fonts.googleapis.com/icon?family=Material+Icons
+  - ./stylesheets/branding.css
+  - ./stylesheets/extra.css

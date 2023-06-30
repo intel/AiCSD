@@ -1,0 +1,63 @@
+[Writable]
+LogLevel = "INFO"
+
+[Service]
+HealthCheckInterval = "10s"
+Host = "localhost"
+Port = 59780
+ServerBindAddr = "" # if blank, uses default Go behavior https://golang.org/pkg/net/#Listen
+StartupMsg = "Started the file watcher microservice"
+RequestTimeout = "15s"
+MaxRequestSize = 0
+MaxResultCount = 0
+
+[Registry]
+Host = "localhost"
+Port = 8500
+Type = "consul"
+
+[SecretStore]
+Type = "vault"
+Protocol = "http"
+Host = "edgex-vault"
+Port = 8200
+Path = "app-file-watcher/"
+TokenFile = "/tmp/edgex/secrets/app-file-watcher/secrets-token.json"
+RootCaCertPath = ""
+ServerName = ""
+[SecretStore.Authentication]
+  AuthType = "X-Vault-Token"
+[SecretStore.RuntimeTokenProvider]
+  Enabled = false
+  Protocol = "https"
+  Host = "localhost"
+  Port = 59841
+  TrustDomain = "edgexfoundry.org"
+  EndpointSocket = "/tmp/edgex/secrets/spiffe/public/api.sock"
+  RequiredSecrets = "redisdb"
+
+[Trigger]
+Type="http"
+
+[UpdatableSettings]
+WatchSubfolders=true
+
+# File Exclusion List
+FileExclusionList=""
+
+[ApplicationSettings]
+# TODO: add documentation of variables to the README
+# At this time folders are assumed to be flat
+
+FoldersToWatch="/tmp/foo"
+
+# Microservices interaction
+DataOrgHost="localhost"
+DataOrgPort="59781"
+
+# Originating lab name, lab equipment, operator
+LabName="ScienceLab"
+LabEquipment="Microscope"
+Operator="Scientist 1"
+
+FileHostname="oem"

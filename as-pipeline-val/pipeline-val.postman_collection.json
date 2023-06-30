@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "bcb0ee66-b991-4ca9-8a9d-5b4769f9e6a8",
+		"name": "pipeline-val",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Launch Pipeline",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"InputFileLocation\":\"/tmp/files/input/test.tiff\",\"PipelineTopic\":\"multi-file\",\"OutputFileFolder\":\"/tmp/files/output\",\"ModelParams\":{\"key1\":\"value1\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:59788/api/v1/launchPipeline",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59788",
+					"path": [
+						"api",
+						"v1",
+						"launchPipeline"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Jobs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:59788/api/v1/job",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59788",
+					"path": [
+						"api",
+						"v1",
+						"job"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Pipelines",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:59788/api/v1/pipelines",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "59788",
+					"path": [
+						"api",
+						"v1",
+						"pipelines"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
