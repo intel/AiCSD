@@ -1,10 +1,7 @@
-# Build and deploy github pages
-name: build
+name: Update GH Pages
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
     paths:
       - docs_src/**
 jobs:
