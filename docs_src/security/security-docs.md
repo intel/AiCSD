@@ -1,4 +1,4 @@
-# Security Considerations TEST
+# Security Considerations
 
 This guide will cover security considerations for the AiCSD Project.
 
