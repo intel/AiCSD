@@ -1,0 +1,72 @@
+# INTEL CONFIDENTIAL
+
+# Copyright (C) 2023 Intel Corporation
+
+# This software and the related documents are Intel copyrighted materials, and your use of them is governed by the express
+# license under which they were provided to you ("License"). Unless the License provides otherwise, you may not use, modify,
+# copy, publish, distribute, disclose or transmit this software or the related documents without Intel's prior written permission.
+
+# This software and the related documents are provided as is, with no express or implied warranties, other than those that are expressly stated in the License.
+
+openapi: 3.0.3
+info:
+  title: File Receiver Gateway APIs
+  version: 1.0.0
+servers:
+  - url: https://localhost:59783/api/v1
+paths:
+  /transmitJob:
+    post:
+      summary: process the incoming job
+      description: requests the file sender to take ownership and send the job/file to the file receiver gateway
+      operationId: dataToHandle
+      requestBody:
+        description: Job entry
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Job'
+        required: true
+      responses:
+        '200':
+          description: Call succeeded, request sent to the file-receiver-gateway
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed to read request body
+  /transmitFile/{jobid}:
+    post:
+      summary: transmits the file for the given job id
+      description: the body contains the contents of the file being transmitted
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+      requestBody:
+        description: file contents
+        content:
+          text/plain:
+            schema:
+              type: string
+              format: binary
+        required: true
+      responses:
+        '200':
+          description: Call succeeded, request sent to the file-receiver-gateway
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed to read request body
+  /retry:
+    post:
+      summary: retries all jobs owned by the file receiver gateway
+      description: receives all job entries the file receiver on the gateway device owns and attempts to process them by sending the job to the task launcher
+      operationId: retry
+      responses:
+        '200':
+          description: Successful operation
+        '500':
+          description: Failed to process job(s)
