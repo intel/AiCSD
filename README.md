@@ -1,7 +1,13 @@
-# applications.iot.reference-implementations.aicsd
+# AI Connect for Scientific Data
 
-For complete documentation on the AiCSD Reference Implementation, please visit [this repository's GitHub Pages site](https://intel-collab.github.io/applications.retail.kaskey-park.kaskey-park/index.html).
+This repository contains EdgeX Foundry based microservices to automatically detect, manage, and process OEM images with OpenVINO.
+For complete documentation on the AiCSD Reference Implementation, please visit [this repository's GitHub Pages site](https://intel.github.io/AiCSD/index.html).
+
+## Quick Links
+
+- [Getting Started](https://intel.github.io/AiCSD/what-to-expect.html)
+- [Learn more about AiCSD](https://intel.github.io/AiCSD/general-info.html)
 
 ## License
 
-[INTEL CONFIDENTIAL](./LICENSE)
+[INTEL Corporation](./LICENSE)

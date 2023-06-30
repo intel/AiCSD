@@ -1,4 +1,4 @@
-# AI Connect for Scientific Devices (AiCSD)
+# AI Connect for Scientific Data (AiCSD)
 
 The AiCSD reference implementation manages pipelines for image processing and automated image comparisons.  
 Adaptable for different use cases and settings, the reference implementation offers an architecture of microservices connected by a secure Redis Message Broker and various communication APIs.
@@ -21,7 +21,7 @@ The architectural components include:
 - **Third-party Input Devices:** The devices supply the images that will be processed. Examples include an optical microscope or conveyor belt camera.
 
 !!! Note
-    Currently, the reference implementation supplies a biopharma pipeline example.
+    Currently, the reference implementation supplies a image classification pipeline example.
 
 ## Setup
 Set up a 2-system configuration, an edge system running Ubuntu and OEM equipment running WSL2 or Ubuntu.
