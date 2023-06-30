@@ -1,0 +1,28 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+########################################################################
+
+name: UX Report
+description: File a ux report
+title: "[UX Report]: "
+labels: ["ux"]
+body:
+  - type: dropdown
+    id: system-persona
+    attributes:
+      label: Persona
+      description: Which persona
+      options:
+        - Data Science
+        - Bench Scientist
+        - Installer
+        - I am not sure
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        This is where you get to tell us a description of the UX feedback. Please include screenshots.
+    validations:
+      required: true

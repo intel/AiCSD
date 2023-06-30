@@ -1,0 +1,40 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+########################################################################
+
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: dropdown
+    id: system-area
+    attributes:
+      label: Area
+      description: What area of the system is believed to be affected?
+      options:
+        - AiCSD
+        - EdgeX/Supporting Service(s)
+        - Pipeline/Model Support
+        - I am not sure
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        This is where you get to tell us what went wrong. When doing so, please make sure to include *all* relevant information.
+
+        Please try to include:
+        * What you were doing when you experienced the bug.
+        * Any error messages you saw, *where* you saw them, and what you believe may have caused them (if you have any ideas).
+        * When possible, steps to reliably produce the bug.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Logs
+      description: |
+        This is where you add all the logs related to the bug - run `make logs` on the gateway to collect the logs of the gateway services.
+    validations:
+      required: true
