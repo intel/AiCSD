@@ -2,7 +2,7 @@
  # Copyright (c) Intel Corporation 2023
 ########################################################################
 
-name: Bug Report
+name: ":beetle: Bug Report"
 description: File a bug report
 title: "[Bug]: "
 labels: ["bug", "triage"]
