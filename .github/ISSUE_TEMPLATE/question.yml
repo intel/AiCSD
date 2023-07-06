@@ -1,0 +1,41 @@
+########################################################################
+# Copyright (c) Intel Corporation 2023
+# SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+name: Question
+description: Ask a question
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: dropdown
+    id: system-persona
+    attributes:
+      label: Persona
+      description: What role/persona are you?
+      options:
+        - Data Science
+        - Bench Scientist
+        - Installer
+        - Developer
+        - I am not sure
+    validations:
+      required: true
+  - type: checkboxes
+    id: area
+    attributes:
+      label: Which step(s) were confusing?
+      description: which-steps
+      options:
+        - install prerequisites
+        - setting up WSL
+        - basic workflow
+        - create pipeline
+        - other
+  - type: textarea
+    attributes:
+      label: question
+      description: |
+        This is where you ask your question. Please include screenshots and logs where necessary.
+    validations:
+      required: true

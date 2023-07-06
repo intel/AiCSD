@@ -1,0 +1,68 @@
+########################################################################
+# Copyright (c) Intel Corporation 2023
+# SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+name: ":rocket: Feature Request"
+description: "I have a suggestion (and may want to implement it)!"
+title: "[Feature]: "
+labels: ["feature"]
+body:
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: What is the priority of this feature?
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: breaking
+      description: Is this a breaking change?
+      options:
+        - Yes
+        - No
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        **Is your feature request related to a problem? Please describe.**
+
+        A clear and concise description of what the problem is. Ex. I have an issue when [...]
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: solution
+      description: |
+        **Describe the solution you'd like**
+        
+        A clear and concise description of what you want to happen. Add any considered drawbacks.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: alternatives
+      description: |
+        **Describe alternatives you've considered**
+        
+        A clear and concise description of any alternative solutions or features you've considered.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: strategies
+      description: |
+        **Teachability, Documentation, Adoption, Migration Strategy**
+        
+        If you can, explain how users will be able to use this and possibly write out a version the docs.
+        Maybe a screenshot or design?
+    validations:
+      required: true
