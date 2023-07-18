@@ -43,4 +43,4 @@ JupyterLab with Elyra extension can be accessed through the URL - **http://0.0.0
 <figcaption>Figure 2: Elyra Web Portal</figcaption>
 </figure>
 
-INTEL CONFIDENTIAL: See [License](../../LICENSE.md).
+BSD-3 License: See [License](../../LICENSE.md).

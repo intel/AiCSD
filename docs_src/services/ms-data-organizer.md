@@ -67,4 +67,4 @@ It searches for the `Id` in the file name and collects the corresponding data ba
 
 [Deep Dive into the Services - Job Repository](ms-job-repository.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

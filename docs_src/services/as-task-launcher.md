@@ -34,4 +34,4 @@ Change task launcher configurations in the [configuration.toml](https://github.c
 
 [Deep Dive into the Services - Pipeline Simulator](./as-pipeline-sim.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

@@ -47,4 +47,4 @@ In this end to end demo, the [Image Classification](https://docs.openvino.ai/lat
  <figcaption>Figure 3: Image Classification Result displayed in Job UI</figcaption>
  </figure>
 
-INTEL CONFIDENTIAL: See [License](../../LICENSE.md).
+BSD-3 License: See [License](../../LICENSE.md).

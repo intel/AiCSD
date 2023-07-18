@@ -98,4 +98,4 @@ To create a task:
 
 [Web UI Guide - Jobs](./ms-web-ui-guide-jobs.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

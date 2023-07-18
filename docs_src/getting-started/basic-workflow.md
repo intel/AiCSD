@@ -64,4 +64,4 @@ If the job did not complete, see [Troubleshooting](./troubleshooting.md).
  [Learn more about the UI](./ms-web-ui-guide.md)
 
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

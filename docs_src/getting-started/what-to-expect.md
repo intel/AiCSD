@@ -36,4 +36,4 @@ The sections under Get Started detail how to install software prerequisites for 
 
 [Set Up](install-prereqs.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

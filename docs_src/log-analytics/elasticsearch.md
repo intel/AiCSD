@@ -14,4 +14,4 @@ It isn't necessary to download Elasticsearch separately as it is included in the
 - [Elasticsearch Docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
 
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

@@ -67,4 +67,4 @@ This application service depends on the following services:
 ## Future Considerations
 In the future, the Pipeline Validator may have a UI to display the job information and start the pipeline(s). 
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

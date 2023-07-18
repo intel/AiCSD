@@ -228,4 +228,4 @@ Old BENTO_TAGs (eg. **image_classification:px4jhnqscwuntqls**) can be found unde
 
 Refer to Complete Demo: [Image Classification](../../pipelines/bentoml/image-classification-demo.md)
 
-INTEL CONFIDENTIAL: See [License](../../LICENSE.md).
+BSD-3 License: See [License](../../LICENSE.md).

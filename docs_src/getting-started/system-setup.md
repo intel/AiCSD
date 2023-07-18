@@ -121,4 +121,4 @@ The following are **Advanced Workflows** for building custom pipelines.
 !!! Note
     To create custom pipelines that interfaces with AiCSD, refer to the [Pipeline Creation](../pipelines/pipeline-creation.md) section.
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

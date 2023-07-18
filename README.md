@@ -4,4 +4,4 @@ For complete documentation on the AiCSD Reference Implementation, please visit [
 
 ## License
 
-[INTEL CONFIDENTIAL](./LICENSE)
+[BSD-3 License](./LICENSE)

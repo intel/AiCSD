@@ -87,4 +87,4 @@ Install make, git, curl, Docker, and Docker Compose.
 
 [Gateway Installation > Configure](choose-config.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

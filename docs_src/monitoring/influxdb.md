@@ -34,4 +34,4 @@ Click **Data > Buckets > systemHealthMonitoring**.
 
 
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

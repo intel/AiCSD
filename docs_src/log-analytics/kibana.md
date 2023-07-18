@@ -16,4 +16,4 @@ These are service accounts that allow the services to communicate properly and v
 
 - [Kibana](https://www.elastic.co/kibana/).
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

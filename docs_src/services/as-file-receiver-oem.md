@@ -21,4 +21,4 @@ This application service depends on the following services:
 
 [Deep Dive into the Services - Web User Interface](./ms-web-ui.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

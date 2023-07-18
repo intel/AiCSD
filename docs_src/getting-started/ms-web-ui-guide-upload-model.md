@@ -32,4 +32,4 @@ To upload a new model:
 
 [Web UI Guide - Dashboards](./ms-web-ui-guide-dashboards.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

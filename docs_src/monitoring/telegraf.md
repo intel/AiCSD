@@ -14,4 +14,4 @@ Telegraf authenticates with InfluxDB via the `DOCKER_INFLUXDB_INIT_ADMIN_TOKEN` 
 - [GitHub](https://github.com/influxdata/telegraf)
 - [Telegraf Docs](https://github.com/influxdata/telegraf/tree/master/docs)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

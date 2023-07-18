@@ -39,4 +39,4 @@ data organizer in order for data to be processed.
 
 [Deep Dive into the Services - Data Organizer](ms-data-organizer.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

@@ -39,4 +39,4 @@ After bento is deployed, service can be accessed via swagger api UI - **http://0
 ## Next up
 [Developer Guide](developer-guide-bentos.md)
 
-INTEL CONFIDENTIAL: See [License](../../LICENSE.md).
+BSD-3 License: See [License](../../LICENSE.md).

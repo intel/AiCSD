@@ -16,4 +16,4 @@ AiCSD implements a variation of the popular log analytics stack containing Elast
 - [General Information: Filebeat](https://www.elastic.co/beats/filebeat)
 - [Filebeat Docs](https://www.elastic.co/guide/en/beats/filebeat/current/index.html)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md)
+BSD-3 License: See [License](../LICENSE.md)

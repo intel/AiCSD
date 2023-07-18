@@ -73,4 +73,4 @@ To control how jobs are displayed:
 
 [Web UI Guide - Model Upload](./ms-web-ui-guide-upload-model.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

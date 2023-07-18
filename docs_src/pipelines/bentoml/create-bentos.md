@@ -51,4 +51,4 @@ Learn More: [Build Bento](https://docs.bentoml.org/en/latest/concepts/bento.html
 ## Next up
 [Deploy Bentos](deploy-bentos.md)
 
-INTEL CONFIDENTIAL: See [License](../../LICENSE.md).
+BSD-3 License: See [License](../../LICENSE.md).

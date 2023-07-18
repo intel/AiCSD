@@ -18,4 +18,4 @@ This application service depends on the following services:
 
 [Deep Dive into the Services - Task Launcher](./as-task-launcher.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).

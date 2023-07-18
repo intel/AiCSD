@@ -29,4 +29,4 @@ On the "Pipeline" dropdown menu, a new pipeline will automatically appear with t
 
 Now follow the rest of the Workflow as illustrated [here](../../getting-started/basic-workflow.md)
 
-INTEL CONFIDENTIAL: See [License](../../LICENSE.md).
+BSD-3 License: See [License](../../LICENSE.md).

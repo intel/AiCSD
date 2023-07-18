@@ -132,4 +132,4 @@ When the pipeline has completed its operations, it will make two calls to send t
 
 **BODY CONTENTS:** `PipelineComplete` or `PipelineFailed`
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD-3 License: See [License](../LICENSE.md).
