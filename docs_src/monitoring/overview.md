@@ -36,4 +36,4 @@ To update the authentication information in the `.env` file:
 ### View System Health
 To view the default system health dashboard on the Grafana UI, open a browser to [http://localhost:3001](http://localhost:3001).
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD 3-Clause License: See [License](../LICENSE.md).

@@ -37,4 +37,4 @@ The table below provides links to configuration options along with the computer 
 
 [Build and Deploy](system-setup.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD 3-Clause License: See [License](../LICENSE.md).

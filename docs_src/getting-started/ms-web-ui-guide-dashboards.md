@@ -28,4 +28,4 @@ This page will open a new tab to the Grafana UI default dashboard as shown in Fi
 
 [Troubleshooting](./troubleshooting.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD 3-Clause License: See [License](../LICENSE.md).

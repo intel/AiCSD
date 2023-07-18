@@ -55,4 +55,4 @@ To best navigate the Kibana UI, follow these next steps:
 
 5. Verify logs are streaming in the entries section below.
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD 3-Clause License: See [License](../LICENSE.md).
