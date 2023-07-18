@@ -300,4 +300,4 @@ To understand how images are processed, see [General Information](../services/ge
 
 To stop and clean up the services, see [Tear Down](./tear-down.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD 3-Clause License: See [License](../LICENSE.md).

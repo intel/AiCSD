@@ -20,4 +20,4 @@ This application service depends on the following services:
 
 [Deep Dive into the Services - File Receiver Gateway](./ms-file-receiver-gateway.md)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD 3-Clause License: See [License](../LICENSE.md).

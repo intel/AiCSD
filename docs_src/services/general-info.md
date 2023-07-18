@@ -196,4 +196,4 @@ This repo leverages a GitHub Pages approach to represent markdown contents as na
 Want to start a deep dive into services? [See File Watcher.](./ms-file-watcher.md)
 
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD 3-Clause License: See [License](../LICENSE.md).

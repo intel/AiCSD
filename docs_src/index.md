@@ -34,4 +34,4 @@ Set up a 2-system configuration, an edge system running Ubuntu and OEM equipment
 ## Additional Resources
 For additional details, see the [General Information](./services/general-info.md).
 
-INTEL CONFIDENTIAL: See [License](LICENSE.md).
+BSD 3-Clause License: See [License](LICENSE.md).

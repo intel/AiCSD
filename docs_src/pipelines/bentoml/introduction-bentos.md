@@ -17,4 +17,4 @@ Get Started on BentoML: [Tutorial](https://docs.bentoml.org/en/latest/tutorial.h
 ## Next up
 [Create Bentos](create-bentos.md)
 
-INTEL CONFIDENTIAL: See [License](../../LICENSE.md).
+BSD 3-Clause License: See [License](../../LICENSE.md).
