@@ -35,4 +35,4 @@ On the "Pipeline" dropdown menu, it will automatically appear the new model you 
 
 Now follow the rest of the Workflow as illustrated [here](../../getting-started/basic-workflow.md)
 
-INTEL CONFIDENTIAL: See [License](../../LICENSE.md).
+BSD 3-Clause License: See [License](../../LICENSE.md).

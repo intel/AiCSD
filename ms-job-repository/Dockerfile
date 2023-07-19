@@ -17,7 +17,7 @@ RUN $MAKE
 
 # final stage
 FROM alpine:3.16
-LABEL license='SPDX-License-Identifier: INTEL CONFIDENTIAL' \
+LABEL license='SPDX-License-Identifier: BSD-3-Clause' \
   copyright='Copyright (c) 2023: Intel Corporation'
 LABEL name='ms-job-repository' \ 
       version="${MSVERSION}"

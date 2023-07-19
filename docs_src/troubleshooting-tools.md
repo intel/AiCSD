@@ -48,4 +48,4 @@
 
 This series of steps resets the Authorization header to enable Grafana to access data for the dashboards.
 
-INTEL CONFIDENTIAL: See [License](LICENSE.md).
+BSD 3-Clause License: See [License](LICENSE.md).

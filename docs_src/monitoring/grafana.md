@@ -23,4 +23,4 @@ Adjust any of the fields at the top to better customize the dashboard.
 - [General Information: Grafana](https://grafana.com/oss/grafana/)
 - [Grafana Docs](https://grafana.com/docs/)
 
-INTEL CONFIDENTIAL: See [License](../LICENSE.md).
+BSD 3-Clause License: See [License](../LICENSE.md).
