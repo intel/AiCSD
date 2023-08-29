@@ -16,7 +16,7 @@ ENV CHROME_BIN=/usr/bin/chromium-browser
 RUN npm config set https-proxy $https_proxy \
     && npm config set proxy $http_proxy
 
-RUN npm install -g npm@9.6.2
+RUN npm install -g npm@9.8.1
 
 ARG USER=1000
 # delete the old 'node' user and create new one with same UID as local user's UID
