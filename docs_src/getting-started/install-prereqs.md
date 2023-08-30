@@ -21,16 +21,31 @@
     ```bash
     [network] generateHosts = false
     ```
-1. Setup WSL2 SSH/SCP
-    * Follow this [guide](https://www.hanselman.com/blog/how-to-ssh-into-wsl2-on-windows-10-from-an-external-machine) to setup WSL2 port forwarding
+
+1. To get the software on the OEM device, clone the AiCSD code repository using **one** of the options below using WSL terminal:
+
+    === "HTTP"
+         ```
+         git clone https://github.com/intel/AiCSD.git
+         ```
+    === "SSH"
+         ```
+         git clone git@github.com:intel/AiCSD.git
+         ```
+
+	!!! Note
+        To update to a specific version of the software after cloning, use:
+
+		``` bash
+		git checkout <version-tag>
+		```
+
+1. Setup WSL2 Port Forwarding within OEM device
+    * Using Admin Powershell on OEM Device, run the `WSL_Port_Setup_Script.ps1` powershell script.
 
     !!! Note
-        When using ssh/scp from Gateway to OEM within WSL2, make sure to use specified port from WSL2 port forwarding and use windows ip address for WSL2 interfacing.
+        To remove the port forwarding rules, run the `WSL_Port_Removal_Script.ps1` powershell script.
 
-1. Pull code on OEM device
-    ```bash
-    git clone https://github.com/intel/AiCSD.git
-    ```
 ## Setup Ubuntu for Linux OEM or Gateway System
 
 The only required setup for these systems is to install [Ubuntu 20.04](https://releases.ubuntu.com/focal/).
