@@ -4,19 +4,19 @@
 ########################################################################
 
 # using alpine based image to address vulnerabilities found by Snyk scans
-FROM node:16.13-alpine3.13 as base
+FROM node:16.14-alpine3.14 as base
 
 # add node_modules binaries to $PATH (eg. `ng`)
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install the latest stable chromium for automated testing
-RUN apk add --no-cache chromium=86.0.4240.111-r0
+RUN apk add --no-cache chromium=93.0.4577.82-r0
 ENV CHROME_BIN=/usr/bin/chromium-browser
 
 RUN npm config set https-proxy $https_proxy \
     && npm config set proxy $http_proxy
 
-RUN npm install -g npm@9.6.2
+RUN npm install -g npm@9.8.1
 
 ARG USER=1000
 # delete the old 'node' user and create new one with same UID as local user's UID
@@ -30,7 +30,7 @@ WORKDIR /app
 
 FROM base as builder
 USER root
-RUN npm install -g @angular/cli@15.2.4
+RUN npm install -g @angular/cli@16.2.0
 COPY . .
 RUN npm install && ng build --configuration production && ls -al /app/dist
 USER $USER:$USER
