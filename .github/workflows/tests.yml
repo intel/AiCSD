@@ -34,7 +34,7 @@ jobs:
         run: sudo apt install libzmq3-dev
 
       - name: Build Containers
-        run: make docker
+        run: make -j2 docker
       
       - name: Run Integration_Test
         run: make integration-test
