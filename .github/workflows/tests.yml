@@ -8,7 +8,7 @@ on:
     branches: [main]
 jobs:
   Unit_Test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps: 
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -25,7 +25,7 @@ jobs:
         run: make test
 
   Integration_Test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
