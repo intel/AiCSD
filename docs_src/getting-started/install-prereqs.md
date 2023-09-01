@@ -44,7 +44,7 @@
     * Using Admin Powershell on OEM Device, run the `WSL_Port_Setup_Script.ps1` powershell script.
 
     !!! Note
-        To remove the port forwarding rules, run the `WSL_Port_Removal_Script.ps1` powershell script.
+        To remove the port forwarding rules, using Admin Powershell, run the `WSL_Port_Removal_Script.ps1` powershell script.
 
 ## Setup Ubuntu for Linux OEM or Gateway System
 
