@@ -36,5 +36,8 @@ jobs:
       - name: Build Containers
         run: make -j2 docker
       
+      - name: Download go-mod
+        run: go mod tidy
+
       - name: Run Integration_Test
         run: make integration-test
