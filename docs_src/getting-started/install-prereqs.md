@@ -41,10 +41,20 @@
 		```
 
 1. Setup WSL2 Port Forwarding within OEM device
-    * Using Admin PowerShell on OEM Device, run the `WSL_Port_Setup_Script.ps1` PowerShell script.
+    * Using Admin PowerShell on OEM Device, navigate to the AiCSD code directory
+    ``` Powershell
+    cd \\wsl.localhost\Ubuntu\...\AiCSD
+    ```
+    * Run the `WSL_Port_Setup_Script.ps1` PowerShell script.
+        ``` PowerShell
+        .\WSL_Port_Setup_Script.ps1
+        ```
 
     !!! Note
         To remove the port forwarding rules, using Admin PowerShell, run the `WSL_Port_Removal_Script.ps1` PowerShell script.
+        ``` PowerShell
+        .\WSL_Port_Removal_Script.ps1
+        ```
 
 ## Setup Ubuntu for Linux OEM or Gateway System
 
