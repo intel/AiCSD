@@ -72,10 +72,10 @@ class MyServer(BaseHTTPRequestHandler):
 
                 # Step 5: Visualization     
                 show_image_with_annotation_scene(image_rgb, prediction, filepath=jsonObj["OutputFileFolder"], show_results=False )
-            except:
+            except Exception as e:
                 self.send_response(500)
                 self._send_cors_headers()
-                print("An error ocurred while processing pipeline")
+                print("An error ocurred while processing pipeline: {}".format(e))
                 self.end_headers()
                 return
 
