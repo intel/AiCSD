@@ -8,7 +8,7 @@ on:
     branches: [main]
 jobs:
   Unit_Test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps: 
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Go ENV
         uses: actions/setup-go@v4
         with: 
-          go-version: '1.20.5'
+          go-version: '1.20.8'
 
       - name: Install Dependencies
         run: sudo apt install libzmq3-dev
@@ -25,16 +25,24 @@ jobs:
         run: make test
 
   Integration_Test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Setup Go ENV
+        uses: actions/setup-go@v4
+        with: 
+          go-version: '1.20.8'
 
       - name: Install Dependencies
         run: sudo apt install libzmq3-dev
 
       - name: Build Containers
-        run: make docker
+        run: make -j2 docker
       
+      - name: Download go-mod
+        run: go mod tidy
+
       - name: Run Integration_Test
         run: make integration-test
