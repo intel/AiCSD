@@ -6,8 +6,7 @@
 # build stage
 FROM golang:1.19-alpine3.16 AS builder
 
-RUN sed -e 's/dl-cdn[.]alpinelinux.org/dl-4.alpinelinux.org/g' -i~ /etc/apk/repositories && \
-    apk add --update --no-cache make=4.3-r0 gcc=11.2.1_git20220219-r2 libc-dev=0.7.2-r3 libsodium-dev=1.0.18-r0 zeromq-dev=4.3.4-r0
+RUN apk add --update --no-cache make=4.3-r0 gcc=11.2.1_git20220219-r2 libc-dev=0.7.2-r3 libsodium-dev=1.0.18-r0 zeromq-dev=4.3.4-r0
 WORKDIR /app
 
 COPY go.mod ./
