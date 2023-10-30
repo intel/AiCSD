@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"github.com/docker/go-connections/nat"
-	"github.com/testcontainers/testcontainers-go"
+	tc "github.com/testcontainers/testcontainers-go/modules/compose"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
@@ -34,7 +34,7 @@ type IntegrationTestFactory interface {
 type TestServiceFactory struct {
 	identifier   string
 	Services     []TestService
-	compose      *testcontainers.LocalDockerCompose
+	compose      *tc.LocalDockerCompose
 	composeFiles []string
 }
 
@@ -44,7 +44,7 @@ func NewTestFactory(composeFiles []string, identifier string, services []TestSer
 	return &TestServiceFactory{
 		identifier:   identifier,
 		Services:     services,
-		compose:      testcontainers.NewLocalDockerCompose(composeFiles, identifier),
+		compose:      tc.NewLocalDockerCompose(composeFiles, identifier),
 		composeFiles: composeFiles,
 	}
 }
@@ -117,10 +117,10 @@ func (f *TestServiceFactory) GetServiceUrl(service string) string {
 
 // StartServiceWithWait starts a service with a new testcontainers.Wait Strategy.
 func (f *TestServiceFactory) StartServiceWithWait(service string) error {
-	var execErr testcontainers.ExecError
+	var execErr tc.ExecError
 
 	command := append([]string{"-p", f.identifier}, "start")
-	newCompose := testcontainers.NewLocalDockerCompose(f.composeFiles, f.identifier)
+	newCompose := tc.NewLocalDockerCompose(f.composeFiles, f.identifier)
 
 	// wait for first service to be ready
 	for k, findServiceDetails := range f.Services {
