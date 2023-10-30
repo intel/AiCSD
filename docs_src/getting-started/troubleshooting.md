@@ -6,7 +6,7 @@ This guide contains troubleshooting for common issues and errors.
 When building the Docker containers, if the build fails with an error message like:
 
 ```bash
-ERROR: failed to solve: golang:1.19-alpine3.16: failed to do request: Head "https://registry-1.docker.io/v2/library/golang/manifests/1.19-alpine3.16": dial tcp: lookup registry-1.docker.io on 127.0.0.53:53: read udp 127.0.0.1:35314->127.0.0.53:53: i/o timeout
+ERROR: failed to solve: golang:1.21.3-alpine3.17: failed to do request: Head "https://registry-1.docker.io/v2/library/golang/manifests/1.19-alpine3.16": dial tcp: lookup registry-1.docker.io on 127.0.0.53:53: read udp 127.0.0.1:35314->127.0.0.53:53: i/o timeout
 make: *** [Makefile:106: docker-job-repository] Error 1
 ```
 
