@@ -1,0 +1,138 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+openapi: 3.0.3
+info:
+  title: Pipeline Validator APIs
+  version: 1.0.0
+servers:
+  - url: https://localhost:59788/api/v1
+paths:
+  /launchPipeline:
+    post:
+      summary: launches the pipeline
+      description: publishes an event with the request body data to the specified topic. This should simulate the microservice behavior and trigger processing if the pipeline is running.
+      requestBody:
+        description: object containing all information needed to trigger the pipeline
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                InputFileLocation:
+                  type: string
+                PipelineTopic:
+                  type: string
+                OutputFileFolder:
+                  type: string
+                ModelParams:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties:
+                      type: string
+            example:
+              InputFileLocation: /path/to/input/file/input_file.ext
+              PipelineTopic: topicToPublishTo
+              OutputFileFolder: /path/to/output/
+              ModelParams:
+                key1: value1
+      responses:
+        '201':
+          description: Call succeeded, created in-memory job entry and launched pipeline
+        '400':
+          description: Invalid request, request payload is incorrect
+        '500':
+          description: Failed, could not publish job on specified topic
+  /job:
+    get:
+      summary: returns all jobs from the pipeline validator's in-memory structure
+      operationId: getJobs
+      responses:
+        '200':
+          description: Call succeeded, all jobs returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './components.yaml#/components/schemas/Job'
+        '500':
+          description: Failed
+  /pipelineStatus/{jobid}/{taskid}:
+    post:
+      summary: simulates notifying the task launcher that the job is done processing on the pipeline
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+        - in: path
+          name: taskid
+          schema:
+            type: string
+          required: true
+          description: UUID of the task corresponding to the pipeline run on the job
+      requestBody:
+        description: string indicating the status of the pipeline for the given job
+        content:
+          text/plain:
+            schema:
+              type: string
+            example: PipelineComplete
+      responses:
+        '200':
+          description: call succeeded, task launcher processed the job
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+  /job/pipeline/{jobid}/{taskid}:
+    put:
+      summary: updates the job from the pipeline
+      description: updates the in-memory job with pipeline details for the entry matching the provided {jobid} and {taskid}
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+        - in: path
+          name: taskid
+          schema:
+            type: string
+          required: true
+          description: UUID of the task corresponding to the pipeline run on the job
+      requestBody:
+        description: map of key value pairs where keys can be anything from the example below (only values to be updated need to be provided)
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                additionalProperties:
+                  type: string
+              example:
+                PipelineDetails.Status: PipelineComplete
+                PipelineDetails.QCFlags: 0
+                PipelineDetails.OutputFileHost: gateway
+                PipelineDetails.OutputFiles: [ { Hostname: gateway, DirName: /tmp/files/output, Name: test1out.tiff, Extension: tiff, Status: FileIncomplete } ]
+                PipelineDetails.Results: CellCount,25
+      responses:
+        '200':
+          description: Call succeeded, response body contains the requested job
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: './components.yaml#/components/schemas/Job'
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed

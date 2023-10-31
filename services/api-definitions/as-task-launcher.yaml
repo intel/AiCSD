@@ -1,0 +1,202 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+openapi: 3.0.3
+info:
+  title: Task Launcher APIs
+  version: 1.0.0
+servers:
+  - url: https://localhost:59788/api/v1
+paths:
+  /task:
+    post:
+      summary: create a new task
+      description: creates a new task entry
+      operationId: createTask
+      requestBody:
+        description: Task entry
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+            example:
+              Description: Generate Output File
+              JobSelector: '{ "==" : [ { "var" : "InputFile.Name" }, "test-image1.tiff" ] }'
+              PipelineId: only-file
+              ResultFileFolder: /tmp/files/output
+              ModelParameters:
+                Brightness: '0'
+              LastUpdated: 0
+        required: true
+      responses:
+        '201':
+          description: Call succeeded, task created
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed to read request body
+    get:
+      summary: returns all tasks from the Task Repo
+      operationId: getTasks
+      responses:
+        '200':
+          description: Call succeeded, all tasks returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+    put:
+      summary: update an existing task
+      description: applies the dictionary of changes to the task
+      operationId: updateTask
+      requestBody:
+        description: Task object with the updated information
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Task'
+              example:
+                Id: "1"
+                Description: "Sample Task"
+                JobSelector: '{ "in" : [ ".tiff", { "var" : "InputFile.Name" } ] }'
+                PipelineId: "new-topic"
+                ResultFileFolder: /tmp/files/output/new-dir
+                ModelParameters: '{ Brightness: 10 }'
+        required: true
+      responses:
+        '200':
+          description: Call succeeded, task updated
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+  /matchTask:
+    post:
+      summary: checks the job to see if there are any tasks that match with it
+      description: checks the job provided in the payload against all of the task rules to see if any task matches with the job
+      requestBody:
+        description: job object to match a task to
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Job'
+      responses:
+        '200':
+          description: job was checked against every task. If the response is true, then there is a matching task. If false, then there are no matching tasks.
+          content:
+            text/plain:
+              example: true
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed to read request body or retrieve tasks
+  /dataToHandle:
+    post:
+      summary: processes the job and sends it to the appropriate pipeline
+      description: matches the job to the first task/pipeline that it can and publishes the job to the EdgeX Message Bus for processing
+      requestBody:
+        description: job object to be processed
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Job'
+      responses:
+        '200':
+          description: call succeeded, published event to the Message Bus to trigger the pipeline
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+  /pipelineStatus/{jobid}/{taskid}:
+    post:
+      summary: notify the task launcher that the job is done processing on the pipeline
+      description: updates the task launcher that the pipeline processing is complete and the job may be passed on to the File Sender on the Gateway if there are output files
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+        - in: path
+          name: taskid
+          schema:
+            type: string
+          required: true
+          description: UUID of the task corresponding to the pipeline run on the job
+      requestBody:
+        description: string indicating the status of the pipeline for the given job (PipelineComplete or PipelineFailed)
+        content:
+          text/plain:
+            schema:
+              type: string
+            example: PipelineComplete
+      responses:
+        '200':
+          description: call succeeded, task launcher processed the job
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+  /retry:
+    post:
+      summary: notify the task launcher to retry any jobs it owns
+      description: checks the job to see which state it falls into. If the job is not processed by the pipeline, the job must fall outside of the timeout duration to know to try again. If the job is already processed by the pipeline, and has output files, then it will be passed onto the file sender on the gateway. If the job is processed and has no output files, then it will be marked with the status set to Complete and owner set to None.
+      requestBody:
+        description: json to indicate the amount of time that should pass between when the job was last processed by the task launcher to when it should retry
+        content:
+          application/json:
+            schema:
+              type: object
+            example:
+              TimeoutDuration: 15s
+      responses:
+        '200':
+          description: call succeeded, task launcher processed the job
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+
+
+components:
+  schemas:
+    Task:
+      required:
+        - topic
+      type: object
+      properties:
+        Id:
+          description: unique identifier for the task
+          type: string
+        Description:
+          description: describes what the task/pipeline does
+          type: string
+        JobSelector:
+          description: json logic rule used to filter and match jobs
+          type: string
+        PipelineId:
+          description: unique topic used for pushing jobs to the Message Bus
+          type: string
+        ResultFileFolder:
+          description: path used for writing the result files from the pipeline
+          type: string
+        ModelParameters:
+          description: map[string]string parameters specific to the pipeline and applied as data is launched into the pipeline
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: string
+        LastUpdated:
+          type: integer
+          description: update time in ns from UTC

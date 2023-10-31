@@ -1,0 +1,204 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+openapi: 3.0.3
+info:
+  title: Job Repository APIs
+  version: 1.0.0
+servers:
+  - url: https://localhost:59784/api/v1
+paths:
+  /job:
+    post:
+      summary: create a new job
+      description: creates a new job entry or indicates that one already exists
+      operationId: createJob
+      requestBody:
+        description: Job entry
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Job'
+        required: true
+      responses:
+        '201':
+          description: Call succeeded, task created
+        '400':
+          description: Invalid request
+        '409':
+          description: Job for the input file already exists
+        '500':
+          description: Failed to read request body
+    get:
+      summary: returns all jobs from the Job Repo
+      operationId: getJobs
+      responses:
+        '200':
+          description: Call succeeded, all jobs returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './components.yaml#/components/schemas/Job'
+        '500':
+          description: Failed
+  /job/{jobid}:
+    get:
+      summary: retrieves the job corresponding to the provided jobid
+      description: returns the matching entry for {jobid} or returns an error if the job is not found
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+      responses:
+        '200':
+          description: Call succeeded, response body contains the requested job
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: './components.yaml#/components/schemas/Job'
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+    put:
+      summary: update job entry by ID
+      description: updates the entry with the given values for the provided {jobid} if the job exists in the Job Repository
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+      requestBody:
+        description: map of key value pairs where keys can be anything from the example below (only values to be updated need to be provided)
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                additionalProperties:
+                  type: string
+              example:
+                Owner: task-launcher
+                InputFile.Hostname: gateway
+                inputFile.Dirname: /tmp/files/input
+                InputFile.Name: changeName.tiff
+                inputFile.Extension: tiff
+                PipelineDetails.TaskId: task1
+                PipelineDetails.Status: PipelineComplete
+                PipelineDetails.QCFlags: 0
+                PipelineDetails.OutputFileHost: gateway
+                PipelineDetails.OutputFiles: [ { Hostname: gateway, DirName: /tmp/files/output, Name: test1out.tiff, Extension: tiff, Status: FileIncomplete } ]
+                PipelineDetails.Results: CellCount,10
+                Status: Failed
+                ErrorDetails: {Owner: task-launcher, Error: "pipeline failed"}
+      responses:
+        '200':
+          description: Call succeeded, response body contains the requested job
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: './components.yaml#/components/schemas/Job'
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+    delete:
+      summary: delete job entry by ID
+      description: deletes the entry for the provided {jobid} if the job exists in the Job Repository
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+      responses:
+        '200':
+          description: Call succeeded, job with id specified was deleted
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+  /job/owner/{owner}:
+    get:
+      summary: list job entries by owner
+      description: returns the list of entries matching the string {owner} and an error if the owner does not exist
+      parameters:
+        - in: path
+          name: owner
+          schema:
+            type: string
+          required: true
+          description: owner of the jobs to be retrieved
+          example:
+            data-organizer
+      responses:
+        '200':
+          description: call succeeded, response contains an array of jobs owned by the specific owner
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './components.yaml#/components/schemas/Job'
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed
+  /job/pipeline/{jobid}/{taskid}:
+    put:
+      summary: update job from the pipeline
+      description: updates the pipeline details for the entry matching the provided {jobid} and {taskid}
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+        - in: path
+          name: taskid
+          schema:
+            type: string
+          required: true
+          description: UUID of the task corresponding to the pipeline run on the job
+      requestBody:
+        description: map of key value pairs where keys can be anything from the example below (only values to be updated need to be provided)
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                additionalProperties:
+                  type: string
+              example:
+                PipelineDetails.Status: PipelineComplete
+                PipelineDetails.QCFlags: 0
+                PipelineDetails.OutputFileHost: gateway
+                PipelineDetails.OutputFiles: [ { Hostname: gateway, DirName: /tmp/files/output, Name: test1out.tiff, Extension: tiff, Status: FileIncomplete } ]
+                PipelineDetails.Results: CellCount,25
+      responses:
+        '200':
+          description: Call succeeded, response body contains the requested job
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: './components.yaml#/components/schemas/Job'
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed

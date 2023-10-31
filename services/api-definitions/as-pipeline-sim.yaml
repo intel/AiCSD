@@ -1,0 +1,53 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+openapi: 3.0.3
+info:
+  title: Pipeline Simulator APIs
+  version: 1.0.0
+servers:
+  - url: https://localhost:10107/api/v1
+paths:
+  /pipelines:
+    get:
+      summary: returns all pipelines running on the system
+      operationId: getPipelines
+      responses:
+        '200':
+          description: Call succeeded, array of pipeline objects returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    subscriptionTopic:
+                      type: string
+                    status:
+                      type: string
+              example:
+                - id: 28c7df40-4819-4b0d-9d21-61bf2340a53b
+                  name: OnlyFile
+                  description: Pipeline that generates only an output file
+                  subscriptionTopic: only-file
+                  status: Running
+                - id: 9ee32f0f-80de-47fb-ade6-b1750f68bcc3
+                  name: OnlyResults
+                  description: Pipeline that generates only results
+                  subscriptionTopic: only-results
+                  status: Running
+                - id: 171b05ec-7790-4ff3-baa2-255f9a514b80
+                  name: FileAndResults
+                  description: Pipeline that generates output file and results
+                  subscriptionTopic: file-and-results
+                  status: Running
+        '500':
+          description: Failed
