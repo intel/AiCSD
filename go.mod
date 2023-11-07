@@ -150,7 +150,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.18.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
 	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1 // indirect
-	golang.org/x/image v0.6.0 // indirect
+	golang.org/x/image v0.10.0 // indirect
 	golang.org/x/oauth2 v0.11.0 // indirect
 	golang.org/x/term v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
