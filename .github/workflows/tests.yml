@@ -19,7 +19,9 @@ jobs:
           go-version: '1.21'
 
       - name: Install Dependencies
-        run: sudo apt install libzmq3-dev
+        run: |
+          sudo apt-get update
+          sudo apt install libzmq3-dev
       
       - name: Run Unit Tests
         run: make test
@@ -36,7 +38,9 @@ jobs:
           go-version: '1.21'
 
       - name: Install Dependencies
-        run: sudo apt install libzmq3-dev
+        run: |
+          sudo apt-get update
+          sudo apt install libzmq3-dev
 
       - name: Build Containers
         run: make -j2 docker
