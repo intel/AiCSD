@@ -5,7 +5,7 @@
 
 .PHONY: build tidy test clean docker integration-test logs
 .SILENT: get-consul-acl-token
-GO=CGO_ENABLED=1 go
+GO=CGO_ENABLED=0 go
 
 # VERSION file is not needed for local development, In the CI/CD pipeline, a temporary VERSION file is written
 # if you need a specific version, just override below
@@ -13,7 +13,7 @@ MSVERSION=$(shell cat ./VERSION 2>/dev/null || echo 0.0.0)
 
 # This pulls the version of the SDK from the go.mod file. If the SDK is the only required module,
 # it must first remove the word 'required' so the offset of $2 is the same if there are multiple required modules
-SDKVERSION=$(shell cat ./go.mod | grep 'github.com/edgexfoundry/app-functions-sdk-go/v2 v' | sed 's/require//g' | awk '{print $$2}')
+SDKVERSION=$(shell cat ./go.mod | grep 'github.com/edgexfoundry/app-functions-sdk-go/v3 v' | sed 's/require//g' | awk '{print $$2}')
 
 PROJECT=aicsd
 
@@ -43,7 +43,7 @@ SVCS=$(filter-out pkg/. tools/. integration-tests/. ms-web-ui/., $(DIRS))
 # Linux needs no file extension, or prefix unless x-compiling for windows
 EXT=
 
-GOFLAGS=-ldflags "-X github.com/edgexfoundry/app-functions-sdk-go/v2/internal.SDKVersion=$(SDKVERSION) -X github.com/edgexfoundry/app-functions-sdk-go/v2/internal.ApplicationVersion=$(MSVERSION)" -buildvcs=false
+GOFLAGS=-ldflags "-X github.com/edgexfoundry/app-functions-sdk-go/v3/internal.SDKVersion=$(SDKVERSION) -X github.com/edgexfoundry/app-functions-sdk-go/v3/internal.ApplicationVersion=$(MSVERSION)" -buildvcs=false
 
 GIT_SHA=$(shell git rev-parse HEAD)
 
