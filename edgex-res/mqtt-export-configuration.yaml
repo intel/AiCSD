@@ -1,8 +1,6 @@
 Writable:
   LogLevel: "INFO"
-  StoreAndForward:
-    Enabled: false
-
+  
   Pipeline:
     ExecutionOrder: "Transform, MQTTExport"
 
