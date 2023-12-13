@@ -6,9 +6,6 @@
 package controller
 
 import (
-	"aicsd/ms-data-organizer/clients/task_launcher"
-	"aicsd/pkg/wait"
-	"aicsd/pkg/werrors"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -20,10 +17,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/common"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/dtos"
+	"aicsd/ms-data-organizer/clients/task_launcher"
+	"aicsd/pkg/wait"
+	"aicsd/pkg/werrors"
+
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/common"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/dtos"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-multierror"
 	"github.com/sunshineplan/imgconv"

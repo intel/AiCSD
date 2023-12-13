@@ -6,10 +6,11 @@
 package config
 
 import (
-	"aicsd/pkg/helpers"
 	"fmt"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
+	"aicsd/pkg/helpers"
+
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
 )
 
 type Configuration struct {

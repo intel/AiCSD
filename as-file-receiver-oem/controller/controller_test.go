@@ -6,23 +6,25 @@
 package controller
 
 import (
+	"errors"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strconv"
+	"testing"
+
 	fileSenderMocks "aicsd/as-file-receiver-oem/clients/file_sender/mocks"
 	"aicsd/pkg"
 	jobRepoMocks "aicsd/pkg/clients/job_repo/mocks"
 	"aicsd/pkg/helpers"
 	"aicsd/pkg/types"
 	"aicsd/pkg/wait"
-	"errors"
-	"fmt"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/jinzhu/copier"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
-	"os"
-	"path/filepath"
-	"strconv"
-	"testing"
 )
 
 const (

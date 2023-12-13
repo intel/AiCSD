@@ -6,6 +6,12 @@
 package controller
 
 import (
+	"net/http"
+	"os"
+	"path/filepath"
+	"strconv"
+	"sync"
+
 	"aicsd/as-file-receiver-oem/clients/file_sender"
 	"aicsd/pkg"
 	"aicsd/pkg/clients/job_repo"
@@ -13,15 +19,10 @@ import (
 	"aicsd/pkg/types"
 	"aicsd/pkg/wait"
 	"aicsd/pkg/werrors"
-	"github.com/hashicorp/go-multierror"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strconv"
-	"sync"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
+	"github.com/hashicorp/go-multierror"
 )
 
 type Controller struct {

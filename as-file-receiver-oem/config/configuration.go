@@ -6,12 +6,14 @@
 package config
 
 import (
-	"aicsd/pkg/helpers"
-	"aicsd/pkg/wait"
 	"errors"
 	"fmt"
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
 	"os"
+
+	"aicsd/pkg/helpers"
+	"aicsd/pkg/wait"
+
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
 )
 
 type Configuration struct {

@@ -6,8 +6,6 @@
 package functions
 
 import (
-	"aicsd/as-pipeline-sim/config"
-	"aicsd/pkg/types"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -18,11 +16,14 @@ import (
 	"path/filepath"
 	"strings"
 
+	"aicsd/as-pipeline-sim/config"
+	"aicsd/pkg/types"
+
 	"aicsd/pkg/helpers"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/dtos"
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/dtos"
 
 	"aicsd/pkg"
 	"aicsd/pkg/werrors"

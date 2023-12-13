@@ -6,7 +6,6 @@
 package controller
 
 import (
-	"aicsd/pkg/wait"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -16,6 +15,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"aicsd/pkg/wait"
+
 	"aicsd/ms-file-receiver-gateway/config"
 	"aicsd/pkg"
 	"aicsd/pkg/clients/job_handler"
@@ -24,8 +25,8 @@ import (
 	"aicsd/pkg/types"
 	"aicsd/pkg/werrors"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/hashicorp/go-multierror"
 )
 

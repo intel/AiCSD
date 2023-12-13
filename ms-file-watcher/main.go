@@ -6,18 +6,19 @@
 package main
 
 import (
-	"aicsd/ms-file-watcher/clients/data_organizer"
-	"aicsd/ms-file-watcher/config"
-	controller "aicsd/ms-file-watcher/controller"
-	"aicsd/pkg"
-	"aicsd/pkg/wait"
 	"context"
 	"fmt"
 	"os"
 	"strings"
 	"sync"
 
-	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v2/pkg"
+	"aicsd/ms-file-watcher/clients/data_organizer"
+	"aicsd/ms-file-watcher/config"
+	controller "aicsd/ms-file-watcher/controller"
+	"aicsd/pkg"
+	"aicsd/pkg/wait"
+
+	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v3/pkg"
 )
 
 func main() {
@@ -69,9 +70,9 @@ func main() {
 	wg.Add(1)
 	go fileWatcher.WatchFolders(ctx, wg, fileWatcher.Config)
 
-	err = service.MakeItRun()
+	err = service.Run()
 	if err != nil {
-		lc.Errorf("MakeItRun returned error: %s", err.Error())
+		lc.Errorf("Run returned error: %s", err.Error())
 		os.Exit(-1)
 	}
 

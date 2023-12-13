@@ -6,22 +6,23 @@
 package functions
 
 import (
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"strconv"
+	"sync"
+
 	"aicsd/as-file-receiver-oem/clients/file_sender"
 	"aicsd/pkg"
 	"aicsd/pkg/clients/job_repo"
 	"aicsd/pkg/helpers"
 	"aicsd/pkg/types"
 	"aicsd/pkg/werrors"
-	"encoding/json"
-	"github.com/hashicorp/go-multierror"
-	"os"
-	"path/filepath"
-	"strconv"
-	"sync"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/dtos"
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/dtos"
+	"github.com/hashicorp/go-multierror"
 )
 
 // PipelineReceiver provides the data for the App Function Pipelines in this package

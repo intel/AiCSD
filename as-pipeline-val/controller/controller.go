@@ -6,13 +6,6 @@
 package controller
 
 import (
-	"aicsd/as-pipeline-val/clients"
-	"aicsd/as-pipeline-val/config"
-	simTypes "aicsd/as-pipeline-val/types"
-	taskPkg "aicsd/as-task-launcher/pkg"
-	"aicsd/pkg/helpers"
-	"aicsd/pkg/types"
-	"aicsd/pkg/wait"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -22,8 +15,16 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"aicsd/as-pipeline-val/clients"
+	"aicsd/as-pipeline-val/config"
+	simTypes "aicsd/as-pipeline-val/types"
+	taskPkg "aicsd/as-task-launcher/pkg"
+	"aicsd/pkg/helpers"
+	"aicsd/pkg/types"
+	"aicsd/pkg/wait"
+
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/google/uuid"
 
 	"aicsd/pkg"

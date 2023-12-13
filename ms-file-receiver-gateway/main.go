@@ -6,9 +6,10 @@
 package main
 
 import (
-	"aicsd/pkg/wait"
 	"fmt"
 	"os"
+
+	"aicsd/pkg/wait"
 
 	"aicsd/ms-file-receiver-gateway/config"
 	"aicsd/ms-file-receiver-gateway/controller"
@@ -16,7 +17,7 @@ import (
 	"aicsd/pkg/clients/job_handler"
 	"aicsd/pkg/clients/job_repo"
 
-	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v2/pkg"
+	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v3/pkg"
 )
 
 func main() {
@@ -57,9 +58,9 @@ func main() {
 		lc.Error(err.Error())
 	}
 
-	err = service.MakeItRun()
+	err = service.Run()
 	if err != nil {
-		lc.Errorf("MakeItRun returned error: %s", err.Error())
+		lc.Errorf("Run returned error: %s", err.Error())
 		os.Exit(-1)
 	}
 

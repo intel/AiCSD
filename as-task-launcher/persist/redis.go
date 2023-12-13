@@ -6,15 +6,16 @@
 package persist
 
 import (
+	"encoding/json"
+	"fmt"
+
 	taskPkg "aicsd/as-task-launcher/pkg"
 	"aicsd/pkg"
 	"aicsd/pkg/clients/redis"
 	"aicsd/pkg/types"
 	"aicsd/pkg/werrors"
-	"encoding/json"
-	"fmt"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	redigo "github.com/gomodule/redigo/redis"
 	"github.com/google/uuid"
 )

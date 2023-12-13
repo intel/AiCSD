@@ -6,7 +6,6 @@
 package controller
 
 import (
-	"aicsd/pkg/wait"
 	"bytes"
 	"encoding/json"
 	"errors"
@@ -14,7 +13,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"aicsd/pkg/wait"
+
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 

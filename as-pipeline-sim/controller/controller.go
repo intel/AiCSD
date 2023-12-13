@@ -6,16 +6,17 @@
 package controller
 
 import (
-	"aicsd/pkg/helpers"
-	"aicsd/pkg/wait"
 	"encoding/json"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"aicsd/pkg/helpers"
+	"aicsd/pkg/wait"
+
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/google/uuid"
 
 	"aicsd/pkg"

@@ -6,10 +6,11 @@
 package main
 
 import (
-	"aicsd/pkg/translation"
-	"aicsd/pkg/wait"
 	"fmt"
 	"os"
+
+	"aicsd/pkg/translation"
+	"aicsd/pkg/wait"
 
 	"aicsd/ms-job-repository/config"
 	"aicsd/ms-job-repository/controller"
@@ -18,7 +19,7 @@ import (
 	"aicsd/pkg/clients/redis"
 	"aicsd/pkg/werrors"
 
-	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v2/pkg"
+	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v3/pkg"
 )
 
 func main() {
@@ -39,7 +40,7 @@ func main() {
 		os.Exit(-1)
 	}
 
-	secrets, err := service.GetSecret(pkg.DatabasePath, "username", "password")
+	secrets, err := service.SecretProvider().GetSecret(pkg.DatabasePath, "username", "password")
 	if err != nil {
 		lc.Errorf("failed to GetSecret for database %s: %s", pkg.DatabasePath, err.Error())
 		os.Exit(-1)
@@ -65,7 +66,7 @@ func main() {
 		os.Exit(-1)
 	}
 
-	err = service.MakeItRun()
+	err = service.Run()
 	if err != nil {
 		lc.Errorf(werrors.WrapErr(err, pkg.ErrRunningService).Error())
 		os.Exit(-1)

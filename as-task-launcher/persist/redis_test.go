@@ -6,16 +6,17 @@
 package persist
 
 import (
+	"encoding/json"
+	"fmt"
+	"testing"
+
 	taskPkg "aicsd/as-task-launcher/pkg"
 	"aicsd/pkg"
 	"aicsd/pkg/clients/redis"
 	"aicsd/pkg/clients/redis/mocks"
 	"aicsd/pkg/types"
-	"encoding/json"
-	"fmt"
-	"testing"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	redigo "github.com/gomodule/redigo/redis"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

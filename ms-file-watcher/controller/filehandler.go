@@ -6,7 +6,6 @@
 package controller
 
 import (
-	"aicsd/pkg/wait"
 	"context"
 	"os"
 	"path/filepath"
@@ -14,10 +13,12 @@ import (
 	"strings"
 	"sync"
 
+	"aicsd/pkg/wait"
+
 	data_organizer "aicsd/ms-file-watcher/clients/data_organizer"
 	"aicsd/ms-file-watcher/config"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/fsnotify/fsnotify"
 )
 

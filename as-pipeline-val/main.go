@@ -6,11 +6,12 @@
 package main
 
 import (
-	"aicsd/pkg"
 	"fmt"
 	"os"
 
-	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v2/pkg"
+	"aicsd/pkg"
+
+	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v3/pkg"
 
 	"aicsd/as-pipeline-val/clients"
 	"aicsd/as-pipeline-val/config"
@@ -54,9 +55,9 @@ func main() {
 		os.Exit(-1)
 	}
 
-	err = service.MakeItRun()
+	err = service.Run()
 	if err != nil {
-		lc.Errorf("MakeItRun returned error: %s", err.Error())
+		lc.Errorf("Run returned error: %s", err.Error())
 		os.Exit(-1)
 	}
 

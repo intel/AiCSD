@@ -6,21 +6,23 @@
 package controller
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"net/http"
+
 	"aicsd/ms-job-repository/persist"
 	"aicsd/pkg"
 	"aicsd/pkg/helpers"
 	"aicsd/pkg/types"
 	"aicsd/pkg/wait"
 	"aicsd/pkg/werrors"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"github.com/nicksnyder/go-i18n/v2/i18n"
-	"io"
-	"net/http"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
+
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 )
 
 type JobRepoController struct {

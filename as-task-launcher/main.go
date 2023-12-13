@@ -6,11 +6,12 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"aicsd/pkg/clients/job_handler"
 	"aicsd/pkg/clients/redis"
 	"aicsd/pkg/wait"
-	"fmt"
-	"os"
 
 	"aicsd/as-task-launcher/config"
 	"aicsd/pkg/clients/job_repo"
@@ -19,7 +20,7 @@ import (
 	"aicsd/as-task-launcher/persist"
 	"aicsd/pkg"
 
-	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v2/pkg"
+	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v3/pkg"
 )
 
 func main() {
@@ -38,7 +39,7 @@ func main() {
 		os.Exit(-1)
 	}
 
-	secrets, err := service.GetSecret(pkg.DatabasePath, "username", "password")
+	secrets, err := service.SecretProvider().GetSecret(pkg.DatabasePath, "username", "password")
 	if err != nil {
 		lc.Errorf("failed to GetSecret for database %s: %s", pkg.DatabasePath, err.Error())
 		os.Exit(-1)
@@ -77,8 +78,8 @@ func main() {
 		lc.Errorf("Retry on startup failed: %s", err.Error())
 	}
 
-	if err := service.MakeItRun(); err != nil {
-		lc.Errorf("MakeItRun returned error: %s", err.Error())
+	if err := service.Run(); err != nil {
+		lc.Errorf("Run returned error: %s", err.Error())
 		os.Exit(-1)
 	}
 
