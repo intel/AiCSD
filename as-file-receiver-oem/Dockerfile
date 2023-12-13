@@ -4,9 +4,9 @@
 ########################################################################
 
 #build stage
-FROM golang:1.21.3-alpine3.17 AS builder
+FROM golang:1.21-alpine3.18 AS builder
 
-RUN apk add --update --no-cache make=4.3-r1 gcc=12.2.1_git20220924-r4 libc-dev=0.7.2-r3 libsodium-dev=1.0.18-r2 zeromq-dev=4.3.4-r1
+RUN apk add --update --no-cache make
 WORKDIR /app
 
 COPY go.mod ./
@@ -17,7 +17,7 @@ ARG MAKE="make file-receiver-oem"
 RUN $MAKE
 
 #final stage
-FROM alpine:3.17
+FROM alpine:3.18
 LABEL license='SPDX-License-Identifier: BSD-3-Clause' \
   copyright='Copyright (c) 2023: Intel Corporation'
 LABEL name='as-file-receiver-oem' \ 
@@ -28,9 +28,9 @@ COPY --from=builder /app/as-file-receiver-oem/res/ /res/
 COPY --from=builder /app/as-file-receiver-oem/as-file-receiver-oem /as-file-receiver-oem
 
 # dumb-init is required as security-bootstrapper uses it in the entrypoint script
-RUN apk add --update --no-cache ca-certificates=20230506-r0 zeromq=4.3.4-r1 dumb-init=1.2.5-r2
+RUN apk add --update --no-cache ca-certificates dumb-init
 
 EXPOSE 59787
 
 ENTRYPOINT ["/as-file-receiver-oem"]
-CMD ["-cp=consul.http://edgex-core-consul:8500", "--registry", "--confdir=/res", "-s"]
+CMD ["-cp=consul.http://edgex-core-consul:8500", "--registry", "-s"]

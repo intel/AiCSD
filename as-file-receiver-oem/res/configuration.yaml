@@ -1,0 +1,23 @@
+Writable:
+  LogLevel: INFO
+Service:
+  Port: 59787
+  StartupMsg: Started the file receiver OEM microservice
+  RequestTimeout: "60s"
+MessageBus:
+  Optional:
+    ClientId: "app-file-receiver-oem"
+Trigger:
+  # Note that the MessageBus connection above is used by edgex-messagebus trigger which is the default set in common config
+  SubscribeTopics: "jobs"  # Base topic is prepended to this topic when using edgex-messagebus
+ApplicationSettings:
+  JobRepoHost: localhost
+  JobRepoPort: '59784'
+  FileSenderHost: localhost
+  FileSenderPort: '59786'
+  OutputFolder: /tmp/output
+  FileHostname: oem
+  PrivateKeyPath: ''
+  JWTKeyPath: ''
+  JWTAlgorithm: ''
+  JWTDuration: ''
