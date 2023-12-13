@@ -6,7 +6,6 @@
 package controller
 
 import (
-	"aicsd/pkg/translation"
 	"bytes"
 	"encoding/json"
 	"errors"
@@ -15,6 +14,8 @@ import (
 	"net/http/httptest"
 	"path/filepath"
 	"testing"
+
+	"aicsd/pkg/translation"
 
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
@@ -25,7 +26,7 @@ import (
 	"aicsd/pkg/helpers"
 	"aicsd/pkg/types"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )

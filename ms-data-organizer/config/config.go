@@ -9,7 +9,8 @@ import (
 	"aicsd/pkg/helpers"
 	"aicsd/pkg/types"
 	"aicsd/pkg/wait"
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
+
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
 )
 
 type Configuration struct {

@@ -6,12 +6,13 @@
 package main
 
 import (
-	"aicsd/pkg"
-	"aicsd/pkg/wait"
 	"fmt"
 	"os"
 
-	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v2/pkg"
+	"aicsd/pkg"
+	"aicsd/pkg/wait"
+
+	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v3/pkg"
 
 	"aicsd/as-pipeline-sim/config"
 	"aicsd/as-pipeline-sim/controller"
@@ -93,7 +94,7 @@ func main() {
 		os.Exit(-1)
 	}
 
-	err = service.MakeItRun()
+	err = service.Run()
 	if err != nil {
 		lc.Errorf("MakeItRun returned error: %s", err.Error())
 		os.Exit(-1)

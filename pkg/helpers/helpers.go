@@ -6,10 +6,6 @@
 package helpers
 
 import (
-	"aicsd/pkg"
-	"aicsd/pkg/clients/job_repo"
-	"aicsd/pkg/types"
-	"aicsd/pkg/werrors"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -24,13 +20,18 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/common"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/dtos"
+	"aicsd/pkg"
+	"aicsd/pkg/clients/job_repo"
+	"aicsd/pkg/types"
+	"aicsd/pkg/werrors"
+
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/common"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/dtos"
 	"github.com/google/uuid"
 
 	"github.com/diegoholiveira/jsonlogic"
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/gorilla/mux"
 )
 

@@ -6,21 +6,22 @@
 package functions
 
 import (
-	fileSenderMocks "aicsd/as-file-receiver-oem/clients/file_sender/mocks"
-	"aicsd/pkg"
-	jobRepoMocks "aicsd/pkg/clients/job_repo/mocks"
-	"aicsd/pkg/helpers"
-	"aicsd/pkg/types"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"testing"
 
-	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v2/pkg"
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/dtos"
+	fileSenderMocks "aicsd/as-file-receiver-oem/clients/file_sender/mocks"
+	"aicsd/pkg"
+	jobRepoMocks "aicsd/pkg/clients/job_repo/mocks"
+	"aicsd/pkg/helpers"
+	"aicsd/pkg/types"
+
+	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v3/pkg"
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/dtos"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

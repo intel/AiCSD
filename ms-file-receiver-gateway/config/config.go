@@ -12,7 +12,7 @@ import (
 
 	"aicsd/pkg/helpers"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
 )
 
 type Configuration struct {

@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 )
 
 // Note: inspiration and work in this file is derived from https://github.com/roerohan/wait-for-it.

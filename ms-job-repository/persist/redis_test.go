@@ -6,18 +6,19 @@
 package persist
 
 import (
-	"aicsd/pkg"
-	"aicsd/pkg/clients/redis"
-	"aicsd/pkg/clients/redis/mocks"
-	"aicsd/pkg/helpers"
-	"aicsd/pkg/types"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
 	"testing"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"aicsd/pkg"
+	"aicsd/pkg/clients/redis"
+	"aicsd/pkg/clients/redis/mocks"
+	"aicsd/pkg/helpers"
+	"aicsd/pkg/types"
+
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	redigo "github.com/gomodule/redigo/redis"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

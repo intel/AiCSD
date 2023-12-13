@@ -6,17 +6,18 @@
 package main
 
 import (
-	"aicsd/ms-data-organizer/clients/task_launcher"
-	"aicsd/pkg/wait"
 	"fmt"
 	"os"
+
+	"aicsd/ms-data-organizer/clients/task_launcher"
+	"aicsd/pkg/wait"
 
 	"aicsd/as-file-sender-gateway/config"
 	"aicsd/as-file-sender-gateway/controller"
 	"aicsd/pkg"
 	"aicsd/pkg/clients/job_repo"
 
-	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v2/pkg"
+	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v3/pkg"
 )
 
 func main() {
@@ -64,7 +65,7 @@ func main() {
 		lc.Errorf("failed to retry one or more jobs: %s", err.Error())
 	}
 
-	if err := service.MakeItRun(); err != nil {
+	if err := service.Run(); err != nil {
 		lc.Errorf("MakeItRun returned error: %s", err.Error())
 		os.Exit(-1)
 	}

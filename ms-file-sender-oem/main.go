@@ -6,10 +6,11 @@
 package main
 
 import (
-	"aicsd/pkg/auth"
-	"aicsd/pkg/wait"
 	"fmt"
 	"os"
+
+	"aicsd/pkg/auth"
+	"aicsd/pkg/wait"
 
 	"aicsd/ms-file-sender-oem/clients/file_receiver"
 	"aicsd/ms-file-sender-oem/config"
@@ -17,7 +18,7 @@ import (
 	"aicsd/pkg"
 	"aicsd/pkg/clients/job_repo"
 
-	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v2/pkg"
+	appsdk "github.com/edgexfoundry/app-functions-sdk-go/v3/pkg"
 )
 
 func main() {
@@ -63,7 +64,7 @@ func main() {
 		lc.Errorf("Retry on startup failed: %s", err.Error())
 	}
 
-	err = service.MakeItRun()
+	err = service.Run()
 	if err != nil {
 		lc.Errorf("MakeItRun returned error: %s", err.Error())
 		os.Exit(-1)

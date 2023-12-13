@@ -6,7 +6,6 @@
 package controller
 
 import (
-	"aicsd/pkg/wait"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -14,10 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/common"
-	"github.com/google/uuid"
-	"github.com/hashicorp/go-multierror"
+	"aicsd/pkg/wait"
 
 	"aicsd/as-task-launcher/config"
 	"aicsd/as-task-launcher/persist"
@@ -29,7 +25,12 @@ import (
 	"aicsd/pkg/types"
 	"aicsd/pkg/werrors"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/app-functions-sdk-go/v3/pkg/interfaces"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/common"
+	"github.com/google/uuid"
+	"github.com/hashicorp/go-multierror"
+
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 )
 
 const (
