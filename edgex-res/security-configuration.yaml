@@ -1,0 +1,14 @@
+# This is a YAML config file for edgexsecurity service.
+  
+LogLevel: "DEBUG"
+SNIS: [""]
+# RequestTimeout for proxy-setup http client caller
+RequestTimeout: 10
+AccessTokenFile: "/tmp/edgex/secrets/consul-acl-token/mgmt_token.json"
+  
+Routes:
+  Routes.core-consul:
+    Name: "consul"
+    Protocol: "http"
+    Host: "localhost"
+    Port: 8500
