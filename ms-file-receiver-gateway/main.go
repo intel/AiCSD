@@ -60,7 +60,7 @@ func main() {
 
 	err = service.Run()
 	if err != nil {
-		lc.Errorf("MakeItRun returned error: %s", err.Error())
+		lc.Errorf("Run returned error: %s", err.Error())
 		os.Exit(-1)
 	}
 
