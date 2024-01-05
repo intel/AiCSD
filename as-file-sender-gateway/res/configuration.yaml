@@ -1,0 +1,22 @@
+Writable:
+  LogLevel: INFO
+Service:
+  Port: 59786
+  StartupMsg: Started the file sender gateway microservice
+  RequestTimeout: "60s"
+MessageBus:
+  Optional:
+    ClientId: "app-file-sender-gateway"
+Trigger:
+  # Note that the MessageBus connection above is used by edgex-messagebus trigger which is the default set in common config
+  PublishTopics: "jobs"  # Base topic is prepended to this topic when using edgex-messagebus
+ApplicationSettings:
+  JobRepoHost: localhost
+  JobRepoPort: '59784'
+
+  TaskLauncherHost: localhost
+  TaskLauncherPort: '59785'
+
+  FileHostname: gateway
+  ArchiveFolder: /tmp/foo
+  RejectFolder: /tmp/bar
