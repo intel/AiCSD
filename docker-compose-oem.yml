@@ -16,12 +16,26 @@ services:
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
     environment:
-      MESSAGEQUEUE_HOST: edgex-redis
+      EDGEX_SECURITY_SECRET_STORE: "true"
       REGISTRY_HOST: edgex-core-consul
+      SECRETSTORE_HOST: edgex-vault
       SERVICE_HOST: data-organizer
       SPIFFE_ENDPOINTSOCKET: /tmp/edgex/secrets/spiffe/public/api.sock
       SPIFFE_TRUSTBUNDLE_PATH: /tmp/edgex/secrets/spiffe/trust/bundle
       SPIFFE_TRUSTDOMAIN: edgexfoundry.org
+      STAGEGATE_BOOTSTRAPPER_HOST: edgex-security-bootstrapper
+      STAGEGATE_BOOTSTRAPPER_STARTPORT: "54321"
+      STAGEGATE_DATABASE_HOST: edgex-redis
+      STAGEGATE_DATABASE_PORT: "6379"
+      STAGEGATE_DATABASE_READYPORT: "6379"
+      STAGEGATE_PROXYSETUP_READYPORT: "54325"
+      STAGEGATE_READY_TORUNPORT: "54329"
+      STAGEGATE_REGISTRY_HOST: edgex-core-consul
+      STAGEGATE_REGISTRY_PORT: "8500"
+      STAGEGATE_REGISTRY_READYPORT: "54324"
+      STAGEGATE_SECRETSTORESETUP_HOST: edgex-security-secretstore-setup
+      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
+      STAGEGATE_WAITFOR_TIMEOUT: 60s
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_TASKLAUNCHERHOST: task-launcher
       APPLICATIONSETTINGS_FILESENDERHOST: file-sender-oem
@@ -48,13 +62,27 @@ services:
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
     environment:
-      MESSAGEQUEUE_HOST: edgex-redis
+      EDGEX_SECURITY_SECRET_STORE: "true"
       PROXY_SETUP_HOST: edgex-security-proxy-setup
       REGISTRY_HOST: edgex-core-consul
+      SECRETSTORE_HOST: edgex-vault
       SERVICE_HOST: file-sender-oem
       SPIFFE_ENDPOINTSOCKET: /tmp/edgex/secrets/spiffe/public/api.sock
       SPIFFE_TRUSTBUNDLE_PATH: /tmp/edgex/secrets/spiffe/trust/bundle
       SPIFFE_TRUSTDOMAIN: edgexfoundry.org
+      STAGEGATE_BOOTSTRAPPER_HOST: edgex-security-bootstrapper
+      STAGEGATE_BOOTSTRAPPER_STARTPORT: "54321"
+      STAGEGATE_DATABASE_HOST: edgex-redis
+      STAGEGATE_DATABASE_PORT: "6379"
+      STAGEGATE_DATABASE_READYPORT: "6379"
+      STAGEGATE_PROXYSETUP_READYPORT: "54325"
+      STAGEGATE_READY_TORUNPORT: "54329"
+      STAGEGATE_REGISTRY_HOST: edgex-core-consul
+      STAGEGATE_REGISTRY_PORT: "8500"
+      STAGEGATE_REGISTRY_READYPORT: "54324"
+      STAGEGATE_SECRETSTORESETUP_HOST: edgex-security-secretstore-setup
+      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
+      STAGEGATE_WAITFOR_TIMEOUT: 60s
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_FILERECEIVERHOST: file-receiver-gateway
       WRITABLE_LOGLEVEL: DEBUG
@@ -80,13 +108,27 @@ services:
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
     environment:
-      MESSAGEQUEUE_HOST: edgex-redis
+      EDGEX_SECURITY_SECRET_STORE: "true"
       PROXY_SETUP_HOST: edgex-security-proxy-setup
       REGISTRY_HOST: edgex-core-consul
+      SECRETSTORE_HOST: edgex-vault
       SERVICE_HOST: file-watcher
       SPIFFE_ENDPOINTSOCKET: /tmp/edgex/secrets/spiffe/public/api.sock
       SPIFFE_TRUSTBUNDLE_PATH: /tmp/edgex/secrets/spiffe/trust/bundle
       SPIFFE_TRUSTDOMAIN: edgexfoundry.org
+      STAGEGATE_BOOTSTRAPPER_HOST: edgex-security-bootstrapper
+      STAGEGATE_BOOTSTRAPPER_STARTPORT: "54321"
+      STAGEGATE_DATABASE_HOST: edgex-redis
+      STAGEGATE_DATABASE_PORT: "6379"
+      STAGEGATE_DATABASE_READYPORT: "6379"
+      STAGEGATE_PROXYSETUP_READYPORT: "54325"
+      STAGEGATE_READY_TORUNPORT: "54329"
+      STAGEGATE_REGISTRY_HOST: edgex-core-consul
+      STAGEGATE_REGISTRY_PORT: "8500"
+      STAGEGATE_REGISTRY_READYPORT: "54324"
+      STAGEGATE_SECRETSTORESETUP_HOST: edgex-security-secretstore-setup
+      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
+      STAGEGATE_WAITFOR_TIMEOUT: 60s
       APPLICATIONSETTINGS_DATAORGHOST: data-organizer
       APPLICATIONSETTINGS_FOLDERSTOWATCH: /tmp/files/input
       WRITABLE_LOGLEVEL: DEBUG
@@ -112,13 +154,27 @@ services:
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
     environment:
-      MESSAGEQUEUE_HOST: edgex-redis
+      EDGEX_SECURITY_SECRET_STORE: "true"
       PROXY_SETUP_HOST: edgex-security-proxy-setup
       REGISTRY_HOST: edgex-core-consul
+      SECRETSTORE_HOST: edgex-vault
       SERVICE_HOST: file-receiver-oem
       SPIFFE_ENDPOINTSOCKET: /tmp/edgex/secrets/spiffe/public/api.sock
       SPIFFE_TRUSTBUNDLE_PATH: /tmp/edgex/secrets/spiffe/trust/bundle
       SPIFFE_TRUSTDOMAIN: edgexfoundry.org
+      STAGEGATE_BOOTSTRAPPER_HOST: edgex-security-bootstrapper
+      STAGEGATE_BOOTSTRAPPER_STARTPORT: "54321"
+      STAGEGATE_DATABASE_HOST: edgex-redis
+      STAGEGATE_DATABASE_PORT: "6379"
+      STAGEGATE_DATABASE_READYPORT: "6379"
+      STAGEGATE_PROXYSETUP_READYPORT: "54325"
+      STAGEGATE_READY_TORUNPORT: "54329"
+      STAGEGATE_REGISTRY_HOST: edgex-core-consul
+      STAGEGATE_REGISTRY_PORT: "8500"
+      STAGEGATE_REGISTRY_READYPORT: "54324"
+      STAGEGATE_SECRETSTORESETUP_HOST: edgex-security-secretstore-setup
+      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
+      STAGEGATE_WAITFOR_TIMEOUT: 60s
       TRIGGER_EDGEXMESSAGEBUS_OPTIONAL_AUTHMODE: usernamepassword
       TRIGGER_EDGEXMESSAGEBUS_OPTIONAL_SECRETNAME: redisdb
       TRIGGER_EDGEXMESSAGEBUS_PUBLISHHOST_HOST: edgex-redis
