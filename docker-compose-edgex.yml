@@ -8,7 +8,7 @@ networks:
   edgex-network:
     driver: bridge
 services:
-  consul:
+  edgex-core-consul:
     command:
       - agent
       - -ui
@@ -16,15 +16,15 @@ services:
       - -server
       - -client
       - 0.0.0.0
-    container_name: edgex-core-consul
     depends_on:
-      security-bootstrapper:
+      edgex-security-bootstrapper:
         condition: service_started
-      vault:
+      edgex-vault:
         condition: service_started
     entrypoint:
       - /edgex-init/consul_wait_install.sh
     environment:
+      EDGEX_ADD_REGISTRY_ACL_ROLES: "app-mqtt-export,app-pipeline-sim,app-pipeline-val,app-file-sender-gateway,app-task-launcher,app-file-receiver-gateway,app-job-repository,app-file-watcher,app-data-organizer,app-file-sender-oem,app-file-receiver-oem"
       EDGEX_GROUP: "2001"
       EDGEX_SECURITY_SECRET_STORE: "true"
       EDGEX_USER: "2002"
@@ -86,18 +86,17 @@ services:
         bind:
           selinux: z
           create_host_path: true
-  core-common-config-bootstrapper:
+  edgex-core-common-config-bootstrapper:
     command:
       - /entrypoint.sh
       - /core-common-config-bootstrapper
       - -cp=consul.http://edgex-core-consul:8500
-    container_name: edgex-core-common-config-bootstrapper
     depends_on:
-      consul:
+      edgex-core-consul:
         condition: service_started
-      security-bootstrapper:
+      edgex-security-bootstrapper:
         condition: service_started
-      security-secretstore-setup:
+      edgex-security-secretstore-setup:
         condition: service_started
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
@@ -105,8 +104,6 @@ services:
       ALL_SERVICES_DATABASE_HOST: edgex-redis
       ALL_SERVICES_MESSAGEBUS_HOST: edgex-redis
       ALL_SERVICES_REGISTRY_HOST: edgex-core-consul
-      APP_SERVICES_CLIENTS_CORE_METADATA_HOST: edgex-core-metadata
-      DEVICE_SERVICES_CLIENTS_CORE_METADATA_HOST: edgex-core-metadata
       EDGEX_SECURITY_SECRET_STORE: "true"
       PROXY_SETUP_HOST: edgex-security-proxy-setup
       SECRETSTORE_HOST: edgex-vault
@@ -150,12 +147,15 @@ services:
         bind:
           selinux: z
           create_host_path: true
-  database:
-    container_name: edgex-redis
+      - type: bind
+        source: ./edgex-res/common-config-bootstrapper-configuration.yaml
+        target: /res/configuration.yaml
+        read_only: true
+  edgex-redis:
     depends_on:
-      security-bootstrapper:
+      edgex-security-bootstrapper:
         condition: service_started
-      security-secretstore-setup:
+      edgex-security-secretstore-setup:
         condition: service_started
     entrypoint:
       - /edgex-init/redis_wait_install.sh
@@ -216,16 +216,16 @@ services:
         bind:
           selinux: z
           create_host_path: true
-  app-mqtt-export:
+  edgex-app-mqtt-export:
     command:
       - /app-service-configurable
       - -cp=consul.http://edgex-core-consul:8500
       - --registry
-    container_name: edgex-app-mqtt-export
+      - -s
     depends_on:
-      consul:
+      edgex-core-consul:
         condition: service_started
-      security-bootstrapper:
+      edgex-security-bootstrapper:
         condition: service_started
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
@@ -249,8 +249,8 @@ services:
       STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
       STAGEGATE_WAITFOR_TIMEOUT: 60s
       WRITABLE_LOGLEVEL: INFO
-      WRITABLE_PIPELINE_FUNCTIONS_MQTTEXPORT_PARAMETERS_BROKERADDRESS: MQTT_BROKER_ADDRESS_PLACE_HOLDER
-      WRITABLE_PIPELINE_FUNCTIONS_MQTTEXPORT_PARAMETERS_TOPIC: edgex-events
+      WRITABLE_PIPELINE_FUNCTIONS_MQTTEXPORT_PARAMETERS_BROKERADDRESS: tcp://external-mqtt-broker:1883
+      WRITABLE_PIPELINE_FUNCTIONS_MQTTEXPORT_PARAMETERS_TOPIC: "mqtt-export/{receivedtopic}"
     hostname: edgex-app-mqtt-export
     image: edgexfoundry/app-service-configurable:3.1.0
     networks:
@@ -285,13 +285,12 @@ services:
         bind:
           selinux: z
           create_host_path: true
-  mqtt-broker:
+  external-mqtt-broker:
     command:
       - /usr/sbin/mosquitto
       - -c
       - /mosquitto-no-auth.conf
-    container_name: edgex-mqtt-broker
-    hostname: edgex-mqtt-broker
+    hostname: external-mqtt-broker
     image: eclipse-mosquitto:2.0.18
     networks:
       edgex-network: null
@@ -306,15 +305,14 @@ services:
     security_opt:
       - no-new-privileges:true
     user: 2002:2001
-  nginx:
+  edgex-nginx:
     command:
       - /docker-entrypoint.sh
       - nginx
       - -g
       - daemon off;
-    container_name: edgex-nginx
     depends_on:
-      security-secretstore-setup:
+      edgex-security-secretstore-setup:
         condition: service_started
     entrypoint:
       - /bin/sh
@@ -368,8 +366,7 @@ services:
         source: nginx-tls
         target: /etc/ssl/nginx
         volume: {}
-  security-bootstrapper:
-    container_name: edgex-security-bootstrapper
+  edgex-security-bootstrapper:
     environment:
       EDGEX_GROUP: "2001"
       EDGEX_USER: "2002"
@@ -407,15 +404,14 @@ services:
         source: edgex-init
         target: /edgex-init
         volume: { }
-  security-proxy-auth:
+  edgex-proxy-auth:
     command:
       - entrypoint.sh
       - /security-proxy-auth
       - -cp=consul.http://edgex-core-consul:8500
       - --registry
-    container_name: edgex-proxy-auth
     depends_on:
-      security-secretstore-setup:
+      edgex-security-secretstore-setup:
         condition: service_started
     entrypoint:
       - /bin/sh
@@ -471,12 +467,11 @@ services:
         bind:
           selinux: z
           create_host_path: true
-  security-proxy-setup:
-    container_name: edgex-security-proxy-setup
+  edgex-security-proxy-setup:
     depends_on:
-      security-bootstrapper:
+      edgex-security-bootstrapper:
         condition: service_started
-      security-secretstore-setup:
+      edgex-security-secretstore-setup:
         condition: service_started
     entrypoint:
       - /edgex-init/proxy_setup_wait_install.sh
@@ -484,15 +479,7 @@ services:
       EDGEX_ADD_PROXY_ROUTE: app-mqtt-export.http://edgex-app-mqtt-export:59703
       EDGEX_SECURITY_SECRET_STORE: "true"
       PROXY_SETUP_HOST: edgex-security-proxy-setup
-      ROUTES_CORE_COMMAND_HOST: edgex-core-command
       ROUTES_CORE_CONSUL_HOST: edgex-core-consul
-      ROUTES_CORE_DATA_HOST: edgex-core-data
-      ROUTES_CORE_METADATA_HOST: edgex-core-metadata
-      ROUTES_DEVICE_VIRTUAL_HOST: device-virtual
-      ROUTES_RULES_ENGINE_HOST: edgex-kuiper
-      ROUTES_SUPPORT_NOTIFICATIONS_HOST: edgex-support-notifications
-      ROUTES_SUPPORT_SCHEDULER_HOST: edgex-support-scheduler
-      ROUTES_SYS_MGMT_AGENT_HOST: edgex-sys-mgmt-agent
       SECRETSTORE_HOST: edgex-vault
       STAGEGATE_BOOTSTRAPPER_HOST: edgex-security-bootstrapper
       STAGEGATE_BOOTSTRAPPER_STARTPORT: "54321"
@@ -551,12 +538,11 @@ services:
         target: /tmp/edgex/secrets/consul-acl-token
         read_only: true
         volume: { }
-  security-secretstore-setup:
-    container_name: edgex-security-secretstore-setup
+  edgex-security-secretstore-setup:
     depends_on:
-      security-bootstrapper:
+      edgex-security-bootstrapper:
         condition: service_started
-      vault:
+      edgex-vault:
         condition: service_started
     environment:
       EDGEX_ADD_KNOWN_SECRETS: redisdb[app-rules-engine],redisdb[app-mqtt-export],message-bus[app-mqtt-export]
@@ -622,14 +608,13 @@ services:
         source: vault-config
         target: /vault/config
         volume: { }
-  vault:
+  edgex-vault:
     cap_add:
       - IPC_LOCK
     command:
       - server
-    container_name: edgex-vault
     depends_on:
-      security-bootstrapper:
+      edgex-security-bootstrapper:
         condition: service_started
     entrypoint:
       - /edgex-init/vault_wait_install.sh
