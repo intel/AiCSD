@@ -1,10 +1,10 @@
 ########################################################################
- # Copyright (c) Intel Corporation 2023
+ # Copyright (c) Intel Corporation 2024
  # SPDX-License-Identifier: BSD-3-Clause
 ########################################################################
 
 # build stage
-FROM golang:1.21.3-alpine3.17 AS builder
+FROM golang:1.21.3-alpine3.18 AS builder
 
 RUN apk add --update --no-cache make=4.3-r1 gcc=12.2.1_git20220924-r4 libc-dev=0.7.2-r3 libsodium-dev=1.0.18-r2 zeromq-dev=4.3.4-r1
 WORKDIR /app
@@ -17,7 +17,7 @@ ARG MAKE="make file-sender-gateway"
 RUN $MAKE
 
 # final stage
-FROM alpine:3.17
+FROM alpine:3.18
 LABEL license='SPDX-License-Identifier: BSD-3-Clause' \
   copyright='Copyright (c) 2023: Intel Corporation'
 LABEL name='as-file-sender-gateway' \ 
@@ -33,4 +33,4 @@ COPY --from=builder /app/as-file-sender-gateway/as-file-sender-gateway /as-file-
 EXPOSE 59786
 
 ENTRYPOINT ["/as-file-sender-gateway"]
-CMD ["-cp=consul.http://edgex-core-consul:8500", "--registry", "--confdir=/res", "-s"]
+CMD ["-cp=consul.http://edgex-core-consul:8500", "--registry", "-s"]
