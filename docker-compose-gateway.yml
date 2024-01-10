@@ -12,36 +12,25 @@ services:
     command: /as-file-sender-gateway -cp=consul.http://edgex-core-consul:8500 --registry --confdir=/res -s
     depends_on:
       - edgex-security-bootstrapper
-      - edgex-core-consul
+      - consul
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
     environment:
-      API_GATEWAY_HOST: edgex-kong
-      API_GATEWAY_STATUS_PORT: '8100'
       EDGEX_SECURITY_SECRET_STORE: "true"
-      MESSAGEQUEUE_HOST: edgex-redis
-      PROXY_SETUP_HOST: edgex-security-proxy-setup
-      REGISTRY_HOST: edgex-core-consul
       SECRETSTORE_HOST: edgex-vault
-      SECRETSTORE_PORT: '8200'
       SERVICE_HOST: file-sender-gateway
-      SPIFFE_ENDPOINTSOCKET: /tmp/edgex/secrets/spiffe/public/api.sock
-      SPIFFE_TRUSTBUNDLE_PATH: /tmp/edgex/secrets/spiffe/trust/bundle
-      SPIFFE_TRUSTDOMAIN: edgexfoundry.org
       STAGEGATE_BOOTSTRAPPER_HOST: edgex-security-bootstrapper
-      STAGEGATE_BOOTSTRAPPER_STARTPORT: '54321'
+      STAGEGATE_BOOTSTRAPPER_STARTPORT: "54321"
       STAGEGATE_DATABASE_HOST: edgex-redis
-      STAGEGATE_DATABASE_PORT: '6379'
-      STAGEGATE_DATABASE_READYPORT: '6379'
-      STAGEGATE_KONGDB_HOST: edgex-kong-db
-      STAGEGATE_KONGDB_PORT: '5432'
-      STAGEGATE_KONGDB_READYPORT: '54325'
-      STAGEGATE_READY_TORUNPORT: '54329'
+      STAGEGATE_DATABASE_PORT: "6379"
+      STAGEGATE_DATABASE_READYPORT: "6379"
+      STAGEGATE_PROXYSETUP_READYPORT: "54325"
+      STAGEGATE_READY_TORUNPORT: "54329"
       STAGEGATE_REGISTRY_HOST: edgex-core-consul
-      STAGEGATE_REGISTRY_PORT: '8500'
-      STAGEGATE_REGISTRY_READYPORT: '54324'
+      STAGEGATE_REGISTRY_PORT: "8500"
+      STAGEGATE_REGISTRY_READYPORT: "54324"
       STAGEGATE_SECRETSTORESETUP_HOST: edgex-security-secretstore-setup
-      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: '54322'
+      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
       STAGEGATE_WAITFOR_TIMEOUT: 60s
       TRIGGER_EDGEXMESSAGEBUS_OPTIONAL_AUTHMODE: usernamepassword
       TRIGGER_EDGEXMESSAGEBUS_OPTIONAL_SECRETNAME: redisdb
@@ -51,7 +40,6 @@ services:
       APPLICATIONSETTINGS_TASKLAUNCHERHOST: task-launcher
       APPLICATIONSETTINGS_ARCHIVEFOLDER: /tmp/files/archive
       APPLICATIONSETTINGS_REJECTFOLDER: /tmp/files/reject
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: file-sender-gateway
     image: aicsd/as-file-sender-gateway:0.0.0-dev
     networks:
@@ -71,47 +59,31 @@ services:
     command: /as-task-launcher -cp=consul.http://edgex-core-consul:8500 --registry --confdir=/res -s
     depends_on:
       - edgex-security-bootstrapper
-      - edgex-core-consul
+      - consul
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
     environment:
-      API_GATEWAY_HOST: edgex-kong
-      API_GATEWAY_STATUS_PORT: '8100'
       DATABASE_HOST: edgex-redis
       EDGEX_SECURITY_SECRET_STORE: "true"
-      MESSAGEQUEUE_HOST: edgex-redis
-      PROXY_SETUP_HOST: edgex-security-proxy-setup
-      REGISTRY_HOST: edgex-core-consul
       SECRETSTORE_HOST: edgex-vault
-      SECRETSTORE_PORT: '8200'
       SERVICE_HOST: task-launcher
-      SPIFFE_ENDPOINTSOCKET: /tmp/edgex/secrets/spiffe/public/api.sock
-      SPIFFE_TRUSTBUNDLE_PATH: /tmp/edgex/secrets/spiffe/trust/bundle
-      SPIFFE_TRUSTDOMAIN: edgexfoundry.org
       STAGEGATE_BOOTSTRAPPER_HOST: edgex-security-bootstrapper
-      STAGEGATE_BOOTSTRAPPER_STARTPORT: '54321'
+      STAGEGATE_BOOTSTRAPPER_STARTPORT: "54321"
       STAGEGATE_DATABASE_HOST: edgex-redis
-      STAGEGATE_DATABASE_PORT: '6379'
-      STAGEGATE_DATABASE_READYPORT: '6379'
-      STAGEGATE_KONGDB_HOST: edgex-kong-db
-      STAGEGATE_KONGDB_PORT: '5432'
-      STAGEGATE_KONGDB_READYPORT: '54325'
-      STAGEGATE_READY_TORUNPORT: '54329'
+      STAGEGATE_DATABASE_PORT: "6379"
+      STAGEGATE_DATABASE_READYPORT: "6379"
+      STAGEGATE_PROXYSETUP_READYPORT: "54325"
+      STAGEGATE_READY_TORUNPORT: "54329"
       STAGEGATE_REGISTRY_HOST: edgex-core-consul
-      STAGEGATE_REGISTRY_PORT: '8500'
-      STAGEGATE_REGISTRY_READYPORT: '54324'
+      STAGEGATE_REGISTRY_PORT: "8500"
+      STAGEGATE_REGISTRY_READYPORT: "54324"
       STAGEGATE_SECRETSTORESETUP_HOST: edgex-security-secretstore-setup
-      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: '54322'
-      STAGEGATE_WAITFOR_TIMEOUT: 60s
-      TRIGGER_EDGEXMESSAGEBUS_OPTIONAL_AUTHMODE: usernamepassword
-      TRIGGER_EDGEXMESSAGEBUS_OPTIONAL_SECRETNAME: redisdb
-      TRIGGER_EDGEXMESSAGEBUS_PUBLISHHOST_HOST: edgex-redis
-      TRIGGER_EDGEXMESSAGEBUS_SUBSCRIBEHOST_HOST: edgex-redis
+      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
+      STAGEGATE_WAITFOR_TIMEOUT: 60
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_FILESENDERHOST: file-sender-gateway
       APPLICATIONSETTINGS_PIPELINESTATUSHOST: task-launcher
       APPLICATIONSETTINGS_REDISHOST: edgex-redis
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: task-launcher
     image: aicsd/as-task-launcher:0.0.0-dev
     networks:
@@ -131,41 +103,29 @@ services:
     command: /ms-file-receiver-gateway -cp=consul.http://edgex-core-consul:8500 --registry --confdir=/res -s
     depends_on:
       - edgex-security-bootstrapper
-      - edgex-core-consul
+      - consul
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
     environment:
-      API_GATEWAY_HOST: edgex-kong
-      API_GATEWAY_STATUS_PORT: '8100'
       EDGEX_SECURITY_SECRET_STORE: "true"
-      MESSAGEQUEUE_HOST: edgex-redis
-      PROXY_SETUP_HOST: edgex-security-proxy-setup
-      REGISTRY_HOST: edgex-core-consul
       SECRETSTORE_HOST: edgex-vault
-      SECRETSTORE_PORT: '8200'
       SERVICE_HOST: file-receiver-gateway
-      SPIFFE_ENDPOINTSOCKET: /tmp/edgex/secrets/spiffe/public/api.sock
-      SPIFFE_TRUSTBUNDLE_PATH: /tmp/edgex/secrets/spiffe/trust/bundle
-      SPIFFE_TRUSTDOMAIN: edgexfoundry.org
       STAGEGATE_BOOTSTRAPPER_HOST: edgex-security-bootstrapper
-      STAGEGATE_BOOTSTRAPPER_STARTPORT: '54321'
+      STAGEGATE_BOOTSTRAPPER_STARTPORT: "54321"
       STAGEGATE_DATABASE_HOST: edgex-redis
-      STAGEGATE_DATABASE_PORT: '6379'
-      STAGEGATE_DATABASE_READYPORT: '6379'
-      STAGEGATE_KONGDB_HOST: edgex-kong-db
-      STAGEGATE_KONGDB_PORT: '5432'
-      STAGEGATE_KONGDB_READYPORT: '54325'
-      STAGEGATE_READY_TORUNPORT: '54329'
+      STAGEGATE_DATABASE_PORT: "6379"
+      STAGEGATE_DATABASE_READYPORT: "6379"
+      STAGEGATE_PROXYSETUP_READYPORT: "54325"
+      STAGEGATE_READY_TORUNPORT: "54329"
       STAGEGATE_REGISTRY_HOST: edgex-core-consul
-      STAGEGATE_REGISTRY_PORT: '8500'
-      STAGEGATE_REGISTRY_READYPORT: '54324'
+      STAGEGATE_REGISTRY_PORT: "8500"
+      STAGEGATE_REGISTRY_READYPORT: "54324"
       STAGEGATE_SECRETSTORESETUP_HOST: edgex-security-secretstore-setup
-      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: '54322'
+      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
       STAGEGATE_WAITFOR_TIMEOUT: 60s
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_TASKLAUNCHERHOST: task-launcher
       APPLICATIONSETTINGS_BASEFILEFOLDER: /tmp/files/input
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: file-receiver-gateway
     image: aicsd/ms-file-receiver-gateway:0.0.0-dev
     networks:
@@ -185,40 +145,28 @@ services:
     command: /ms-job-repository -cp=consul.http://edgex-core-consul:8500 --registry --confdir=/res -s
     depends_on:
       - edgex-security-bootstrapper
-      - edgex-core-consul
+      - consul
     entrypoint:
       - /edgex-init/ready_to_run_wait_install.sh
     environment:
-      API_GATEWAY_HOST: edgex-kong
-      API_GATEWAY_STATUS_PORT: '8100'
       DATABASE_HOST: edgex-redis
       EDGEX_SECURITY_SECRET_STORE: "true"
-      MESSAGEQUEUE_HOST: edgex-redis
-      PROXY_SETUP_HOST: edgex-security-proxy-setup
-      REGISTRY_HOST: edgex-core-consul
       SECRETSTORE_HOST: edgex-vault
-      SECRETSTORE_PORT: '8200'
       SERVICE_HOST: job-repository
-      SPIFFE_ENDPOINTSOCKET: /tmp/edgex/secrets/spiffe/public/api.sock
-      SPIFFE_TRUSTBUNDLE_PATH: /tmp/edgex/secrets/spiffe/trust/bundle
-      SPIFFE_TRUSTDOMAIN: edgexfoundry.org
       STAGEGATE_BOOTSTRAPPER_HOST: edgex-security-bootstrapper
-      STAGEGATE_BOOTSTRAPPER_STARTPORT: '54321'
+      STAGEGATE_BOOTSTRAPPER_STARTPORT: "54321"
       STAGEGATE_DATABASE_HOST: edgex-redis
-      STAGEGATE_DATABASE_PORT: '6379'
-      STAGEGATE_DATABASE_READYPORT: '6379'
-      STAGEGATE_KONGDB_HOST: edgex-kong-db
-      STAGEGATE_KONGDB_PORT: '5432'
-      STAGEGATE_KONGDB_READYPORT: '54325'
-      STAGEGATE_READY_TORUNPORT: '54329'
+      STAGEGATE_DATABASE_PORT: "6379"
+      STAGEGATE_DATABASE_READYPORT: "6379"
+      STAGEGATE_PROXYSETUP_READYPORT: "54325"
+      STAGEGATE_READY_TORUNPORT: "54329"
       STAGEGATE_REGISTRY_HOST: edgex-core-consul
-      STAGEGATE_REGISTRY_PORT: '8500'
-      STAGEGATE_REGISTRY_READYPORT: '54324'
+      STAGEGATE_REGISTRY_PORT: "8500"
+      STAGEGATE_REGISTRY_READYPORT: "54324"
       STAGEGATE_SECRETSTORESETUP_HOST: edgex-security-secretstore-setup
-      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: '54322'
+      STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
       STAGEGATE_WAITFOR_TIMEOUT: 60s
       APPLICATIONSETTINGS_REDISHOST: edgex-redis
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: job-repository
     image: aicsd/ms-job-repository:0.0.0-dev
     networks:
