@@ -110,9 +110,9 @@ services:
       - ${HOME}/data/oem-files:/tmp/files
       - /tmp/edgex/secrets/spiffe:/tmp/edgex/secrets/spiffe:z
   sshd-remote:
-    image: edgex-sshd-remote:2.3.0
+    image: edgex-sshd-remote:latest
     build:
-      context: edgex-res/remote/sshd-remote
+      context: sshd-remote
     container_name: edgex-sshd-remote
     hostname: edgex-sshd-remote
     ports:
@@ -129,10 +129,6 @@ services:
           - edgex-security-spire-server
           - edgex-security-spiffe-token-provider
           - edgex-vault
-          - job-repository
-          - file-receiver-gateway
-          - task-launcher
-          - file-sender-gateway
     tmpfs:
       - /run
     volumes:
@@ -140,13 +136,13 @@ services:
       - /tmp/edgex/secrets/spiffe:/tmp/edgex/secrets/spiffe:z
   remote-spire-agent:
     build:
-      context: edgex-res/remote/remote-spire-agent
+      context: remote-spire-agent
     command: docker-entrypoint.sh
     container_name: edgex-remote-spire-agent
     depends_on:
       - sshd-remote
     hostname: edgex-security-spire-agent
-    image: nexus3.edgexfoundry.org:10004/security-spire-agent:2.3.0
+    image: edgexfoundry/security-spire-agent:3.1.0
     networks:
       edgex-network: { }
     pid: host
