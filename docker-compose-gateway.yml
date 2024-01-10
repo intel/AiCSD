@@ -40,7 +40,6 @@ services:
       APPLICATIONSETTINGS_TASKLAUNCHERHOST: task-launcher
       APPLICATIONSETTINGS_ARCHIVEFOLDER: /tmp/files/archive
       APPLICATIONSETTINGS_REJECTFOLDER: /tmp/files/reject
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: file-sender-gateway
     image: aicsd/as-file-sender-gateway:0.0.0-dev
     networks:
@@ -85,7 +84,6 @@ services:
       APPLICATIONSETTINGS_FILESENDERHOST: file-sender-gateway
       APPLICATIONSETTINGS_PIPELINESTATUSHOST: task-launcher
       APPLICATIONSETTINGS_REDISHOST: edgex-redis
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: task-launcher
     image: aicsd/as-task-launcher:0.0.0-dev
     networks:
@@ -128,7 +126,6 @@ services:
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_TASKLAUNCHERHOST: task-launcher
       APPLICATIONSETTINGS_BASEFILEFOLDER: /tmp/files/input
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: file-receiver-gateway
     image: aicsd/ms-file-receiver-gateway:0.0.0-dev
     networks:
@@ -170,7 +167,6 @@ services:
       STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
       STAGEGATE_WAITFOR_TIMEOUT: 60s
       APPLICATIONSETTINGS_REDISHOST: edgex-redis
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: job-repository
     image: aicsd/ms-job-repository:0.0.0-dev
     networks:

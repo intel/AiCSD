@@ -35,7 +35,6 @@ services:
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_TASKLAUNCHERHOST: task-launcher
       APPLICATIONSETTINGS_FILESENDERHOST: file-sender-oem
-      WRITABLE_LOGLEVEL: DEBUG
     image: aicsd/ms-data-organizer:0.0.0-dev
     networks:
       edgex-network: { }
@@ -76,7 +75,6 @@ services:
       STAGEGATE_WAITFOR_TIMEOUT: 60s
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_FILERECEIVERHOST: file-receiver-gateway
-      WRITABLE_LOGLEVEL: DEBUG
     image: aicsd/ms-file-sender-oem:0.0.0-dev
     networks:
       edgex-network: {}
@@ -117,7 +115,6 @@ services:
       STAGEGATE_WAITFOR_TIMEOUT: 60s
       APPLICATIONSETTINGS_DATAORGHOST: data-organizer
       APPLICATIONSETTINGS_FOLDERSTOWATCH: /tmp/files/input
-      WRITABLE_LOGLEVEL: DEBUG
     image: aicsd/ms-file-watcher:0.0.0-dev
     networks:
       edgex-network: {}
@@ -159,7 +156,6 @@ services:
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_FILESENDERHOST: file-sender-gateway
       APPLICATIONSETTINGS_OUTPUTFOLDER: /tmp/files/output
-      WRITABLE_LOGLEVEL: DEBUG
     image: aicsd/as-file-receiver-oem:0.0.0-dev
     networks:
       edgex-network: {}

@@ -31,7 +31,6 @@ services:
       STAGEGATE_SECRETSTORESETUP_HOST: edgex-security-secretstore-setup
       STAGEGATE_SECRETSTORESETUP_TOKENS_READYPORT: "54322"
       STAGEGATE_WAITFOR_TIMEOUT: 60s
-      WRITABLE_LOGLEVEL: DEBUG
     image: aicsd/as-pipeline-sim:0.0.0-dev
     networks:
       edgex-network: {}

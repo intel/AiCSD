@@ -19,7 +19,6 @@ services:
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_TASKLAUNCHERHOST: task-launcher
       APPLICATIONSETTINGS_FILESENDERHOST: file-sender-oem
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: data-organizer
     image: aicsd/ms-data-organizer:0.0.0-dev
     networks:
@@ -44,7 +43,6 @@ services:
       SERVICE_HOST: file-sender-oem
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_FILERECEIVERHOST: file-receiver-gateway
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: file-sender-oem
     image: aicsd/ms-file-sender-oem:0.0.0-dev
     networks:
@@ -69,7 +67,6 @@ services:
       SERVICE_HOST: file-watcher
       APPLICATIONSETTINGS_DATAORGHOST: data-organizer
       APPLICATIONSETTINGS_FOLDERSTOWATCH: /tmp/files/input
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: file-watcher
     image: aicsd/ms-file-watcher:0.0.0-dev
     networks:
@@ -98,7 +95,6 @@ services:
       APPLICATIONSETTINGS_JOBREPOHOST: job-repository
       APPLICATIONSETTINGS_FILESENDERHOST: file-sender-gateway
       APPLICATIONSETTINGS_OUTPUTFOLDER: /tmp/files/output
-      WRITABLE_LOGLEVEL: DEBUG
     hostname: file-receiver-oem
     image: aicsd/as-file-receiver-oem:0.0.0-dev
     networks:
