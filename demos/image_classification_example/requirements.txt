@@ -1,5 +1,5 @@
 numpy==1.23.5
-grpcio==1.53.0
+grpcio==1.53.2
 tensorflow==2.11.1
 tensorflow-serving-api==2.11.1
 opencv-python-headless==4.7.0.72
