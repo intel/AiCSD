@@ -1,0 +1,21 @@
+name: Dependabot export
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest    
+    steps:               
+      - name: Dependabot Alert CSV Export
+        uses: ShamKarthikS-Hexaware/dependabot-alert-export@v1.0
+        with:        
+          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+          org_name: 'ORG_NAME'
+          repo_name: 'REPO_NAME'
+          csv_path: data/vulnerability.csv          
+      - name: Upload Vulnerability report
+        uses: actions/upload-artifact@v3
+        with:
+           name: vulnerability_report
+           path: data/vulnerability.csv          
