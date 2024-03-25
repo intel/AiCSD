@@ -3,14 +3,17 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   dependabot:
     runs-on: ubuntu-latest    
     steps:               
       - name: Dependabot Alert CSV Export
         uses: ShamKarthikS-Hexaware/dependabot-alert-export@v1.0
-        with:        
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:                  
           org_name: 'intel'
           repo_name: 'AiCSD'
           csv_path: data/vulnerability.csv          
