@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest    
     steps:               
       - name: Dependabot Alert CSV Export
-        uses: antoniomtz/dependabot-alert-export
+        uses: antoniomtz/dependabot-alert-export@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:        
