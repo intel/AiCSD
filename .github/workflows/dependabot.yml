@@ -11,8 +11,8 @@ jobs:
         uses: ShamKarthikS-Hexaware/dependabot-alert-export@v1.0
         with:        
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          org_name: 'ORG_NAME'
-          repo_name: 'REPO_NAME'
+          org_name: 'intel'
+          repo_name: 'AiCSD'
           csv_path: data/vulnerability.csv          
       - name: Upload Vulnerability report
         uses: actions/upload-artifact@v3
