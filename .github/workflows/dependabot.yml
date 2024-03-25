@@ -10,7 +10,7 @@ jobs:
       - name: Dependabot Alert CSV Export
         uses: ShamKarthikS-Hexaware/dependabot-alert-export@v1.0
         with:        
-          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           org_name: 'ORG_NAME'
           repo_name: 'REPO_NAME'
           csv_path: data/vulnerability.csv          
