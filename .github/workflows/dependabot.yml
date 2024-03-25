@@ -13,7 +13,8 @@ jobs:
         uses: ShamKarthikS-Hexaware/dependabot-alert-export@v1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:                  
+        with:        
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           org_name: 'intel'
           repo_name: 'AiCSD'
           csv_path: data/vulnerability.csv          
