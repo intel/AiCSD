@@ -28,7 +28,7 @@ COPY --from=builder /app/as-file-receiver-oem/res/ /res/
 COPY --from=builder /app/as-file-receiver-oem/as-file-receiver-oem /as-file-receiver-oem
 
 # dumb-init is required as security-bootstrapper uses it in the entrypoint script
-RUN apk add --update --no-cache ca-certificates=20230506-r0 zeromq=4.3.4-r1 dumb-init=1.2.5-r2
+RUN apk add --update --no-cache ca-certificates=20240226-r0 zeromq=4.3.4-r1 dumb-init=1.2.5-r2
 
 EXPOSE 59787
 
