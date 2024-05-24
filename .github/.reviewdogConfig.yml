@@ -8,7 +8,7 @@ runner:
   hadolint:
     cmd: './bin/hadolint -c .github/.hadolint.yaml Dockerfile.* -f json | jq -f ".github/.rdjson.jq" -c | tee "$PWD"/scan_results/hadolintResults.txt'
     format: rdjson
-    level: error # (optional. same as -level flag. [info,warning,error])
+    level: error # (optional. same as -level flag. [info,warning,error]))
   shellcheck:
     cmd: shellcheck **/*.sh -f gcc | tee "$PWD"/scan_results/shellcheckResults.txt
     errorformat:
