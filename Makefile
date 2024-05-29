@@ -1,5 +1,5 @@
 ########################################################################
- # Copyright (c) Intel Corporation 2023
+ # Copyright (c) Intel Corporation 2024
  # SPDX-License-Identifier: BSD-3-Clause
 ########################################################################
 
@@ -30,6 +30,7 @@ SENDER_GATEWAY=as-file-sender-gateway
 TASK_LAUNCHER=as-task-launcher
 FILE_WATCHER=ms-file-watcher
 PIPELINE_SIM=as-pipeline-sim
+PIPELINE_GRPC_GO=as-pipeline-grpc-go
 AiCSD_SIM=as-pipeline-val
 WEB_UI=ms-web-ui
 INTEGRATION_TEST=integration-tests
@@ -48,7 +49,7 @@ GOFLAGS=-ldflags "-X github.com/edgexfoundry/app-functions-sdk-go/v2/internal.SD
 GIT_SHA=$(shell git rev-parse HEAD)
 
 define COMPOSE_DOWN
-	docker compose -p edgex -f docker-compose-edgex.yml -f docker-compose-oem.yml -f docker-compose-gateway.yml -f docker-compose-sim.yml -f docker-compose-pipeline-val.yml -f docker-compose-geti.yml -f docker-compose-elyra.yml -f docker-compose-openvino.yml -f docker-compose-edgex-spiffe-spire.yml down $1
+	docker compose -p edgex -f docker-compose-edgex.yml -f docker-compose-oem.yml -f docker-compose-gateway.yml -f docker-compose-sim.yml -f docker-compose-pipeline-val.yml -f docker-compose-geti.yml -f docker-compose-elyra.yml -f docker-compose-openvino.yml -f docker-compose-edgex-spiffe-spire.yml -f docker-compose-grpc-go.yml down $1
 	docker compose -p monitor -f docker-compose-monitor.yml down $1
 	docker compose -p log-analytics -f docker-compose-log-analytics.yml down $1
 endef
@@ -88,6 +89,9 @@ file-watcher:
 
 pipeline-sim:
 	$(GO) build $(GOFLAGS) -o ./$(PIPELINE_SIM)/$(PIPELINE_SIM) ./$(PIPELINE_SIM)
+
+pipeline-grpc-go:
+	$(GO) build $(GOFLAGS) -o ./$(PIPELINE_GRPC_GO)/$(PIPELINE_GRPC_GO) ./$(PIPELINE_GRPC_GO)
 
 pipeline-val:
 	$(GO) build $(GOFLAGS) -o ./$(AiCSD_SIM)/$(AiCSD_SIM) ./$(AiCSD_SIM)
@@ -190,6 +194,16 @@ docker-pipeline-sim:
 		--label "git_sha=$(GIT_SHA)" \
 		-t ${PROJECT}/${PIPELINE_SIM}:$(GIT_SHA) \
 		-t ${PROJECT}/${PIPELINE_SIM}:${MSVERSION}-dev \
+		.
+
+docker-pipeline-grpc-go:
+	docker build \
+	    --build-arg http_proxy \
+	    --build-arg https_proxy \
+		-f ${PIPELINE_GRPC_GO}/Dockerfile \
+		--label "git_sha=$(GIT_SHA)" \
+		-t ${PROJECT}/${PIPELINE_GRPC_GO}:$(GIT_SHA) \
+		-t ${PROJECT}/${PIPELINE_GRPC_GO}:${MSVERSION}-dev \
 		.
 
 docker-pipeline-val:
@@ -396,6 +410,13 @@ run-pipeline-val: files
 	GATEWAY_IP_ADDR=${GATEWAY_IP_ADDR} docker compose -p edgex \
 		-f docker-compose-edgex.yml \
 		-f docker-compose-pipeline-val.yml \
+		up -d
+
+run-pipeline-grpc-go: files
+	GATEWAY_IP_ADDR=${GATEWAY_IP_ADDR} docker compose -p edgex \
+		-f docker-compose-edgex.yml \
+        -f docker-compose-pipeline-val.yml \
+		-f docker-compose-grpc-go.yml \
 		up -d
 
 run-monitor: docker-grafana
