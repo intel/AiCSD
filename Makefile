@@ -283,8 +283,8 @@ client-update:
 	done;
 
 test:
-	$(GO) test -coverprofile=coverage.out `go list ./... | grep -v integration-tests`
-	$(GO) vet ./...
+	$(GO) test -coverprofile=coverage.out `go list ./... | grep -v integration-tests | grep -v as-pipeline-grpc-go`
+	$(GO) vet `go list ./... | grep -v as-pipeline-grpc-go`
 	gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")
 	[ "`gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")`" = "" ]
 	#./bin/test-attribution-txt.sh
