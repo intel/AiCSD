@@ -18,7 +18,7 @@ services:
     entrypoint:
       - /edgex-init/consul_wait_install.sh
     environment:
-      ADD_REGISTRY_ACL_ROLES: "app-mqtt-export,app-pipeline-sim,app-pipeline-val,app-file-sender-gateway,app-task-launcher,app-file-receiver-gateway,app-job-repository,app-file-watcher,app-data-organizer,app-file-sender-oem,app-file-receiver-oem"
+      ADD_REGISTRY_ACL_ROLES: "app-mqtt-export,app-pipeline-sim,app-pipeline-grpc-go,app-pipeline-val,app-file-sender-gateway,app-task-launcher,app-file-receiver-gateway,app-job-repository,app-file-watcher,app-data-organizer,app-file-sender-oem,app-file-receiver-oem"
       API_GATEWAY_HOST: edgex-kong
       API_GATEWAY_STATUS_PORT: '8100'
       EDGEX_GROUP: '2001'
@@ -384,8 +384,8 @@ services:
       edgex-vault:
         condition: service_started
     environment:
-      ADD_KNOWN_SECRETS: "redisdb[app-task-launcher],redisdb[app-job-repository],redisdb[app-pipeline-sim],redisdb[app-pipeline-val],redisdb[app-mqtt-export],redisdb[app-file-sender-gateway],redisdb[app-file-watcher],redisdb[app-data-organizer],redisdb[app-file-sender-oem],redisdb[app-file-receiver-oem]"
-      ADD_SECRETSTORE_TOKENS: "app-mqtt-export,app-pipeline-sim,app-pipeline-val,app-file-sender-gateway,app-task-launcher,app-job-repository,app-file-receiver-gateway,app-file-watcher,app-data-organizer,app-file-sender-oem,app-file-receiver-oem"
+      ADD_KNOWN_SECRETS: "redisdb[app-task-launcher],redisdb[app-job-repository],redisdb[app-pipeline-sim],redisdb[app-pipeline-grpc-go],redisdb[app-pipeline-val],redisdb[app-mqtt-export],redisdb[app-file-sender-gateway],redisdb[app-file-watcher],redisdb[app-data-organizer],redisdb[app-file-sender-oem],redisdb[app-file-receiver-oem]"
+      ADD_SECRETSTORE_TOKENS: "app-mqtt-export,app-pipeline-sim,app-pipeline-grpc-go,app-pipeline-val,app-file-sender-gateway,app-task-launcher,app-job-repository,app-file-receiver-gateway,app-file-watcher,app-data-organizer,app-file-sender-oem,app-file-receiver-oem"
       API_GATEWAY_HOST: edgex-kong
       API_GATEWAY_STATUS_PORT: '8100'
       EDGEX_GROUP: '2001'

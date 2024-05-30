@@ -1,5 +1,5 @@
 // *********************************************************************
-// Copyright (c) Intel Corporation 2023
+// Copyright (c) Intel Corporation 2024
 // SPDX-License-Identifier: BSD-3-Clause
 // **********************************************************************/
 
@@ -20,11 +20,13 @@ require (
 	github.com/google/uuid v1.3.1
 	github.com/gorilla/mux v1.8.0
 	github.com/hashicorp/go-multierror v1.1.1
+	github.com/hybridgroup/mjpeg v0.0.0-20140228234708-4680f319790e
 	github.com/jinzhu/copier v0.3.5
 	github.com/nicksnyder/go-i18n/v2 v2.2.0
 	github.com/stretchr/testify v1.8.4
 	github.com/testcontainers/testcontainers-go v0.26.0
 	github.com/testcontainers/testcontainers-go/modules/compose v0.26.0
+	gocv.io/x/gocv v0.35.0
 	golang.org/x/text v0.14.0
 )
 
@@ -258,7 +260,7 @@ require (
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/tools v0.10.0 // indirect
 	google.golang.org/genproto v0.0.0-20230822172742-b8732ec3820d // indirect
-	google.golang.org/grpc v1.59.0 // indirect
+	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
