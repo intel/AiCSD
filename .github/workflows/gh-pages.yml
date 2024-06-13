@@ -6,8 +6,13 @@ on:
       - main
     paths:
       - docs_src/**
+permissions:
+  contents: read
+
 jobs:
   deploy:
+    permissions:
+      contents: write  # for mkdocs gh-deploy to publish docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
