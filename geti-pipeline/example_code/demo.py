@@ -101,7 +101,7 @@ class MyServer(BaseHTTPRequestHandler):
                 jsonObj = json.loads(body)     
                 name = jsonObj["Name"]
                 modelType = jsonObj["Type"]
-                dir_path = self.safe_path('/models', name)                
+                dir_path = self.safe_path('/models', name)
                 if not os.path.exists(dir_path):
                     os.makedirs(dir_path)
                     
