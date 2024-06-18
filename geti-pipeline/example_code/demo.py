@@ -19,6 +19,16 @@ hostName = "0.0.0.0"
 serverPort = 8080
 
 class MyServer(BaseHTTPRequestHandler):
+    
+    # Normalize the path to remove any path traversal characters
+    def safe_path(self,base_path,input):        
+        safe_name = os.path.normpath(os.path.join(base_path, input))                
+        
+        if not safe_name.startswith(base_path):
+            raise ValueError("Invalid directory path")
+
+        return os.path.join(base_path, safe_name)
+
     def _send_cors_headers(self):
       self.send_header("Access-Control-Allow-Origin", "*")
       self.send_header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
@@ -91,7 +101,8 @@ class MyServer(BaseHTTPRequestHandler):
                 jsonObj = json.loads(body)     
                 name = jsonObj["Name"]
                 modelType = jsonObj["Type"]
-                dir_path = f'/models/{name}'
+                dir_path = self.safe_path('/models', name)
+                print(dir_path)
                 if not os.path.exists(dir_path):
                     os.makedirs(dir_path)
                     
@@ -107,7 +118,7 @@ class MyServer(BaseHTTPRequestHandler):
                          
                     items = os.listdir(dir_path)
                     for item in items:
-                        item_path = os.path.join(dir_path, item)
+                        item_path = self.safe_path(dir_path, item)
                     
                     if modelType == "geti":  
                         if os.path.isdir(item_path) and item != "deployment":
@@ -136,7 +147,7 @@ class MyServer(BaseHTTPRequestHandler):
                     self.end_headers()
             except Exception:
                 print(sys.exc_info()[2])
-                self.send_response(500)
+                self.send_response(500)                
                 print("An error occurred while unzipping the file")
                 self.end_headers()
                 return
