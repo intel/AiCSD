@@ -146,7 +146,7 @@ class MyServer(BaseHTTPRequestHandler):
                     self.end_headers()
             except Exception:
                 print(sys.exc_info()[2])
-                self.send_response(500)                
+                self.send_response(500)
                 print("An error occurred while unzipping the file")
                 self.end_headers()
                 return
