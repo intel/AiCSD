@@ -14,11 +14,13 @@ import (
 	"aicsd/pkg/wait"
 	"aicsd/pkg/werrors"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
@@ -217,9 +219,22 @@ func (fh *FileHandler) SendNewFile(writer http.ResponseWriter, request *http.Req
 	fh.lc.Debugf("Transmitted file for %s", fileJob.FullInputFileLocation())
 }
 
+func validateFileName(fileName string) error {
+	// Check for path traversal characters
+	if strings.Contains(fileName, "..") || strings.HasPrefix(fileName, "/") {
+		return errors.New("invalid file path")
+	}
+	return nil
+}
+
 // validate is a helper function to check that the fileHostname matches in the job and that the file exists on the file
 // system.
 func (fh *FileHandler) validate(fileInfo types.FileInfo) error {
+
+	if err := validateFileName(fileInfo.Name); err != nil {
+		return err
+	}
+
 	// check if the fileHostname matches
 	if fileInfo.Hostname != fh.fileHostname {
 		return fmt.Errorf("fileHostname does not match: got %s, expected %s", fileInfo.Hostname, fh.fileHostname)

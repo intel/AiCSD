@@ -166,6 +166,12 @@ func (fh *FileHandler) TransmitFile(writer http.ResponseWriter, request *http.Re
 	requestFilename := request.Header.Get(pkg.FilenameKey)
 	requestId := request.Header.Get(pkg.JobIdKey)
 
+	// Sanitize and validate filename
+	if strings.Contains(requestFilename, "/") || strings.Contains(requestFilename, "\\") || strings.Contains(requestFilename, "..") {
+		helpers.HandleErrorMessage(fh.lc, writer, fmt.Errorf("invalid filename: %s", requestFilename), http.StatusBadRequest)
+		return
+	}
+
 	jobEntry, ok := fh.jobMap[requestId]
 	if !ok {
 		helpers.HandleErrorMessage(fh.lc, writer, fmt.Errorf("did not receive job mapping to id (%s):", requestId), http.StatusInternalServerError)
@@ -204,7 +210,7 @@ func (fh *FileHandler) TransmitFile(writer http.ResponseWriter, request *http.Re
 	// inputFileDir is the directory including the subfolders for the input file
 	inputFileDir := filepath.Join(fh.baseFileFolder, subFolderLinux)
 	// fileLocation is the filepath for the input file
-	fileLocation := filepath.Join(inputFileDir, requestFilename)
+	fileLocation := filepath.Join(inputFileDir, filepath.Base(requestFilename))
 	err = os.MkdirAll(inputFileDir, 0777)
 	if err != nil {
 		helpers.HandleErrorMessage(fh.lc, writer, fmt.Errorf("failed to write required folder structure :  (%s): %s", inputFileDir, err.Error()), http.StatusInternalServerError)
