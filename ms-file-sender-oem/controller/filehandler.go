@@ -227,6 +227,14 @@ func validateFileName(fileName string) error {
 	return nil
 }
 
+func validateDirName(fileName string) error {
+	// Check for path traversal characters
+	if strings.Contains(fileName, "..") || strings.Contains(fileName, "./") || strings.Contains(fileName, "..\\") {
+		return errors.New("invalid file path")
+	}
+	return nil
+}
+
 // validate is a helper function to check that the fileHostname matches in the job and that the file exists on the file
 // system.
 func (fh *FileHandler) validate(fileInfo types.FileInfo) error {
@@ -235,13 +243,21 @@ func (fh *FileHandler) validate(fileInfo types.FileInfo) error {
 		return err
 	}
 
+	if err := validateDirName(fileInfo.DirName); err != nil {
+		return err
+	}
+
 	// check if the fileHostname matches
 	if fileInfo.Hostname != fh.fileHostname {
 		return fmt.Errorf("fileHostname does not match: got %s, expected %s", fileInfo.Hostname, fh.fileHostname)
 	}
+
 	// check that file exists - if not fail.
-	fileName := filepath.Join(fileInfo.DirName, fileInfo.Name)
-	_, err := os.Stat(fileName)
+	fileName, err := filepath.Abs(filepath.Join(fileInfo.DirName, fileInfo.Name))
+	if err != nil {
+		return fmt.Errorf("error accessing file: %s", err.Error())
+	}
+	_, err = os.Stat(fileName)
 	if err != nil {
 		return fmt.Errorf("error accessing file: %s", err.Error())
 	}
