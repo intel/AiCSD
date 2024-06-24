@@ -1,0 +1,22 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+openapi: 3.0.3
+info:
+  title: File Receiver OEM APIs
+  version: 1.0.0
+servers:
+  - url: https://localhost:59787/api/v1
+paths:
+  /retry:
+    post:
+      summary: retries all jobs owned by the file receiver OEM
+      description: receives all job entries the file receiver on the OEM device owns and attempts to process them
+      operationId: retry
+      responses:
+        '200':
+          description: Successful operation
+        '500':
+          description: Failed to process job(s)

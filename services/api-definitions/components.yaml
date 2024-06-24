@@ -1,0 +1,144 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+components:
+  schemas:
+    Job:
+      required:
+        - InputFile
+      type: object
+      properties:
+        Id:
+          description: unique identifier for the job
+          type: string
+        Owner:
+          description: service that owns the object
+          type: string
+          enum:
+            - file-watcher
+            - data-organizer
+            - file-sender-oem
+            - file-receiver-gateway
+            - task-launcher
+            - file-sender-gateway
+            - file-receiver-oem
+            - none
+            - job-repository
+        InputFile:
+          $ref: '#/components/schemas/FileInfo'
+        PipelineDetails:
+          $ref: '#/components/schemas/PipelineInfo'
+        LastUpdated:
+          type: integer
+          description: update time in ns from UTC
+        Status:
+          type: string
+          description: status of the current job
+          enum:
+            - Incomplete
+            - Complete
+            - NoPipelineFound
+            - PipelineError
+            - TransmissionFailed
+            - FileErrored
+        ErrorDetails:
+          $ref: '#/components/schemas/UserFacingError'
+    FileInfo:
+      type: object
+      properties:
+        Hostname:
+          type: string
+          description: host system for the file
+        DirName:
+          type: string
+          description: path to the file
+        Name:
+          type: string
+          description: file name with extension
+        ArchiveName:
+          type: string
+          description: file path and name for the archive file
+        Viewable:
+          type: string
+          description: file path and name for the ui viewable file
+        Extension:
+          type: string
+          description: just the file extension
+        Attributes:
+          type: array
+          description: contains additional information from the configuration or data organizer
+          items:
+            type: object
+            additionalProperties:
+              type: string
+          example:
+            LabName: MyLab
+            LabEquipment: Microscope1
+            Operator: Chip
+    OutputFile:
+      type: object
+      properties:
+        Hostname:
+          type: string
+          description: host system for the file
+        DirName:
+          type: string
+          description: path to the file
+        Name:
+          type: string
+          description: file name with extension
+        Extension:
+          type: string
+          description: just the file extension
+        ArchiveName:
+          type: string
+          description: file path and name for the archive file
+        Viewable:
+          type: string
+          description: file path and name for the ui viewable file
+        Status:
+          type: string
+          description: current status of the file
+          enum:
+            - FileComplete
+            - FileIncomplete
+            - FileTransmissionFailed
+            - FileArchivalFailed
+            - FileWriteFailed
+            - FileInvalid
+        ErrorDetails:
+          $ref: '#/components/schemas/UserFacingError'
+    PipelineInfo:
+      type: object
+      properties:
+        TaskId:
+          type: string
+          description: unique identifier for the task run for the job
+        Status:
+          type: string
+          description: status of the pipeline running the task
+          enum:
+            - PipelineComplete
+            - PipelineProcessing
+            - PipelineFailed
+            - FileNotFound
+        OutputFileHost:
+          type: string
+        OutputFiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutputFile'
+        Results:
+          type: string
+    UserFacingError:
+      type: object
+      description: defines the error that the user will see in the UI
+      properties:
+        Owner:
+          type: string
+          description: owner (service) that owned the job when it errored out
+        Error:
+          type: string
+          description: descriptive string containing the error
