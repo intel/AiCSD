@@ -20,7 +20,7 @@
     !!! Warning
         Leave plenty of time for this step to complete, up to 30-40 minutes. Console output may appear to hang while conducting parts of the build process using intermediate containers. Red text is not necessarily concerning, so allow the process to finish.
 
-2. For a two system setup, it is necessary to update `<OEM_IP_ADDRESS>` with the appropriate IP address of the OEM system in the docker-compose-edgex-spiffe-spire.yml file. To obtain the IP address use `hostname -I` on Linux or `ipconfig` on Windows. 
+2. For a two system setup, on the Gateway, it is necessary to update `<OEM_IP_ADDRESS>` with the appropriate IP address of the OEM system in the docker-compose-edgex-spiffe-spire.yml file. To obtain the IP address use `hostname -I` on Linux or `ipconfig` on Windows. 
 
     !!! Note
         For an OEM system running in WSL, use the IP address of the Windows system.
