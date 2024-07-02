@@ -4,7 +4,7 @@
 ########################################################################
 
 FROM python:3.8-bullseye
-RUN apt-get update && apt-get install --no-install-recommends ffmpeg=7:4.3.6-0+deb11u1 libsm6=2:1.2.3-1 libxext6=2:1.3.3-1.1 -y \
+RUN apt-get update && apt-get install --no-install-recommends ffmpeg=7:4.3.7-0+deb11u1 libsm6=2:1.2.3-1 libxext6=2:1.3.3-1.1 -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 COPY . .
