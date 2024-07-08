@@ -1,12 +1,12 @@
 ########################################################################
- # Copyright (c) Intel Corporation 2023
+ # Copyright (c) Intel Corporation 2024
  # SPDX-License-Identifier: BSD-3-Clause
 ########################################################################
 
 #build stage
-FROM golang:1.21.3-alpine3.17 AS builder
+FROM golang:1.22.5-alpine3.19 AS builder
 
-RUN apk add --update --no-cache make=4.3-r1 gcc=12.2.1_git20220924-r4 libc-dev=0.7.2-r3 libsodium-dev=1.0.18-r2 zeromq-dev=4.3.4-r1
+RUN apk add --update --no-cache make=4.4.1-r2 gcc=13.2.1_git20231014-r0 libc-dev=0.7.2-r5 libsodium-dev=1.0.19-r0 zeromq-dev=4.3.5-r2
 WORKDIR /app
 
 COPY go.mod ./
@@ -17,15 +17,15 @@ ARG MAKE="make data-organizer"
 RUN $MAKE
 
 #final stage
-FROM alpine:3.17
+FROM alpine:3.19
 # TODO: Change Copyright to your company if open sourcing or remove label
 LABEL license='SPDX-License-Identifier: BSD-3-Clause' \
-  copyright='Copyright (c) 2023: Intel Corporation'
+  copyright='Copyright (c) 2024: Intel Corporation'
 LABEL name='ms-data-organizer' \ 
       version="${MSVERSION}"
 
 # dumb-init is required as security-bootstrapper uses it in the entrypoint script
-RUN apk add --update --no-cache ca-certificates=20240226-r0 zeromq=4.3.4-r1 dumb-init=1.2.5-r2
+RUN apk add --update --no-cache ca-certificates=20240226-r0 zeromq=4.3.5-r2 dumb-init=1.2.5-r3
 
 # COPY --from=builder /app/Attribution.txt /Attribution.txt
 COPY --from=builder /app/ms-data-organizer/LICENSE /LICENSE

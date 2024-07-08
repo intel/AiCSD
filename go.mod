@@ -5,7 +5,7 @@
 
 module aicsd
 
-go 1.21
+go 1.22.5
 
 require (
 	github.com/diegoholiveira/jsonlogic v1.0.1-0.20200220175622-ab7989be08b9
