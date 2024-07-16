@@ -177,3 +177,63 @@ func TestDataOrgController_NotifyNewFileHandler(t *testing.T) {
 		})
 	}
 }
+func FuzzNotifyNewFileHandler(f *testing.F) {
+
+	expectedId := "1"
+	expected := helpers.CreateTestJob(pkg.OwnerDataOrg, fileHostname)
+	expectedJson, err := json.Marshal(expected)
+	require.NoError(f, err)
+
+	badFile := expected
+	badFile.Owner = "none"
+	badFileJson, err := json.Marshal(badFile)
+	require.NoError(f, err)
+
+	fileExistsJob := helpers.CreateTestJob(pkg.OwnerTaskLauncher, fileHostname)
+	fileExistsJobJson, err := json.Marshal(fileExistsJob)
+	require.NoError(f, err)
+
+	// Seed corpus with a valid JSON job representation if available
+	f.Add(expectedJson)
+	f.Add(badFileJson)
+	f.Add(fileExistsJobJson)
+
+	f.Fuzz(func(t *testing.T, data []byte) {
+		// Mock dependencies
+		repoMock := jobRepoMocks.Client{}
+		senderMock := fileSenderMocks.Client{}
+		taskLaunchMock := taskLauncherMocks.Client{}
+		attributeParser := make(map[string]types.AttributeInfo)
+		dependentServices := wait.Services{wait.ServiceConsul, wait.ServiceJobRepo}
+
+		// Create a new instance of the controller
+		controller := New(logger.MockLogger{}, &repoMock, &senderMock, &taskLaunchMock, attributeParser, dependentServices)
+
+		requestBody := data
+		// Create a new HTTP request with the fuzzed JSON data
+		req := httptest.NewRequest("POST", "http://localhost", bytes.NewReader(requestBody))
+		// Create a ResponseRecorder to record the response
+		w := httptest.NewRecorder()
+
+		// Set up mocks for dependencies if necessary
+		repoMock.On("Create", mock.Anything).Return(expectedId, true, nil)
+
+		repoMock.On("RetrieveById", mock.Anything).Return(mock.Anything, nil)
+		taskLaunchMock.On("MatchTask", mock.Anything).Return(true, nil)
+
+		repoMock.On("Update", mock.Anything, mock.Anything).Return(nil, nil)
+
+		senderMock.On("HandleJob", mock.Anything).Return(nil)
+
+		// Call the handler function
+		controller.NotifyNewFileHandler(w, req)
+
+		// Check if the response is as expected
+		resp := w.Result()
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusBadRequest && resp.StatusCode != http.StatusInternalServerError {
+			t.Errorf("Handler returned unexpected status code: %v", resp.StatusCode)
+		}
+	})
+}

@@ -37,5 +37,8 @@ test:
 	gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")
 	[ "`gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")`" = "" ]
 
+fuzztest:
+	$(GO) test -fuzz=FuzzNotifyNewFileHandler -fuzztime 30s ./controller
+
 clean:
 	rm -f ms-$(SERVICE_NAME)
