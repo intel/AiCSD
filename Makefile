@@ -54,6 +54,7 @@ define COMPOSE_DOWN
 	docker compose -p log-analytics -f docker-compose-log-analytics.yml down $1
 endef
 
+FUZZTEST=$(ORGANIZER) $(RECEIVER_GATEWAY)
 VERIFY_CLIENTS=$(FILE_WATCHER) $(RECEIVER_OEM) $(TASK_LAUNCHER) $(ORGANIZER) $(SENDER_OEM) $(REPOSITORY)
 
 build: $(MICROSERVICES)
@@ -288,6 +289,12 @@ test:
 	gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")
 	[ "`gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")`" = "" ]
 	#./bin/test-attribution-txt.sh
+
+# The client-update target manually updates the mocked files without checking client files.
+fuzztest:
+	for svc in $(FUZZTEST); do \
+		make -C $$svc $@ -s; \
+	done;
 
 # runs integration tests without the retry test cases
 integration-test: files integration-test-pipeline-sim integration-test-pipeline-val
