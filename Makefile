@@ -290,7 +290,6 @@ test:
 	[ "`gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")`" = "" ]
 	#./bin/test-attribution-txt.sh
 
-# The client-update target manually updates the mocked files without checking client files.
 fuzztest:
 	for svc in $(FUZZTEST); do \
 		make -C $$svc $@ -s; \
