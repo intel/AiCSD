@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) Intel Corporation 2023
+ * Copyright (c) Intel Corporation 2024
  * SPDX-License-Identifier: BSD-3-Clause
  **********************************************************************/
 
@@ -120,6 +120,51 @@ func TestFileHandler_TransmitJob(t *testing.T) {
 			assert.Equal(t, expected, fileHandler.jobMap[test.LocalData.Id])
 		})
 	}
+}
+
+// FuzzTransmitJob tests the TransmitJob method with random JSON data.
+func FuzzTransmitJob(f *testing.F) {
+	// Seed corpus entries with known inputs to start with.
+	// These should be valid JSON representations of types.Job objects.
+	expected := helpers.CreateTestJob(pkg.OwnerFileRecvGateway, fileHostname)
+	val, err := json.Marshal(&expected)
+	require.NoError(f, err)
+
+	badJob1_obj := expected
+	badJob1_obj.Id = ""
+	badJob1_json, err := json.Marshal(&badJob1_obj)
+	require.NoError(f, err)
+
+	badJob2_obj := expected
+	badJob2_obj.InputFile.Name = "@#%!&*()"
+	badJob2_json, err := json.Marshal(&badJob2_obj)
+	require.NoError(f, err)
+
+	f.Add(string(val))          // known good input
+	f.Add(string(badJob1_json)) // known bad input
+	f.Add(string(badJob2_json)) // known edge case input
+
+	// Setup mocks and dependencies as needed.
+	configuration := config.Configuration{
+		BaseFileFolder: ".",
+		FileHostname:   fileHostname,
+	}
+	fileHandler := New(logger.MockLogger{}, nil, nil, &configuration)
+
+	// Define the fuzzing function.
+	f.Fuzz(func(t *testing.T, data string) {
+		requestBody := []byte(data)
+
+		req := httptest.NewRequest("POST", "http://localhost", bytes.NewReader(requestBody))
+		w := httptest.NewRecorder()
+		fileHandler.TransmitJob(w, req)
+		resp := w.Result()
+		defer func() { _ = resp.Body.Close() }()
+
+		if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("unexpected status code: got %v, want %v or %v", resp.StatusCode, http.StatusOK, http.StatusBadRequest)
+		}
+	})
 }
 
 func TestFileHandler_TransmitFile(t *testing.T) {

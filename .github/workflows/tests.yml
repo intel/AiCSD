@@ -29,6 +29,25 @@ jobs:
       - name: Run Unit Tests
         run: make test
 
+  Fuzz_Test:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      
+      - name: Setup Go ENV
+        uses: actions/setup-go@v4
+        with: 
+          go-version: '1.22.5'
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install libzmq3-dev
+      
+      - name: Run Fuzz Tests
+        run: make fuzztest
+
   Integration_Test:
     runs-on: ubuntu-latest
     steps:

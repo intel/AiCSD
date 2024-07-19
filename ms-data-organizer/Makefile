@@ -1,5 +1,5 @@
 ########################################################################
- # Copyright (c) Intel Corporation 2023
+ # Copyright (c) Intel Corporation 2024
  # SPDX-License-Identifier: BSD-3-Clause
 ########################################################################
 
@@ -36,6 +36,9 @@ test:
 	$(GO) vet ./...
 	gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")
 	[ "`gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")`" = "" ]
+
+fuzztest:
+	$(GO) test -cover -fuzz=FuzzNotifyNewFileHandler -fuzztime 60s ./controller
 
 clean:
 	rm -f ms-$(SERVICE_NAME)

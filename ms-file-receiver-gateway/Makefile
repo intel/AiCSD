@@ -23,6 +23,9 @@ test:
 	$(GO) vet ./...
 	gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")
 	[ "`gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")`" = "" ]
+
+fuzztest:
+	$(GO) test -cover -fuzz=FuzzTransmitJob -fuzztime 60s ./controller
 	
 clean:
 	rm -f ms-$(SERVICE_NAME)
