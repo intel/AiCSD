@@ -1,0 +1,98 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2024
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+
+version: "3"
+services:
+  ntp:
+    image: cturra/ntp:latest
+    container_name: ntp
+    restart: always
+    ports:
+      - 123:123/udp
+    environment:
+      - NTP_SERVERS=corp.intel.com
+      - LOG_LEVEL=0
+  edge_video_analytics_microservice:
+    image: intel/edge_video_analytics_microservice:2.0.0
+    hostname: edge_video_analytics_microservice
+    container_name: edge_video_analytics_microservice
+    security_opt:
+      - seccomp:unconfined
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        CMLIB_VERSION: "4.1.0"
+        MSGBUS_LIB_VERSION: 4.0.0
+        UTILS_LIB_VERSION: 4.0.0
+        SW_LIC_LIB_VERSION: ${SW_LIC_LIB_VERSION}
+        EII_UID: 1999
+        USER: "eiiuser"
+        EII_SOCKET_DIR: "/opt/intel/eii/sockets"
+        BASE_IMAGE: "ubuntu:22.04"
+        PKG_SRC: ${PKG_SRC}
+        UDF_PKG_SRC: "http://ubit-artifactory-ba.intel.com/artifactory/eis-aiservices-devops-ba-local/latest/"
+        MSGBUS_WHL: "eii_msgbus-4.0.0-cp310-cp310-manylinux2014_x86_64.whl"
+        CFGMGR_WHL: "eii_configmgr-4.1.0-cp310-cp310-manylinux2014_x86_64.whl"
+        CMAKE_INSTALL_PREFIX: "/opt/intel/eii"
+        # Download sources for GPL/LGPL/AGPL binary distributed components (yes/no)
+        DOWNLOAD_GPL_SOURCES: "no"
+    privileged: false
+    tty: true
+    entrypoint: ["./run.sh"]
+    ports:
+      - '8080:8080'
+      - '8554:8554'
+    networks:
+      edgex-network: {}
+    environment:
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8554
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443
+      # - no_proxy=localhost,127.0.0.1
+      # - http_proxy=http://proxy-dmz.intel.com:912
+      # - https_proxy=http://proxy-dmz.intel.com:912
+      - RUN_MODE=EVA
+      - GENICAM=Balluff
+      - GST_DEBUG="1,gencamsrc:2"
+      # Default Detection and Classification Device
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
+      - LSFEATURE_NAME="EVAM"
+      - RUNTIME_LICENSE_CHECK_FREQ_SECS=${RUNTIME_LICENSE_CHECK_FREQ_SECS}
+      - APPLICATION_RESTART_FREQ_SECS=${APPLICATION_RESTART_FREQ_SECS}
+    volumes:
+    # - "./pipelines/:/home/pipeline-server/pipelines/"
+      - "../models:/home/pipeline-server/models/"
+      - "../resources:/home/pipeline-server/resources/"
+      - "../configs/default/config.json:/home/pipeline-server/config.json"
+      - "../certificates:/MqttCerts:ro"
+    #  - "../user_scripts/udfs/python:/home/pipeline-server/udfs/python"
+      - "/run/udev:/run/udev:ro"
+      - "/dev:/dev"
+      - "/tmp:/tmp"
+    group_add:
+      # render group ID for ubuntu 20.04 host OS
+      - "109"
+      # render group ID for ubuntu 22.04 host OS
+      - "110"
+    device_cgroup_rules:
+    # Default run - device-cgroup-rule='c 189:* rmw'
+    # Selective rules can be applied for deployment
+    - 'c 189:* rmw'
+    - 'c 209:* rmw'
+    - 'a 189:* rwm'
+    devices:
+    # Following devices under /dev filesystem will be needed based on usecase
+    # dri - GPU
+    # USB camera devices
+    # Selective mount can be done for deployment as mounting whole /dev is not recommended
+    - "/dev:/dev"
+
+networks:
+  app_network:
+    driver: "bridge"
