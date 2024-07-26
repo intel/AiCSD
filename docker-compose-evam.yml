@@ -21,25 +21,6 @@ services:
     container_name: edge_video_analytics_microservice
     security_opt:
       - seccomp:unconfined
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile
-      args:
-        CMLIB_VERSION: "4.1.0"
-        MSGBUS_LIB_VERSION: 4.0.0
-        UTILS_LIB_VERSION: 4.0.0
-        SW_LIC_LIB_VERSION: ${SW_LIC_LIB_VERSION}
-        EII_UID: 1999
-        USER: "eiiuser"
-        EII_SOCKET_DIR: "/opt/intel/eii/sockets"
-        BASE_IMAGE: "ubuntu:22.04"
-        PKG_SRC: ${PKG_SRC}
-        UDF_PKG_SRC: "http://ubit-artifactory-ba.intel.com/artifactory/eis-aiservices-devops-ba-local/latest/"
-        MSGBUS_WHL: "eii_msgbus-4.0.0-cp310-cp310-manylinux2014_x86_64.whl"
-        CFGMGR_WHL: "eii_configmgr-4.1.0-cp310-cp310-manylinux2014_x86_64.whl"
-        CMAKE_INSTALL_PREFIX: "/opt/intel/eii"
-        # Download sources for GPL/LGPL/AGPL binary distributed components (yes/no)
-        DOWNLOAD_GPL_SOURCES: "no"
     privileged: false
     tty: true
     entrypoint: ["./run.sh"]
