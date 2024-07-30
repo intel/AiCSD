@@ -55,6 +55,7 @@ services:
       - "/run/udev:/run/udev:ro"
       - "/dev:/dev"
       - "/tmp:/tmp"
+      - ${HOME}/data/gateway-files:/tmp/files
     group_add:
       # render group ID for ubuntu 20.04 host OS
       - "109"

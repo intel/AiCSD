@@ -189,7 +189,8 @@ docker-file-watcher:
 docker-pipeline-sim:
 	docker build \
 	    --build-arg http_proxy \
-	    --build-arg https_proxy \		
+	    --build-arg https_proxy \
+		--no-cache \
 		-f ${PIPELINE_SIM}/Dockerfile \
 		--label "git_sha=$(GIT_SHA)" \
 		-t ${PROJECT}/${PIPELINE_SIM}:$(GIT_SHA) \
