@@ -284,68 +284,155 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 	p.outputFiles = []types.OutputFile{types.CreateOutputFile(p.params.OutputFileFolder, outputFilename, extension, "", "", "", "", nil)}
 	p.outputFiles[0].Extension = extension
 
-	outputFilenamePath := p.params.OutputFileFolder + "/" + outputFilename
+	//outputFilenamePath := p.params.OutputFileFolder + "/" + outputFilename
 
-	pipelineParams := struct {
-		InputFileLocation string
-		OutputFileFolder  string
-		ModelName         string
-	}{
-		InputFileLocation: p.params.InputFileLocation,
-		OutputFileFolder:  outputFilenamePath,
-		ModelName:         strings.TrimLeft(pipelineTopic, "geti/"),
+	pipelineName := strings.TrimLeft(pipelineTopic, "geti/")
+
+	// pipelineParams := struct {
+	// 	InputFileLocation string
+	// 	OutputFileFolder  string
+	// 	ModelName         string
+	// }{
+	// 	InputFileLocation: p.params.InputFileLocation,
+	// 	OutputFileFolder:  outputFilenamePath,
+	// 	ModelName:         strings.TrimLeft(pipelineTopic, "geti/"),
+	// }
+
+	payload := map[string]interface{}{
+		"destination": map[string]interface{}{
+			"metadata": map[string]string{
+				"type":   "file",
+				"path":   "/tmp/results1.jsonl",
+				"format": "json-lines",
+			},
+		},
+		"parameters": map[string]interface{}{
+			"udfloader": map[string]interface{}{
+				"udfs": []map[string]string{
+					{
+						"name":               "python.geti_udf.geti_udf",
+						"type":               "python",
+						"device":             "CPU",
+						"visualize":          "true",
+						"deployment":         "./resources/models/" + pipelineName + "/deployment",
+						"metadata_converter": "null",
+					},
+				},
+			},
+		},
 	}
 
-	body, err := json.Marshal(pipelineParams)
+	body, err := json.Marshal(payload)
 	if err != nil {
-		err = werrors.WrapMsg(err, "failed to marshal pipelineParams to send to Geti pipeline.")
+		err = werrors.WrapMsg(err, "failed to marshal pipelineParams to send to EVAM pipeline.")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
-	request, err := http.NewRequest(http.MethodPost, p.config.GetiUrl, bytes.NewBuffer([]byte(body)))
+	// Start EVAM pipeline
+	request, err := http.NewRequest(http.MethodPost, "http://evam:8080/pipelines/user_defined_pipelines/"+pipelineName, bytes.NewBuffer([]byte(body)))
 	if err != nil {
-		err = werrors.WrapMsg(err, "failed to create http request to trigger Geti pipeline.")
+		err = werrors.WrapMsg(err, "failed to create http request to trigger EVAM pipeline.")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
 	response, err := http.DefaultClient.Do(request)
 	if err != nil {
-		err = werrors.WrapMsg(err, "failed to trigger Geti pipeline request.")
+		err = werrors.WrapMsg(err, "failed to trigger EVAM pipeline request.")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
 	if response.StatusCode != http.StatusOK {
-		err := fmt.Errorf("trigger Geti pipeline request failed with status code %d", response.StatusCode)
+		err := fmt.Errorf("trigger EVAM pipeline request failed with status code %d", response.StatusCode)
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
 	resbody, err := io.ReadAll(response.Body)
 	if err != nil {
-		err := werrors.WrapMsg(err, "failed to read response from Geti pipeline")
+		err := werrors.WrapMsg(err, "failed to read response from EVAM pipeline")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
-	var pipelineResp pipelineBodyResp
+	var pipelineResp string
 	err = json.Unmarshal(resbody, &pipelineResp)
 	if err != nil {
-		err = werrors.WrapMsgf(err, "unable to unmarshal data from Geti response")
+		err = werrors.WrapMsgf(err, "unable to unmarshal data from EVAM response")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
-	output, err := json.Marshal(pipelineResp)
+	pipelineId, err := json.Marshal(pipelineResp)
 	if err != nil {
-		err = werrors.WrapMsgf(err, "unable to marshal data from Geti response")
+		err = werrors.WrapMsgf(err, "unable to marshal data from EVAM response")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
-	p.pipelineResults = string(output)
+	// Send inference call
+
+	inferenceBody := map[string]interface{}{
+		"source": map[string]string{
+			"path": p.params.InputFileLocation,
+			"type": "file",
+		},
+	}
+
+	marshaledInferenceBody, err := json.Marshal(inferenceBody)
+	if err != nil {
+		err = werrors.WrapMsg(err, "failed to marshal marshaledInferenceBody to send to EVAM pipeline.")
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	request, err = http.NewRequest(http.MethodPost, "http://evam:8080/pipelines/user_defined_pipelines/"+pipelineName+"/"+string(pipelineId), bytes.NewBuffer([]byte(marshaledInferenceBody)))
+	if err != nil {
+		err = werrors.WrapMsg(err, "failed to create http request to trigger EVAM pipeline.")
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	response, err = http.DefaultClient.Do(request)
+	if err != nil {
+		err = werrors.WrapMsg(err, "failed to trigger EVAM pipeline request.")
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	if response.StatusCode != http.StatusOK {
+		err := fmt.Errorf("trigger EVAM pipeline request failed with status code %d", response.StatusCode)
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	// Delete/Stop EVAM pipeline
+	req, err := http.NewRequest(http.MethodDelete, "http://evam:8080/pipelines/"+string(pipelineId), nil)
+	if err != nil {
+		err = werrors.WrapMsg(err, "failed to delete EVAM pipeline.")
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	deleteResponse, err := http.DefaultClient.Do(req)
+	if err != nil {
+		err = werrors.WrapMsg(err, "failed to trigger EVAM pipeline request.")
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	defer deleteResponse.Body.Close()
+
+	if deleteResponse.StatusCode != http.StatusOK {
+		err := fmt.Errorf("delete EVAM pipeline request failed with status code %d", response.StatusCode)
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	// TODO: modify results
+	p.pipelineResults = string(pipelineId)
 
 	return true, data
 }

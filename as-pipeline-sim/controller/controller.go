@@ -9,10 +9,9 @@ import (
 	"aicsd/pkg/helpers"
 	"aicsd/pkg/wait"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
-	"os"
-	"path/filepath"
 
 	"github.com/edgexfoundry/app-functions-sdk-go/v2/pkg/interfaces"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
@@ -32,10 +31,12 @@ const (
 	OnlyResultsPipelineTopic    = "only-results"
 	FileAndResultsPipelineName  = "FileAndResults"
 	FileAndResultsPipelineTopic = "file-and-results"
-	GetiPipelineName            = "GetiPipeline"
+	GetiPipelineName            = "EvamPipeline"
 	GetiPipelineTopic           = "geti/#"
 	OvmsPipelineName            = "OVMS Pipeline"
 	PipelineStatusRunning       = "Running"
+
+	EVAMPipelines = "/pipelines"
 )
 
 type PipelineSimController struct {
@@ -44,8 +45,8 @@ type PipelineSimController struct {
 	GetiUrl           string
 }
 
-type pipelineBody struct {
-	Models []string `json:"models"`
+type EvamBodyPipelines struct {
+	Version string `json:"version"`
 }
 
 func New(lc logger.LoggingClient, GetiUrl string) *PipelineSimController {
@@ -104,67 +105,71 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 		},
 	}
 
-	// Get available models from GETi, skip errors if GETi container is not running
-	resp, err := http.Get(p.GetiUrl)
+	// Get available models from EVAM
+	getiURL := fmt.Sprintf("%s%s", "http://evam:8080", EVAMPipelines)
+	p.lc.Info("HERE GET")
+	p.lc.Info(getiURL)
+
+	resp, err := http.Get(getiURL)
 	if err == nil {
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
-			err = werrors.WrapMsgf(err, "unable to read data from GETi")
+			err = werrors.WrapMsgf(err, "unable to read data from EVAM")
 			helpers.HandleErrorMessage(p.lc, writer, err, http.StatusInternalServerError)
 		}
 
-		var models pipelineBody
-		err = json.Unmarshal(body, &models)
+		var EvamPipelines []EvamBodyPipelines
+		err = json.Unmarshal(body, &EvamPipelines)
 		if err != nil {
-			err = werrors.WrapMsgf(err, "unable to unmarshal data from GETi")
+			err = werrors.WrapMsgf(err, "unable to unmarshal data from EVAM")
 			helpers.HandleErrorMessage(p.lc, writer, err, http.StatusInternalServerError)
 		}
 
-		for _, value := range models.Models {
+		for _, value := range EvamPipelines {
 
 			//ignore ovms configuation file
-			if value == "config.json" {
+			if value.Version == "config.json" {
 				continue
 			}
 
-			dirPath := filepath.Join("models", value, "1")
+			//dirPath := filepath.Join("models", value.Version, "1")
 
 			//check for existence of ovms model with sub directory 1
-			if _, err := os.Stat(dirPath); os.IsNotExist(err) {
+			// if _, err := os.Stat(dirPath); os.IsNotExist(err) {
 
-				//process & add geti models to pipelines
-				pipeline := struct {
-					Id                string `json:"id"`
-					Name              string `json:"name"`
-					Description       string `json:"description"`
-					SubscriptionTopic string `json:"subscriptionTopic"`
-					Status            string `json:"status"`
-				}{
-					Id:                uuid.NewString(),
-					Name:              value + " " + GetiPipelineName,
-					Description:       "Pipeline that calls Geti pipeline for " + value + " Detection",
-					SubscriptionTopic: "geti/" + value,
-					Status:            PipelineStatusRunning,
-				}
-				pipelines = append(pipelines, pipeline)
-			} else {
-
-				//process & add ovms models to pipelines
-				pipeline := struct {
-					Id                string `json:"id"`
-					Name              string `json:"name"`
-					Description       string `json:"description"`
-					SubscriptionTopic string `json:"subscriptionTopic"`
-					Status            string `json:"status"`
-				}{
-					Id:                uuid.NewString(),
-					Name:              value + " " + OvmsPipelineName,
-					Description:       "Pipeline serving model " + value + " via BentoML service",
-					SubscriptionTopic: "ovms/" + value,
-					Status:            PipelineStatusRunning,
-				}
-				pipelines = append(pipelines, pipeline)
+			//process & add EVAM pipelines
+			pipeline := struct {
+				Id                string `json:"id"`
+				Name              string `json:"name"`
+				Description       string `json:"description"`
+				SubscriptionTopic string `json:"subscriptionTopic"`
+				Status            string `json:"status"`
+			}{
+				Id:                uuid.NewString(),
+				Name:              value.Version + " " + GetiPipelineName,
+				Description:       "Pipeline that calls EVAM for " + value.Version,
+				SubscriptionTopic: "geti/" + value.Version,
+				Status:            PipelineStatusRunning,
 			}
+			pipelines = append(pipelines, pipeline)
+			//} else {
+
+			// 	//process & add ovms models to pipelines
+			// 	pipeline := struct {
+			// 		Id                string `json:"id"`
+			// 		Name              string `json:"name"`
+			// 		Description       string `json:"description"`
+			// 		SubscriptionTopic string `json:"subscriptionTopic"`
+			// 		Status            string `json:"status"`
+			// 	}{
+			// 		Id:                uuid.NewString(),
+			// 		Name:              value + " " + OvmsPipelineName,
+			// 		Description:       "Pipeline serving model " + value + " via BentoML service",
+			// 		SubscriptionTopic: "ovms/" + value,
+			// 		Status:            PipelineStatusRunning,
+			// 	}
+			// 	pipelines = append(pipelines, pipeline)
+			// }
 		}
 
 		defer resp.Body.Close()

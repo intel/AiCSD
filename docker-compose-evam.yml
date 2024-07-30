@@ -15,7 +15,7 @@ services:
     environment:
       - NTP_SERVERS=corp.intel.com
       - LOG_LEVEL=0
-  edge_video_analytics_microservice:
+  evam:
     image: intel/edge_video_analytics_microservice:2.0.0
     hostname: edge_video_analytics_microservice
     container_name: edge_video_analytics_microservice
@@ -48,10 +48,9 @@ services:
       - APPLICATION_RESTART_FREQ_SECS=${APPLICATION_RESTART_FREQ_SECS}
     volumes:
     # - "./pipelines/:/home/pipeline-server/pipelines/"
-      - "../models:/home/pipeline-server/models/"
-      - "../resources:/home/pipeline-server/resources/"
-      - "../configs/default/config.json:/home/pipeline-server/config.json"
-      - "../certificates:/MqttCerts:ro"
+      - "./models:/home/pipeline-server/models/"      
+      - "./config.json:/home/pipeline-server/config.json"
+      # - "../certificates:/MqttCerts:ro"
     #  - "../user_scripts/udfs/python:/home/pipeline-server/udfs/python"
       - "/run/udev:/run/udev:ro"
       - "/dev:/dev"
@@ -73,7 +72,6 @@ services:
     # USB camera devices
     # Selective mount can be done for deployment as mounting whole /dev is not recommended
     - "/dev:/dev"
-
 networks:
   app_network:
     driver: "bridge"
