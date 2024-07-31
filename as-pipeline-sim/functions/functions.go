@@ -276,7 +276,8 @@ func (p *PipelineSim) ReportStatus(ctx interfaces.AppFunctionContext, data inter
 func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, data interface{}) (bool, interface{}) {
 	p.lc.Debugf("Running TriggerGetiPipeline...")
 
-	//pipelineTopic, _ := ctx.GetValue("receivedtopic")
+	pipelineTopic, _ := ctx.GetValue("receivedtopic")
+	pipelineName := strings.TrimLeft(pipelineTopic, "geti/")
 
 	_, filename := path.Split(p.params.InputFileLocation)
 	extension := filepath.Ext(filename)
@@ -287,19 +288,7 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 
 	outputFilenamePath := p.params.OutputFileFolder + "/" + outputFilename
 
-	//pipelineName := strings.TrimLeft(pipelineTopic, "geti/")
-
-	// pipelineParams := struct {
-	// 	InputFileLocation string
-	// 	OutputFileFolder  string
-	// 	ModelName         string
-	// }{
-	// 	InputFileLocation: p.params.InputFileLocation,
-	// 	OutputFileFolder:  outputFilenamePath,
-	// 	ModelName:         strings.TrimLeft(pipelineTopic, "geti/"),
-	// }
-
-	url1 := "http://evam:8080/pipelines/user_defined_pipelines/person_detection"
+	url1 := fmt.Sprintf("%s/pipelines/user_defined_pipelines/%s", p.config.GetiUrl, pipelineName)
 	payload1 := []byte(fmt.Sprintf(`{
 		"destination": {
 			"metadata": {
@@ -332,7 +321,7 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 		return true, err
 	}
 
-	url2 := fmt.Sprintf("http://evam:8080/pipelines/user_defined_pipelines/person_detection/%s", instanceID)
+	url2 := fmt.Sprintf("%s/pipelines/user_defined_pipelines/%s/%s", p.config.GetiUrl, pipelineName, instanceID)
 	payload2 := []byte(fmt.Sprintf(`{
 		"source": {
 			"path": "%s",
@@ -350,8 +339,9 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 	}
 
 	p.lc.Debugf("Deleting EVAM pipeline...")
+	deleteUrl := fmt.Sprintf("%s/pipelines/%s", p.config.GetiUrl, instanceID)
 	// Delete pipeline
-	if err := deleteInstance(instanceID); err != nil {
+	if err := deleteInstance(deleteUrl); err != nil {
 		err = werrors.WrapMsg(err, "failed to delete EVAM pipeline.")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
@@ -454,9 +444,7 @@ func executePostRequest(url string, payload []byte) (string, error) {
 	return responseString, nil
 }
 
-func deleteInstance(instanceID string) error {
-	// Construct the URL by appending the instance ID
-	url := fmt.Sprintf("http://evam:8080/pipelines/%s", instanceID)
+func deleteInstance(url string) error {
 
 	// Create the DELETE request
 	req, err := http.NewRequest("DELETE", url, nil)

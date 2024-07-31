@@ -106,7 +106,7 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 	}
 
 	// Get available models from EVAM
-	getiURL := fmt.Sprintf("%s%s", "http://evam:8080", EVAMPipelines)
+	getiURL := fmt.Sprintf("%s%s", p.GetiUrl, EVAMPipelines)
 	p.lc.Info("HERE GET")
 	p.lc.Info(getiURL)
 
@@ -132,11 +132,6 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 				continue
 			}
 
-			//dirPath := filepath.Join("models", value.Version, "1")
-
-			//check for existence of ovms model with sub directory 1
-			// if _, err := os.Stat(dirPath); os.IsNotExist(err) {
-
 			//process & add EVAM pipelines
 			pipeline := struct {
 				Id                string `json:"id"`
@@ -152,24 +147,6 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 				Status:            PipelineStatusRunning,
 			}
 			pipelines = append(pipelines, pipeline)
-			//} else {
-
-			// 	//process & add ovms models to pipelines
-			// 	pipeline := struct {
-			// 		Id                string `json:"id"`
-			// 		Name              string `json:"name"`
-			// 		Description       string `json:"description"`
-			// 		SubscriptionTopic string `json:"subscriptionTopic"`
-			// 		Status            string `json:"status"`
-			// 	}{
-			// 		Id:                uuid.NewString(),
-			// 		Name:              value + " " + OvmsPipelineName,
-			// 		Description:       "Pipeline serving model " + value + " via BentoML service",
-			// 		SubscriptionTopic: "ovms/" + value,
-			// 		Status:            PipelineStatusRunning,
-			// 	}
-			// 	pipelines = append(pipelines, pipeline)
-			// }
 		}
 
 		defer resp.Body.Close()
