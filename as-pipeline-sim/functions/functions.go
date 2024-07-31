@@ -8,6 +8,7 @@ package functions
 import (
 	"aicsd/as-pipeline-sim/config"
 	"aicsd/pkg/types"
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -284,7 +285,7 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 	p.outputFiles = []types.OutputFile{types.CreateOutputFile(p.params.OutputFileFolder, outputFilename, extension, "", "", "", "", nil)}
 	p.outputFiles[0].Extension = extension
 
-	//outputFilenamePath := p.params.OutputFileFolder + "/" + outputFilename
+	outputFilenamePath := p.params.OutputFileFolder + "/" + outputFilename
 
 	//pipelineName := strings.TrimLeft(pipelineTopic, "geti/")
 
@@ -299,11 +300,11 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 	// }
 
 	url1 := "http://evam:8080/pipelines/user_defined_pipelines/person_detection"
-	payload1 := []byte(`{
+	payload1 := []byte(fmt.Sprintf(`{
 		"destination": {
 			"metadata": {
 				"type": "file",
-				"path": "/tmp/results1.jsonl",
+				"path": "/tmp/%s.jsonl",
 				"format": "json-lines"
 			}
 		},
@@ -321,7 +322,7 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 				]
 			}
 		}
-	}`)
+	}`, filename))
 
 	p.lc.Debugf("Creating EVAM pipeline...")
 	instanceID, err := executePostRequest(url1, payload1)
@@ -356,10 +357,63 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 		return true, err
 	}
 
-	// TODO: modify results
-	//p.pipelineResults = string(pipelineId)
+	p.lc.Debugf("Move output file to its destination...")
+	// Move file to the correct destination
+	if err := moveFile("/tmp/files/output/output.jpg", outputFilenamePath); err != nil {
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	p.lc.Debugf("Read inference data from jsonl file...")
+	// Read inference output from jsonl file
+	outputFile := fmt.Sprintf("/tmp/%s.jsonl", filename)
+	output, err := readJSONLFile(outputFile)
+	if err != nil {
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	p.pipelineResults = output
 
 	return true, data
+}
+
+func readJSONLFile(filename string) (string, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		err = werrors.WrapMsg(err, "failed to open file")
+		return "", err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		err = werrors.WrapMsg(err, "failed to read file")
+		return "", err
+	}
+
+	//TODO: this throws operation not permitted. Need to investigate a solution
+	// Delete the file after reading
+	// if err := os.Remove(filename); err != nil {
+	// 	err = werrors.WrapMsg(err, "failed to delete file")
+	// 	return "", err
+	// }
+
+	return strings.Join(lines, "\n"), nil
+}
+
+func moveFile(source, destination string) error {
+	err := os.Rename(source, destination)
+	if err != nil {
+		err = werrors.WrapMsg(err, "failed to move the outputfile.")
+		return err
+	}
+	return nil
 }
 
 func executePostRequest(url string, payload []byte) (string, error) {

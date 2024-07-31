@@ -12,7 +12,7 @@
                 "name": "person_detection",
                 "source": "image_ingestor",
                 "queue_maxsize": 50,
-                "pipeline": "appsrc name=source  ! decodebin ! videoconvert ! video/x-raw,format=BGR ! udfloader name=udfloader ! gvametaconvert add-empty-results=true name=metaconvert ! gvametapublish name=destination ! queue ! videoconvert ! jpegenc ! multifilesink location=/tmp/files/output/output%05d.jpg",
+                "pipeline": "appsrc name=source  ! decodebin ! videoconvert ! video/x-raw,format=BGR ! udfloader name=udfloader ! gvametaconvert add-empty-results=true name=metaconvert ! gvametapublish name=destination ! queue ! videoconvert ! jpegenc ! multifilesink location=/tmp/files/output/output.jpg",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -27,19 +27,7 @@
                     }
                 },
                 "auto_start": false,
-                "publish_frame": true,
-                "udfs": {
-                    "udfloader": [
-                        {
-                            "name": "python.geti_udf.geti_udf",
-                            "type": "python",
-                            "device": "CPU",
-                            "visualize": "true",
-                            "deployment": "./models/person_detection/deployment",
-                            "metadata_converter": "null"
-                        }
-                    ]
-                }
+                "publish_frame": true
             }
         ]
     },
