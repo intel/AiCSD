@@ -9,7 +9,7 @@
         ],
         "pipelines": [
             {
-                "name": "person_detection",
+                "name": "cancer",
                 "source": "image_ingestor",
                 "queue_maxsize": 50,
                 "pipeline": "appsrc name=source  ! decodebin ! videoconvert ! video/x-raw,format=BGR ! udfloader name=udfloader ! gvametaconvert add-empty-results=true name=metaconvert ! gvametapublish name=destination ! queue ! videoconvert ! jpegenc ! multifilesink location=/tmp/files/output/output.jpg",
@@ -39,7 +39,7 @@
                 "zmq_send_hwm": 50,
                 "EndPoint": "/EII/sockets",
                 "Topics": [
-                    "person_detection"
+                    "cancer"
                 ],
                 "AllowedClients": [
                     "*"

@@ -16,7 +16,7 @@ services:
       - NTP_SERVERS=corp.intel.com
       - LOG_LEVEL=0
   evam:
-    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:ab54ec3dc33bfc6b26ca7254750e0f5a20cb5bf32331e5ce350cd2b296106da6
+    image: intel/edge_video_analytics_microservice:2.0.0
     hostname: edge_video_analytics_microservice
     container_name: edge_video_analytics_microservice
     security_opt:

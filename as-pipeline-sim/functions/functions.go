@@ -305,13 +305,13 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 						"type": "python",
 						"device": "CPU",
 						"visualize": "true",
-						"deployment": "./models/person_detection/deployment",
+						"deployment": "./models/%s/deployment",
 						"metadata_converter": "null"
 					}
 				]
 			}
 		}
-	}`, filename))
+	}`, filename, pipelineName))
 
 	p.lc.Debugf("Creating EVAM pipeline...")
 	instanceID, err := executePostRequest(url1, payload1)

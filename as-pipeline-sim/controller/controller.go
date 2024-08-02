@@ -107,8 +107,6 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 
 	// Get available models from EVAM
 	getiURL := fmt.Sprintf("%s%s", p.GetiUrl, EVAMPipelines)
-	p.lc.Info("HERE GET")
-	p.lc.Info(getiURL)
 
 	resp, err := http.Get(getiURL)
 	if err == nil {
@@ -126,11 +124,6 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 		}
 
 		for _, value := range EvamPipelines {
-
-			//ignore ovms configuation file
-			if value.Version == "config.json" {
-				continue
-			}
 
 			//process & add EVAM pipelines
 			pipeline := struct {
