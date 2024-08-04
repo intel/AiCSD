@@ -3,7 +3,6 @@
  # SPDX-License-Identifier: BSD-3-Clause
 ########################################################################
 
-version: '3.7'
 volumes:
   portainer_data:
   
