@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
-version: '3.7'
 services:
   camera-simulator:
     container_name: camera-simulator
