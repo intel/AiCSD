@@ -16,7 +16,7 @@ services:
       - NTP_SERVERS=corp.intel.com
       - LOG_LEVEL=0
   evam:
-    image: intel/edge_video_analytics_microservice:2.0.0
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
     hostname: edge_video_analytics_microservice
     container_name: edge_video_analytics_microservice
     security_opt:
@@ -34,9 +34,6 @@ services:
       - RTSP_PORT=8554
       - ENABLE_WEBRTC=true
       - WEBRTC_SIGNALING_SERVER=ws://localhost:8443
-      # - no_proxy=localhost,127.0.0.1
-      # - http_proxy=http://proxy-dmz.intel.com:912
-      # - https_proxy=http://proxy-dmz.intel.com:912
       - RUN_MODE=EVA
       - GENICAM=Balluff
       - GST_DEBUG="1,gencamsrc:2"
@@ -46,8 +43,7 @@ services:
       - LSFEATURE_NAME="EVAM"
       - RUNTIME_LICENSE_CHECK_FREQ_SECS=${RUNTIME_LICENSE_CHECK_FREQ_SECS}
       - APPLICATION_RESTART_FREQ_SECS=${APPLICATION_RESTART_FREQ_SECS}
-    volumes:
-    # - "./pipelines/:/home/pipeline-server/pipelines/"
+    volumes:    
       - "./models:/home/pipeline-server/models/"      
       - "./config.json:/home/pipeline-server/config.json"
       # - "../certificates:/MqttCerts:ro"

@@ -394,7 +394,7 @@ func readJSONLFile(filename string) (string, error) {
 	// 	return "", err
 	// }
 
-	return strings.Join(lines, "\n"), nil
+	return strings.Join(lines, fmt.Sprintln()), nil
 }
 
 func moveFile(source, destination string) error {
