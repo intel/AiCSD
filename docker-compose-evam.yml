@@ -1,0 +1,74 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2024
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+
+version: "3"
+services:
+  ntp:
+    image: cturra/ntp:latest
+    container_name: ntp
+    restart: always
+    ports:
+      - 123:123/udp
+    environment:
+      - NTP_SERVERS=corp.intel.com
+      - LOG_LEVEL=0
+  evam:
+    image: amr-registry.caas.intel.com/nex-microservices/intel/edge_video_analytics_microservice@sha256:5588f0488d908bc07daab9555c2776eb4a9bead78f43dde2eec452b610a534b4
+    hostname: edge_video_analytics_microservice
+    container_name: edge_video_analytics_microservice
+    security_opt:
+      - seccomp:unconfined
+    privileged: false
+    tty: true
+    entrypoint: ["./run.sh"]
+    ports:
+      - '8081:8080'
+      - '8554:8554'
+    networks:
+      edgex-network: {}
+    environment:
+      - ENABLE_RTSP=true
+      - RTSP_PORT=8554
+      - ENABLE_WEBRTC=true
+      - WEBRTC_SIGNALING_SERVER=ws://localhost:8443
+      - RUN_MODE=EVA
+      - GENICAM=Balluff
+      - GST_DEBUG="1,gencamsrc:2"
+      # Default Detection and Classification Device
+      - DETECTION_DEVICE=CPU
+      - CLASSIFICATION_DEVICE=CPU
+      - LSFEATURE_NAME="EVAM"
+      - RUNTIME_LICENSE_CHECK_FREQ_SECS=${RUNTIME_LICENSE_CHECK_FREQ_SECS}
+      - APPLICATION_RESTART_FREQ_SECS=${APPLICATION_RESTART_FREQ_SECS}
+    volumes:    
+      - "./models:/home/pipeline-server/models/"      
+      - "./config.json:/home/pipeline-server/config.json"
+      # - "../certificates:/MqttCerts:ro"
+    #  - "../user_scripts/udfs/python:/home/pipeline-server/udfs/python"
+      - "/run/udev:/run/udev:ro"
+      - "/dev:/dev"
+      - "/tmp:/tmp"
+      - ${HOME}/data/gateway-files:/tmp/files
+    group_add:
+      # render group ID for ubuntu 20.04 host OS
+      - "109"
+      # render group ID for ubuntu 22.04 host OS
+      - "110"
+    device_cgroup_rules:
+    # Default run - device-cgroup-rule='c 189:* rmw'
+    # Selective rules can be applied for deployment
+    - 'c 189:* rmw'
+    - 'c 209:* rmw'
+    - 'a 189:* rwm'
+    devices:
+    # Following devices under /dev filesystem will be needed based on usecase
+    # dri - GPU
+    # USB camera devices
+    # Selective mount can be done for deployment as mounting whole /dev is not recommended
+    - "/dev:/dev"
+networks:
+  app_network:
+    driver: "bridge"

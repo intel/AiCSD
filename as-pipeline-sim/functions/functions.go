@@ -8,6 +8,7 @@ package functions
 import (
 	"aicsd/as-pipeline-sim/config"
 	"aicsd/pkg/types"
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -276,6 +277,7 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 	p.lc.Debugf("Running TriggerGetiPipeline...")
 
 	pipelineTopic, _ := ctx.GetValue("receivedtopic")
+	pipelineName := strings.TrimLeft(pipelineTopic, "geti/")
 
 	_, filename := path.Split(p.params.InputFileLocation)
 	extension := filepath.Ext(filename)
@@ -286,66 +288,183 @@ func (p *PipelineSim) TriggerGetiPipeline(ctx interfaces.AppFunctionContext, dat
 
 	outputFilenamePath := p.params.OutputFileFolder + "/" + outputFilename
 
-	pipelineParams := struct {
-		InputFileLocation string
-		OutputFileFolder  string
-		ModelName         string
-	}{
-		InputFileLocation: p.params.InputFileLocation,
-		OutputFileFolder:  outputFilenamePath,
-		ModelName:         strings.TrimLeft(pipelineTopic, "geti/"),
-	}
+	url1 := fmt.Sprintf("%s/pipelines/user_defined_pipelines/%s", p.config.GetiUrl, pipelineName)
+	payload1 := []byte(fmt.Sprintf(`{
+		"destination": {
+			"metadata": {
+				"type": "file",
+				"path": "/tmp/%s.jsonl",
+				"format": "json-lines"
+			}
+		},
+		"parameters": {
+			"udfloader": {
+				"udfs": [
+					{
+						"name": "python.geti_udf.geti_udf",
+						"type": "python",
+						"device": "CPU",
+						"visualize": "true",
+						"deployment": "./models/%s/deployment",
+						"metadata_converter": "null"
+					}
+				]
+			}
+		}
+	}`, filename, pipelineName))
 
-	body, err := json.Marshal(pipelineParams)
+	p.lc.Debugf("Creating EVAM pipeline...")
+	instanceID, err := executePostRequest(url1, payload1)
 	if err != nil {
-		err = werrors.WrapMsg(err, "failed to marshal pipelineParams to send to Geti pipeline.")
+		err = werrors.WrapMsg(err, "failed to trigger EVAM pipeline request.")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
-	request, err := http.NewRequest(http.MethodPost, p.config.GetiUrl, bytes.NewBuffer([]byte(body)))
+	url2 := fmt.Sprintf("%s/pipelines/user_defined_pipelines/%s/%s", p.config.GetiUrl, pipelineName, instanceID)
+	payload2 := []byte(fmt.Sprintf(`{
+		"source": {
+			"path": "%s",
+			"type": "file"
+		}
+	}`, p.params.InputFileLocation))
+
+	p.lc.Debugf("Inference call to EVAM...")
+	// Inference call
+	_, err = executePostRequest(url2, payload2)
 	if err != nil {
-		err = werrors.WrapMsg(err, "failed to create http request to trigger Geti pipeline.")
+		err = werrors.WrapMsg(err, "failed to trigger inference call EVAM pipeline request.")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
-	response, err := http.DefaultClient.Do(request)
+	p.lc.Debugf("Deleting EVAM pipeline...")
+	deleteUrl := fmt.Sprintf("%s/pipelines/%s", p.config.GetiUrl, instanceID)
+	// Delete pipeline
+	if err := deleteInstance(deleteUrl); err != nil {
+		err = werrors.WrapMsg(err, "failed to delete EVAM pipeline.")
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	p.lc.Debugf("Move output file to its destination...")
+	// Move file to the correct destination
+	if err := moveFile("/tmp/files/output/output.jpg", outputFilenamePath); err != nil {
+		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
+		return true, err
+	}
+
+	p.lc.Debugf("Read inference data from jsonl file...")
+	// Read inference output from jsonl file
+	outputFile := fmt.Sprintf("/tmp/%s.jsonl", filename)
+	output, err := readJSONLFile(outputFile)
 	if err != nil {
-		err = werrors.WrapMsg(err, "failed to trigger Geti pipeline request.")
 		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
 		return true, err
 	}
 
-	if response.StatusCode != http.StatusOK {
-		err := fmt.Errorf("trigger Geti pipeline request failed with status code %d", response.StatusCode)
-		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
-		return true, err
-	}
-
-	resbody, err := io.ReadAll(response.Body)
-	if err != nil {
-		err := werrors.WrapMsg(err, "failed to read response from Geti pipeline")
-		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
-		return true, err
-	}
-
-	var pipelineResp pipelineBodyResp
-	err = json.Unmarshal(resbody, &pipelineResp)
-	if err != nil {
-		err = werrors.WrapMsgf(err, "unable to unmarshal data from Geti response")
-		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
-		return true, err
-	}
-
-	output, err := json.Marshal(pipelineResp)
-	if err != nil {
-		err = werrors.WrapMsgf(err, "unable to marshal data from Geti response")
-		p.lc.Errorf("TriggerGetiPipeline failed: %s", err.Error())
-		return true, err
-	}
-
-	p.pipelineResults = string(output)
+	p.pipelineResults = output
 
 	return true, data
+}
+
+func readJSONLFile(filename string) (string, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		err = werrors.WrapMsg(err, "failed to open file")
+		return "", err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		err = werrors.WrapMsg(err, "failed to read file")
+		return "", err
+	}
+
+	//TODO: this throws operation not permitted. Need to investigate a solution
+	// Delete the file after reading
+	// if err := os.Remove(filename); err != nil {
+	// 	err = werrors.WrapMsg(err, "failed to delete file")
+	// 	return "", err
+	// }
+
+	return strings.Join(lines, fmt.Sprintln()), nil
+}
+
+func moveFile(source, destination string) error {
+	err := os.Rename(source, destination)
+	if err != nil {
+		err = werrors.WrapMsg(err, "failed to move the outputfile.")
+		return err
+	}
+	return nil
+}
+
+func executePostRequest(url string, payload []byte) (string, error) {
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return "", err
+	}
+
+	req.Header.Add("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	// Read the response body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("request failed: Status %d, Body: %s", resp.StatusCode, string(body))
+	}
+
+	fmt.Println("Request successful: Status 200 OK")
+	fmt.Println("Response body:", string(body))
+
+	// Decode the JSON-encoded string
+	var responseString string
+	err = json.Unmarshal(body, &responseString)
+	if err != nil {
+		return "", fmt.Errorf("error decoding JSON string: %v, raw response: %s", err, body)
+	}
+
+	return responseString, nil
+}
+
+func deleteInstance(url string) error {
+
+	// Create the DELETE request
+	req, err := http.NewRequest("DELETE", url, nil)
+	if err != nil {
+		return err
+	}
+
+	// Create a client and send the request
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Check the HTTP response status
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to delete the instance: Status %d", resp.StatusCode)
+	}
+
+	fmt.Println("Instance successfully deleted with Status 200 OK")
+	return nil
 }

@@ -49,7 +49,7 @@ GOFLAGS=-ldflags "-X github.com/edgexfoundry/app-functions-sdk-go/v2/internal.SD
 GIT_SHA=$(shell git rev-parse HEAD)
 
 define COMPOSE_DOWN
-	docker compose -p edgex -f docker-compose-edgex.yml -f docker-compose-oem.yml -f docker-compose-gateway.yml -f docker-compose-sim.yml -f docker-compose-pipeline-val.yml -f docker-compose-geti.yml -f docker-compose-elyra.yml -f docker-compose-openvino.yml -f docker-compose-edgex-spiffe-spire.yml -f docker-compose-grpc-go.yml down $1
+	docker compose -p edgex -f docker-compose-edgex.yml -f docker-compose-oem.yml -f docker-compose-gateway.yml -f docker-compose-sim.yml -f docker-compose-pipeline-val.yml -f docker-compose-evam.yml -f docker-compose-geti.yml -f docker-compose-elyra.yml -f docker-compose-openvino.yml -f docker-compose-edgex-spiffe-spire.yml -f docker-compose-grpc-go.yml down $1
 	docker compose -p monitor -f docker-compose-monitor.yml down $1
 	docker compose -p log-analytics -f docker-compose-log-analytics.yml down $1
 endef
@@ -190,6 +190,7 @@ docker-pipeline-sim:
 	docker build \
 	    --build-arg http_proxy \
 	    --build-arg https_proxy \
+		--no-cache \
 		-f ${PIPELINE_SIM}/Dockerfile \
 		--label "git_sha=$(GIT_SHA)" \
 		-t ${PROJECT}/${PIPELINE_SIM}:$(GIT_SHA) \
@@ -396,6 +397,7 @@ run-geti: files
 		-f docker-compose-oem.yml \
 		-f docker-compose-gateway.yml \
 		-f docker-compose-sim.yml \
+		-f docker-compose-evam.yml \
 		-f docker-compose-geti.yml \
 		up -d
 

@@ -19,7 +19,7 @@ func New(service interfaces.ApplicationService) (*Configuration, error) {
 	var err error
 	config := Configuration{}
 
-	config.GetiUrl, err = helpers.GetUrlFromAppSetting(service, "Geti", "http", false)
+	config.GetiUrl, err = helpers.GetUrlFromAppSetting(service, "Evam", "http", false)
 	if err != nil {
 		return nil, err
 	}

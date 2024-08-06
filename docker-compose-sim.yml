@@ -60,4 +60,5 @@ services:
       - ${HOME}/data/gateway-files:/tmp/files
       - ./models:/models
       - edgex-init:/edgex-init:z
-      - /tmp/edgex/secrets/app-pipeline-sim:/tmp/edgex/secrets/app-pipeline-sim:ro,z
+      - /tmp/edgex/secrets/app-pipeline-sim:/tmp/edgex/secrets/app-pipeline-sim:ro,z 
+      - /tmp:/tmp      

@@ -67,5 +67,5 @@ Type="edgex-messagebus"
     Subject = "edgex/#" # Required for NATS JetStream only for stream autoprovisioning
 
 [ApplicationSettings]
-GetiHost="geti-pipeline"
-GetiPort="8080"
+EvamHost="evam"
+EvamPort="8080"
