@@ -107,6 +107,7 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 
 	// Get available models from EVAM
 	getiURL := fmt.Sprintf("%s%s", p.GetiUrl, EVAMPipelines)
+	p.lc.Info(getiURL)
 
 	resp, err := http.Get(getiURL)
 	if err == nil {
@@ -122,6 +123,8 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 			err = werrors.WrapMsgf(err, "unable to unmarshal data from EVAM")
 			helpers.HandleErrorMessage(p.lc, writer, err, http.StatusInternalServerError)
 		}
+
+		p.lc.Info(string(len(EvamPipelines)))
 
 		for _, value := range EvamPipelines {
 
@@ -143,6 +146,10 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 		}
 
 		defer resp.Body.Close()
+	} else {
+		err = werrors.WrapMsgf(err, "unable to reach server to query pipelines")
+		helpers.HandleErrorMessage(p.lc, writer, err, http.StatusInternalServerError)
+		return
 	}
 
 	data, err := json.Marshal(pipelines)
