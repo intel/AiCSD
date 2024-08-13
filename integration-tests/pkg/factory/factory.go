@@ -110,7 +110,7 @@ func (f *TestServiceFactory) StartAllServices() error {
 func (f *TestServiceFactory) GetServiceUrl(service string) string {
 	switch service {
 	case pkg.ServiceFileWatcher:
-		return fmt.Sprintf("http://-/containers/%s_%s/logs?stdout=1&stderr=1&follow=1", f.identifier, pkg.ServiceFileWatcher)
+		return fmt.Sprintf("http://-/containers/%s-%s/logs?stdout=1&stderr=1&follow=1", f.identifier, pkg.ServiceFileWatcher)
 	}
 	return ""
 }
@@ -148,7 +148,7 @@ func (f *TestServiceFactory) StartServices(services ...string) error {
 	command := append([]string{"-p", f.identifier}, "start")
 
 	for _, service := range services {
-		service = strings.TrimSuffix(service, "_1")
+		service = strings.TrimSuffix(service, "-1")
 		command = append(command, service)
 	}
 
@@ -161,7 +161,7 @@ func (f *TestServiceFactory) StopServices(services ...string) error {
 	command := append([]string{"-p", f.identifier}, "stop")
 
 	for _, service := range services {
-		service = strings.TrimSuffix(service, "_1")
+		service = strings.TrimSuffix(service, "-1")
 		command = append(command, service)
 	}
 
