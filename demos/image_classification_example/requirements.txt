@@ -2,6 +2,6 @@ numpy==1.23.5
 grpcio==1.53.2
 tensorflow==2.12.1
 tensorflow-serving-api==2.11.1
-opencv-python-headless==4.7.0.72
+opencv-python-headless==4.8.1.78
 paho-mqtt==1.6.1
 bentoml==1.2.5
