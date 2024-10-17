@@ -299,6 +299,8 @@ func (c *Controller) RetryOnStartup(retryTimeout int64) error {
 				errs = multierror.Append(errs, fmt.Errorf("could not update job repo to status no pipeline for job with input file %s: %s", job.FullInputFileLocation(), err.Error()))
 				continue
 			}
+			// Adding a timer to avoid conflicts when sending multiples events at the same time
+			time.Sleep(2 * time.Second)
 			err = helpers.PublishEventForPipeline(c.publisher, c.service, c.lc, job, matchedTask, c.config.JobRepoBaseUrl, c.config.PipelineStatusBaseUrl, c.config.DeviceProfileName, c.config.DeviceName, c.config.ResourceName)
 			if err != nil {
 				errs = multierror.Append(errs, err)
@@ -428,7 +430,8 @@ func (c *Controller) HandleNewJob(writer http.ResponseWriter, request *http.Requ
 	c.lc.Debugf("Took ownership of Job for %s", job.FullInputFileLocation())
 
 	writer.WriteHeader(http.StatusOK)
-
+	// Adding a timer to avoid conflicts when sending multiples events at the same time
+	time.Sleep(2 * time.Second)
 	err = helpers.PublishEventForPipeline(c.publisher, c.service, c.lc, job, matchedTask, c.config.JobRepoBaseUrl, c.config.PipelineStatusBaseUrl, c.config.DeviceProfileName, c.config.DeviceName, c.config.ResourceName)
 	if err != nil {
 		c.lc.Error(err.Error())
