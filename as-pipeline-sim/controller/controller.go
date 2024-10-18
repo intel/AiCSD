@@ -146,10 +146,6 @@ func (p *PipelineSimController) getPipelinesHandler(writer http.ResponseWriter, 
 		}
 
 		defer resp.Body.Close()
-	} else {
-		err = werrors.WrapMsgf(err, "unable to reach server to query pipelines")
-		helpers.HandleErrorMessage(p.lc, writer, err, http.StatusInternalServerError)
-		return
 	}
 
 	data, err := json.Marshal(pipelines)
