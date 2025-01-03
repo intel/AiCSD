@@ -25,7 +25,7 @@ LABEL name='as-task-launcher' \
       version="${MSVERSION}"
 
 # dumb-init is required as security-bootstrapper uses it in the entrypoint script
-RUN apk add --update --no-cache ca-certificates=20240226-r0 zeromq=4.3.5-r2 dumb-init=1.2.5-r3
+RUN apk add --update --no-cache ca-certificates=20241121-r0 zeromq=4.3.5-r2 dumb-init=1.2.5-r3
 
 COPY --from=builder /app/as-task-launcher/LICENSE /LICENSE
 COPY --from=builder /app/as-task-launcher/res/ /res/
