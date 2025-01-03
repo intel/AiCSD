@@ -15,7 +15,7 @@ require (
 	github.com/edgexfoundry/go-mod-core-contracts/v2 v2.3.0
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/gavv/httpexpect/v2 v2.15.0
-	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/golang-jwt/jwt/v4 v4.5.1
 	github.com/gomodule/redigo v1.8.9
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
