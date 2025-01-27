@@ -192,6 +192,10 @@ If you're behind a proxy, there may be connectivity issues. Use the following st
 
 3. Use these methods from Docker to [configure the Docker CLI to use proxies](https://docs.docker.com/engine/cli/proxy/).
 
+### Troubleshooting
+
+Refer to [Troubleshooting](../troubleshooting-tools.md) if you are seeing issues during setup.
+
 ### Known Issues
 
 For known issues, see [Issues](https://github.com/intel/AiCSD/issues?q=is%3Aissue+is%3Aopen+label%3A1.1) on GitHub*.
