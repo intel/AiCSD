@@ -1,0 +1,104 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+openapi: 3.0.3
+info:
+  title: File Sender Gateway APIs
+  version: 1.0.0
+servers:
+  - url: https://localhost:59786/api/v1
+paths:
+  /dataToHandle:
+    post:
+      summary: process the incoming job by sending it to the Message Bus
+      description: adds the message to the Message Bus for the receiver on the OEM to pull and process the job
+      operationId: dataToHandle
+      requestBody:
+        description: Job entry
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Job'
+        required: true
+      responses:
+        '200':
+          description: Call succeeded - request sent to the file-receiver-gateway
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed to read request body
+  /transmitFile/{jobid}:
+    get:
+      summary: transmits the file for the given job id
+      description: the body contains the contents of the file being transmitted
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+      requestBody:
+        description: file contents
+        content:
+          text/plain:
+            schema:
+              type: string
+              format: binary
+        required: true
+      responses:
+        '200':
+          description: Call succeeded - file was transmitted and written to the file system
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed to read request body
+  /archiveFile/{jobid}:
+    post:
+      summary: archives the input file and output file(s) for the given job id
+      description: sends all files for the job to a known archive path - files will have the jobid and timestamp in their archival names
+      parameters:
+        - in: path
+          name: jobid
+          schema:
+            type: string
+          required: true
+          description: UUID of the job the file corresponds to
+      responses:
+        '200':
+          description: Call succeeded - all input and output files were successfully archived
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed to read request body
+  /retry:
+    post:
+      summary: retries all jobs owned by the file sender gateway
+      description: receives all job entries the file sender on the gateway device owns and attempts to process them by sending the job to the file receiver on the OEM device using the Message Bus
+      operationId: retry
+      responses:
+        '200':
+          description: Successful operation
+        '500':
+          description: Failed to process job(s)
+  /reject/{jobid}:
+    post:
+      summary: adds image to the rejected folder
+      description: copies the image associated with the job from the archive folder to the rejected folder and creates a subfolder if one does not exist for the associated taskid
+      operationId: reject
+      responses:
+        '200':
+          description: Successful operation
+        '500':
+          description: Failed to add image to rejected folder
+    delete:
+      summary: deletes image from the rejected folder
+      description: removes the image associated with the job from the rejected folder and deletes empty subfolders
+      operationId: reject
+      responses:
+        '200':
+          description: Successful operation
+        '500':
+          description: Failed to remove image from rejected folder
