@@ -5,12 +5,9 @@
 
 ## Get Started
 
-A typical setup for the [AI Pipeline Connection for Scientific Instrument Data Reference Implementation](../user-guide/Overview.md) (or AiCSD) comprises two systems, a Gateway system and an OEM system, communicating with each other via a secure SSH tunnel. Scientific instruments (for example, optical microscopes) are connected to the OEM system and supply the images for processing on the Gateway system.
+A typical setup for the AI Pipeline Connection for Scientific Instrument Data Reference Implementation (or AiCSD) comprises two systems, a Gateway system and an OEM system, communicating with each other via a secure SSH tunnel. Scientific instruments (for example, optical microscopes) are connected to the OEM system and supply the images for processing on the Gateway system.
 
 This guide demonstrates the reference implementation setup on a single system, which runs the services for both OEM and Gateway. Complete this guide to confirm that your setup is working correctly and try out a basic workflow in the reference implementation.
-
-> **Note**  
-> To try the reference implementation on separate systems, follow the procedures in the User Guide for a [two-system setup](./Two-System-Setup.md).
 
 ### Prerequisites for Target System
 
@@ -179,7 +176,6 @@ In this guide, you installed and validated the reference implementation, with Ga
 ## Learn More
 
 -  Learn how to integrate a custom pipeline with models from Intel® Geti™ platform using the [Pipeline Configuration](./Pipeline-Configuration.md) chapter in the User Guide.
--  Try other configurations of a single- and two-system setup using the [Two-System Setup](./Two-System-Setup.md) chapter in the User Guide.
 
 
 ## Troubleshooting
@@ -195,11 +191,6 @@ If you're behind a proxy, there may be connectivity issues. Use the following st
 2. Complete these post-installation steps from Docker to [manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user).
 
 3. Use these methods from Docker to [configure the Docker CLI to use proxies](https://docs.docker.com/engine/cli/proxy/).
-
-
-### Error Logs
-
-Refer to the [Check Logs](./Troubleshooting.md#check-logs) chapter in the User Guide.
 
 ### Known Issues
 

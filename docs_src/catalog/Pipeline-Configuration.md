@@ -94,7 +94,7 @@ Follow this procedure on the OEM system to supply input images.
 Use one of the following methods on the Gateway system to check the status of the job.
 
 **Method 1:**  
-Use the Web UI to monitor the status of the job. For details, see [Job Management](./Web-UI-Guide.md#job-management).
+Use the Web UI to monitor the status of the job. For details, see [Job Management](../getting-started/ms-web-ui-guide-jobs.md#job-management).
 
 **Method 2:**  
 Use the Terminal.
@@ -108,6 +108,3 @@ Use the Terminal.
 3. Copy the job ID and use it to query for details.
 
          curl localhost:59784/api/v1/job/<job_id> | json_pp
-
-> **Note**  
-> To check the status of the pipeline processing the image, check the logs of the **edgex-pipeline-sim-1** container. For details on checking the logs, see [Check Logs](./Troubleshooting.md#check-logs).
