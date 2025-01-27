@@ -175,7 +175,7 @@ In this guide, you installed and validated the reference implementation, with Ga
 
 ## Learn More
 
--  Learn how to integrate a custom pipeline with models from Intel® Geti™ platform using the [Pipeline Configuration](./Pipeline-Configuration.md) chapter in the User Guide.
+-  Learn how to integrate a custom pipeline with models from Intel® Geti™ platform using the [Pipeline Configuration](../pipelines/geti/deployment.md) chapter in the User Guide.
 
 
 ## Troubleshooting
