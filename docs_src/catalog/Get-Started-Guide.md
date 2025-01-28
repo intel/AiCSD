@@ -186,7 +186,10 @@ The following are options to help you resolve issues with the reference implemen
 
 If you're behind a proxy, there may be connectivity issues. Use the following steps to install Docker manually:
 
-1. Follow the instructions from Docker to [install Docker Engine from a package](https://docs.docker.com/engine/install/ubuntu/#install-from-a-package).
+1. Follow the instructions from Docker to [install Docker Engine from a package](https://docs.docker.com/engine/install/ubuntu/#install-from-a-package). 
+
+   > **Note** 
+   When installing make sure the following packages are installed containerd, docker-ce, docker-ce-cli, docker-buildx, docker-compose
 
 2. Complete these post-installation steps from Docker to [manage Docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user).
 
