@@ -1,0 +1,45 @@
+########################################################################
+ # Copyright (c) Intel Corporation 2023
+ # SPDX-License-Identifier: BSD-3-Clause
+########################################################################
+
+openapi: 3.0.3
+info:
+  title: Data Organizer APIs
+  version: 1.0.0
+servers:
+  - url: https://localhost:59781/api/v1
+paths:
+  /notifyNewFile:
+    post:
+      summary: New file on the file system
+      description: Creates a new job entry, matches it to a task and passes it to the file sender. If the entry already exists, it will just return.
+      operationId: notifyNewFile
+      requestBody:
+        description: Job entry
+        content:
+          application/json:
+            schema:
+              $ref: './components.yaml#/components/schemas/Job'
+        required: true
+      responses:
+        '200':
+          description: Successful operation - new entry created, matched to a task and processed file
+        '204':
+          description: Input file did not have any matching tasks
+        '208':
+          description: Input file already processed
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed to read request body
+  /retry:
+    post:
+      summary: retries all jobs owned by the data organizer
+      description: retries all jobs owned by the data organizer
+      operationId: retry
+      responses:
+        '200':
+          description: Successful operation
+        '500':
+          description: Failed to process job(s)

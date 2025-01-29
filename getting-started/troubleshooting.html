@@ -1,0 +1,1479 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="ms-web-ui-guide-dashboards.html" rel="prev"/>
+<link href="../pipelines/pipeline-creation.html" rel="next"/>
+<link href="../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.5.50" name="generator"/>
+<title>Troubleshooting - AiCSD Reference Implementation</title>
+<link href="../assets/stylesheets/main.a40c8224.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<link href="../stylesheets/index.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="../stylesheets/branding.css" rel="stylesheet"/>
+<link href="../stylesheets/extra.css" rel="stylesheet"/>
+<script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#troubleshooting">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="AiCSD Reference Implementation" class="md-header__button md-logo" data-md-component="logo" href=".." title="AiCSD Reference Implementation">
+<img alt="logo" src="../images/logo-white-75px.png"/>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            AiCSD Reference Implementation
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Troubleshooting
+            
+          </span>
+</div>
+</div>
+</div>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/intel/AiCSD" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
+</div>
+<div class="md-source__repository">
+    intel/AiCSD
+  </div>
+</a>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  Home
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="what-to-expect.html">
+          
+  
+  Get Started
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../pipelines/pipeline-creation.html">
+          
+  
+  Pipelines
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../services/general-info.html">
+          
+  
+  Services
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../monitoring/overview.html">
+          
+  
+  Tools Suite
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../security/security-docs.html">
+        
+  
+    
+  
+  Security
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="AiCSD Reference Implementation" class="md-nav__button md-logo" data-md-component="logo" href=".." title="AiCSD Reference Implementation">
+<img alt="logo" src="../images/logo-white-75px.png"/>
+</a>
+    AiCSD Reference Implementation
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/intel/AiCSD" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
+</div>
+<div class="md-source__repository">
+    intel/AiCSD
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+<span class="md-ellipsis">
+    Home
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_1_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_1">
+<span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    Overview
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+<span class="md-ellipsis">
+    Get Started
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            Get Started
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_2_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="">
+<span class="md-ellipsis">
+    Prerequisites
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_1">
+<span class="md-nav__icon md-icon"></span>
+            Prerequisites
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="what-to-expect.html">
+<span class="md-ellipsis">
+    What to Expect
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="install-prereqs.html">
+<span class="md-ellipsis">
+    Set Up
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_2_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+<span class="md-ellipsis">
+    System Setup
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_2">
+<span class="md-nav__icon md-icon"></span>
+            System Setup
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="choose-config.html">
+<span class="md-ellipsis">
+    Configure
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="system-setup.html">
+<span class="md-ellipsis">
+    Build and Deploy
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_2_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+<span class="md-ellipsis">
+    Manage
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_3">
+<span class="md-nav__icon md-icon"></span>
+            Manage
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="basic-workflow.html">
+<span class="md-ellipsis">
+    Start Workflow
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="tear-down.html">
+<span class="md-ellipsis">
+    Tear Down
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_2_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+<span class="md-ellipsis">
+    Web UI
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_4">
+<span class="md-nav__icon md-icon"></span>
+            Web UI
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="ms-web-ui-guide.html">
+<span class="md-ellipsis">
+    Workspace
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="ms-web-ui-guide-tasks.html">
+<span class="md-ellipsis">
+    Tasks
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="ms-web-ui-guide-jobs.html">
+<span class="md-ellipsis">
+    Jobs
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="ms-web-ui-guide-upload-model.html">
+<span class="md-ellipsis">
+    Model Upload
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="ms-web-ui-guide-dashboards.html">
+<span class="md-ellipsis">
+    Dashboards
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_2_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+<span class="md-ellipsis">
+    Get Help
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_2_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_2_5">
+<span class="md-nav__icon md-icon"></span>
+            Get Help
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Troubleshooting
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="troubleshooting.html">
+<span class="md-ellipsis">
+    Troubleshooting
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#build-errors">
+<span class="md-ellipsis">
+      Build Errors
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#job-status">
+<span class="md-ellipsis">
+      Job Status
+    </span>
+</a>
+<nav aria-label="Job Status" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#view-jobs-in-web-ui">
+<span class="md-ellipsis">
+      View Jobs in Web UI
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#output-file-status">
+<span class="md-ellipsis">
+      Output File Status
+    </span>
+</a>
+<nav aria-label="Output File Status" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#see-output-file-status-information">
+<span class="md-ellipsis">
+      See Output File Status Information
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#check-logs">
+<span class="md-ellipsis">
+      Check Logs
+    </span>
+</a>
+<nav aria-label="Check Logs" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#portainer">
+<span class="md-ellipsis">
+      Portainer
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#command-line">
+<span class="md-ellipsis">
+      Command Line
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#export-logs-gateway">
+<span class="md-ellipsis">
+      Export Logs (Gateway)
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#retry-logic">
+<span class="md-ellipsis">
+      Retry Logic
+    </span>
+</a>
+<nav aria-label="Retry Logic" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#retry-api-table">
+<span class="md-ellipsis">
+      Retry API Table
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#retry">
+<span class="md-ellipsis">
+      Retry
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#retry-timeout-window">
+<span class="md-ellipsis">
+      Retry Timeout Window
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#security">
+<span class="md-ellipsis">
+      Security
+    </span>
+</a>
+<nav aria-label="Security" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#regenerating-ssh-keys-two-system-only">
+<span class="md-ellipsis">
+      Regenerating SSH Keys (Two System Only)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#consul">
+<span class="md-ellipsis">
+      Consul
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#server-misbehaving-two-system-setup">
+<span class="md-ellipsis">
+      Server Misbehaving (Two System Setup)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#oem-services-hang">
+<span class="md-ellipsis">
+      OEM Services Hang
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#golang-tool-issues">
+<span class="md-ellipsis">
+      Golang Tool Issues
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dashboards">
+<span class="md-ellipsis">
+      Dashboards
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#next-up">
+<span class="md-ellipsis">
+      Next up
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    Pipelines
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            Pipelines
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pipelines/pipeline-creation.html">
+<span class="md-ellipsis">
+    Create a Pipeline
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_3_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+<span class="md-ellipsis">
+    Intel Geti
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_2">
+<span class="md-nav__icon md-icon"></span>
+            Intel Geti
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pipelines/geti/deployment.html">
+<span class="md-ellipsis">
+    Deployment
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_3_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+<span class="md-ellipsis">
+    Intel OpenVINO™ Model Server
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_3">
+<span class="md-nav__icon md-icon"></span>
+            Intel OpenVINO™ Model Server
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pipelines/ovms/ovms.html">
+<span class="md-ellipsis">
+    OVMS
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_3_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+<span class="md-ellipsis">
+    BentoML
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_4">
+<span class="md-nav__icon md-icon"></span>
+            BentoML
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pipelines/bentoml/introduction-bentos.html">
+<span class="md-ellipsis">
+    Overview
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pipelines/bentoml/create-bentos.html">
+<span class="md-ellipsis">
+    Create Bentos
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pipelines/bentoml/deploy-bentos.html">
+<span class="md-ellipsis">
+    Deploy Bentos
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pipelines/bentoml/developer-guide-bentos.html">
+<span class="md-ellipsis">
+    Developer Guide for Bentos
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pipelines/bentoml/image-classification-demo.html">
+<span class="md-ellipsis">
+    Image Classification Demo
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_3_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-ellipsis">
+    Elyra
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            Elyra
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pipelines/elyra/elyra.html">
+<span class="md-ellipsis">
+    ML Pipeline Visual Editor Tool
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    Services
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            Services
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/general-info.html">
+<span class="md-ellipsis">
+    General Information
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_4_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+<span class="md-ellipsis">
+    OEM
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_2">
+<span class="md-nav__icon md-icon"></span>
+            OEM
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/ms-file-watcher.html">
+<span class="md-ellipsis">
+    File Watcher
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/ms-data-organizer.html">
+<span class="md-ellipsis">
+    Data Organizer
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/ms-file-sender-oem.html">
+<span class="md-ellipsis">
+    File Sender OEM
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/as-file-receiver-oem.html">
+<span class="md-ellipsis">
+    File Receiver OEM
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_4_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+<span class="md-ellipsis">
+    Gateway
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_3">
+<span class="md-nav__icon md-icon"></span>
+            Gateway
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/ms-job-repository.html">
+<span class="md-ellipsis">
+    Job Repository
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/ms-web-ui.html">
+<span class="md-ellipsis">
+    Web UI
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/ms-file-receiver-gateway.html">
+<span class="md-ellipsis">
+    Receiver Gateway
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/as-task-launcher.html">
+<span class="md-ellipsis">
+    Task Launcher
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/as-file-sender-gateway.html">
+<span class="md-ellipsis">
+    File Sender Gateway
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_4_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+<span class="md-ellipsis">
+    Pipelines
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_4">
+<span class="md-nav__icon md-icon"></span>
+            Pipelines
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/as-pipeline-sim.html">
+<span class="md-ellipsis">
+    Pipeline Simulator
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/as-pipeline-val.html">
+<span class="md-ellipsis">
+    Pipeline Validator
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_4_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+<span class="md-ellipsis">
+    Tests
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_4_5">
+<span class="md-nav__icon md-icon"></span>
+            Tests
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../services/integration-tests.html">
+<span class="md-ellipsis">
+    Integration Tests
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    Tools Suite
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            Tools Suite
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_5_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+<span class="md-ellipsis">
+    Monitoring
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_1_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_1">
+<span class="md-nav__icon md-icon"></span>
+            Monitoring
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../monitoring/overview.html">
+<span class="md-ellipsis">
+    Overview
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../monitoring/telegraf.html">
+<span class="md-ellipsis">
+    Telegraf
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../monitoring/influxdb.html">
+<span class="md-ellipsis">
+    InfluxDB
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../monitoring/grafana.html">
+<span class="md-ellipsis">
+    Grafana
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_5_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+<span class="md-ellipsis">
+    Log Analytics
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_2">
+<span class="md-nav__icon md-icon"></span>
+            Log Analytics
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../log-analytics/overview.html">
+<span class="md-ellipsis">
+    Overview
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../log-analytics/elasticsearch.html">
+<span class="md-ellipsis">
+    Elasticsearch
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../log-analytics/filebeat.html">
+<span class="md-ellipsis">
+    Filebeat
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../log-analytics/kibana.html">
+<span class="md-ellipsis">
+    Kibana
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_5_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+<span class="md-ellipsis">
+    Get Help
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_3">
+<span class="md-nav__icon md-icon"></span>
+            Get Help
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../troubleshooting-tools.html">
+<span class="md-ellipsis">
+    Tools Troubleshooting
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../security/security-docs.html">
+<span class="md-ellipsis">
+    Security
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h1>
+<p>This guide contains troubleshooting for common issues and errors.</p>
+<h2 id="build-errors">Build Errors<a class="headerlink" href="#build-errors" title="Permanent link">¶</a></h2>
+<p>When building the Docker containers, if the build fails with an error message like:</p>
+<div class="highlight"><pre><span></span><code>ERROR:<span class="w"> </span>failed<span class="w"> </span>to<span class="w"> </span>solve:<span class="w"> </span>golang:1.21.3-alpine3.17:<span class="w"> </span>failed<span class="w"> </span>to<span class="w"> </span><span class="k">do</span><span class="w"> </span>request:<span class="w"> </span>Head<span class="w"> </span><span class="s2">"https://registry-1.docker.io/v2/library/golang/manifests/1.19-alpine3.16"</span>:<span class="w"> </span>dial<span class="w"> </span>tcp:<span class="w"> </span>lookup<span class="w"> </span>registry-1.docker.io<span class="w"> </span>on<span class="w"> </span><span class="m">127</span>.0.0.53:53:<span class="w"> </span><span class="nb">read</span><span class="w"> </span>udp<span class="w"> </span><span class="m">127</span>.0.0.1:35314-&gt;127.0.0.53:53:<span class="w"> </span>i/o<span class="w"> </span>timeout
+make:<span class="w"> </span>***<span class="w"> </span><span class="o">[</span>Makefile:106:<span class="w"> </span>docker-job-repository<span class="o">]</span><span class="w"> </span>Error<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+<p>there could be an issue with the system's <a href="https://docs.docker.com/docker-hub/download-rate-limit/">Docker download rate limit</a>.</p>
+<h2 id="job-status">Job Status<a class="headerlink" href="#job-status" title="Permanent link">¶</a></h2>
+<p>The table below lists the status and error messages associated with jobs. </p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Job Status</th>
+<th>Description</th>
+<th style="text-align: left;">Next Steps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Complete</td>
+<td>Job has been successfully processed.</td>
+<td style="text-align: left;">No next steps.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Incomplete</td>
+<td>Job is still being processed.</td>
+<td style="text-align: left;">Check the logs of the container that correspond with the service owner of the job. If a container has stopped running, restart that container. Then call the retry endpoint for the service. To learn about retry endpoints, see <a href="#retry-logic">Retry Logic</a>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">No Pipeline Found</td>
+<td>No tasks have a job selector that matches with the provided image.</td>
+<td style="text-align: left;">Ensure that the desired task has the appropriate job selector. To modify a task in the Web UI, follow the instructions for <a href="ms-web-ui-guide-tasks.html#update-task">Update Task</a>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pipeline Error</td>
+<td>The pipeline processing the image failed.</td>
+<td style="text-align: left;">Check the job <strong>Error Details</strong> column or QC flags field for details about the error. See <a href="#view-jobs-in-web-ui">View Jobs in Web UI</a>. Also, check the log for the pipeline container.  If the error is permissions-based, the logs may say <code>permission denied</code> or <code>failed to write file</code>. In this case, on the <strong>Ubuntu</strong> system, run: <code>make files</code> or <code>sudo make files</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Transmission Error</td>
+<td>The job could not be transferred to the message bus.</td>
+<td style="text-align: left;">Check the logs of the service in the <strong>Error Details</strong> column. See <a href="#view-jobs-in-web-ui">View Jobs in Web UI</a>. If necessary, call the retry endpoint for the appropriate service, restart the pipeline and/or restart the Redis container. To learn about retry endpoints, see <a href="#retry-logic">Retry Logic</a>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">File Error (Input)</td>
+<td>The input file could not be transferred from the File Sender OEM to the File Receiver Gateway.</td>
+<td style="text-align: left;">Check the logs of the File Sender OEM. If the owner of the job is still the File Sender OEM, then call the retry endpoint using instructions in <a href="#retry-logic">Retry Logic</a>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">File Error (Output)</td>
+<td>The output file(s) could not be transferred from the File Sender Gateway to the File Receiver OEM.</td>
+<td style="text-align: left;">To learn how to check the error details for the failing output file(s), See <a href="#see-output-file-status-information">Output File Status Info</a>. Check the logs of the File Receiver OEM and the File Sender Gateway for the job. If the owner of the job is still the File Receiver OEM, call the retry endpoint for the File Sender Gateway and File Receiver OEM using the instructions in <a href="#retry-logic">Retry Logic</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="view-jobs-in-web-ui">View Jobs in Web UI<a class="headerlink" href="#view-jobs-in-web-ui" title="Permanent link">¶</a></h3>
+<p>To see job-level errors in the Web UI:</p>
+<ol>
+<li>
+<p>Choose the <strong>View Jobs</strong> tab.
+    <figure class="figure-image">
+<img alt="Figure 1: View Jobs Tab" src="../images/DisplayJobErrorDetails.jpg"/>
+<figcaption>Figure 1: View Jobs Tab</figcaption>
+</figure></p>
+</li>
+<li>
+<p>See the columns <strong>Job Status</strong>, <strong>Pipeline Status</strong> and <strong>Error Details</strong>, which displays detailed information about the error.</p>
+</li>
+<li>
+<p>Compare the contents of these columns with the Job Status table above. </p>
+</li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>The <strong>Error Details</strong> column presents with this format: <code>(&lt;service name&gt;): &lt;error&gt;</code>.
+The <code>&lt;service name&gt;</code> is the service to investigate.
+The <code>&lt;error&gt;</code> is the cause of the failure.</p>
+<p>Example:<br/>
+<code>(data-organizer): no tasks could be matched to the input file name</code></p>
+</div>
+<p>For information about how to view a container's logs, see <a href="#check-logs">Check Logs</a>.</p>
+<h2 id="output-file-status">Output File Status<a class="headerlink" href="#output-file-status" title="Permanent link">¶</a></h2>
+<p>The output file status messages are listed in the table below. </p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">File Status</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">File Complete</td>
+<td style="text-align: left;">The file is done processing.</td>
+</tr>
+<tr>
+<td style="text-align: left;">File Incomplete</td>
+<td style="text-align: left;">The file is still processing.</td>
+</tr>
+<tr>
+<td style="text-align: left;">File Invalid</td>
+<td style="text-align: left;">The file could not be validated (e.g. hostname mismatch or file not found).</td>
+</tr>
+<tr>
+<td style="text-align: left;">File Transmission Failed</td>
+<td style="text-align: left;">The file could not be transmitted from the File Sender Gateway to the File Receiver OEM.</td>
+</tr>
+<tr>
+<td style="text-align: left;">File Write Failed</td>
+<td style="text-align: left;">The file could not be written to the OEM system.</td>
+</tr>
+<tr>
+<td style="text-align: left;">File Archival Failed</td>
+<td style="text-align: left;">The file on the gateway could not be archived by the File Sender Gateway.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="see-output-file-status-information">See Output File Status Information<a class="headerlink" href="#see-output-file-status-information" title="Permanent link">¶</a></h3>
+<p>For information about the output file status:</p>
+<ol>
+<li>Click the <strong>View Jobs</strong> tab to see the <strong>Jobs</strong> page for the specific job.</li>
+<li>Click on the <strong>Output Files</strong>. The output file view will indicate which files failed.</li>
+<li>Hover over the file status and file name, as shown in Figures 2 and 3, to see the specific error that occurred.</li>
+</ol>
+<figure class="figure-image">
+<img alt="Figure 2: Output File Status" src="../images/OutputFileStatusToolTip.png"/>
+<figcaption>Figure 2: Output File Status</figcaption>
+</figure>
+<figure class="figure-image">
+<img alt="Figure 3: Output File Error Details" src="../images/OutputFileErrDetailsToolTip.png"/>
+<figcaption>Figure 3: Output File Error Details</figcaption>
+</figure>
+<p>Check the <strong>Error Details</strong> column to determine the service that failed to process the file. From
+there, trace the logs back to see the context of the error. If necessary, restart the affected containers or call
+the appropriate retry endpoints. See <a href="#retry-logic">Retry Logic</a>.</p>
+<h2 id="check-logs">Check Logs<a class="headerlink" href="#check-logs" title="Permanent link">¶</a></h2>
+<p>The following sections describe various instructions for checking logs. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Run the instructions on the correct system, Gateway or OEM.</p>
+</div>
+<h3 id="portainer">Portainer<a class="headerlink" href="#portainer" title="Permanent link">¶</a></h3>
+<p>Use Portainer to view the status of AiCSD containers. </p>
+<p>On the <strong>Gateway</strong> system:</p>
+<ol>
+<li>Open a terminal and run: 
+    <div class="highlight"><pre><span></span><code>make<span class="w"> </span>run-portainer
+</code></pre></div></li>
+<li>
+<p>Navigate to <a href="http://localhost:9000">Portainer</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The link to Portainer (above) refers to http://localhost:9000. If viewing from the OEM system, use the IP address instead of localhost.</p>
+</div>
+</li>
+<li>
+<p>Log in and navigate to the containers view. This will show all the running and stopped containers.
+    <figure class="figure-image">
+<img alt="Figure 4: Portainer Container View" src="../images/Portainer.jpg"/>
+<figcaption>Figure 4: Portainer Container View</figcaption>
+</figure></p>
+</li>
+<li>For the desired container, under the <strong>Quick actions</strong> column, click the paper icon to view the logs.
+    <figure class="figure-image">
+<img alt="Figure 5: Portainer Log Icon" src="../images/PortainerLogIcon.jpg"/>
+<figcaption>Figure 5: Portainer Log Icon</figcaption>
+</figure></li>
+<li>This will open the logs for the selected container.
+    <figure class="figure-image">
+<img alt="Figure 6: Portainer Log" src="../images/PortainerLog.jpg"/>
+<figcaption>Figure 6: Portainer Log</figcaption>
+</figure></li>
+</ol>
+<h3 id="command-line">Command Line<a class="headerlink" href="#command-line" title="Permanent link">¶</a></h3>
+<p>Use command line instructions to view the status of AiCSD containers.</p>
+<p>On the <strong>Gateway</strong> or <strong>OEM</strong> system:</p>
+<ol>
+<li>
+<p>Open a terminal and run:</p>
+<p><div class="highlight"><pre><span></span><code>docker<span class="w"> </span>ps
+</code></pre></div>
+This command lists all the running containers.
+<figure class="figure-image">
+<img alt="Figure 7: Docker Container List" src="../images/DockerPS.png"/>
+<figcaption>Figure 7: Docker Container List</figcaption>
+</figure>
+2. Select the CONTAINER ID and use that to run:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>logs<span class="w"> </span>&lt;container_id&gt;
+</code></pre></div>
+<p>This command displays the logs for the selected container.</p>
+<p><figure class="figure-image">
+<img alt="Figure 8: Docker Logs" src="../images/DockerLogs.png"/>
+<figcaption>Figure 8: Docker Logs</figcaption>
+</figure></p>
+</li>
+</ol>
+<h3 id="export-logs-gateway">Export Logs (Gateway)<a class="headerlink" href="#export-logs-gateway" title="Permanent link">¶</a></h3>
+<p>To export logs from all services (AiCSD and EdgeX), run: </p>
+<p><div class="highlight"><pre><span></span><code>make<span class="w"> </span>logs
+</code></pre></div>
+This creates a zip file called <strong>logs.zip</strong>.</p>
+<h2 id="retry-logic">Retry Logic<a class="headerlink" href="#retry-logic" title="Permanent link">¶</a></h2>
+<p>All services have retry endpoints documented in each individual service. See <a href="#retry-api-table">Retry API Table</a>.</p>
+<p>A service will process jobs it owns when: </p>
+<ul>
+<li>Retry endpoints are called. </li>
+<li>The service starts up.</li>
+</ul>
+<h3 id="retry-api-table">Retry API Table<a class="headerlink" href="#retry-api-table" title="Permanent link">¶</a></h3>
+<p>Each service has its own retry endpoint that is shown in the API documentation for that service</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Microservice Retry Endpoint</th>
+<th style="text-align: left;">Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a href="../services/ms-data-organizer.html#swagger-documentation">data-organizer</a></td>
+<td style="text-align: left;">59781</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="../services/ms-file-sender-oem.html#swagger-documentation">file-sender-oem</a></td>
+<td style="text-align: left;">59782</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="../services/ms-file-receiver-gateway.html#swagger-documentation">file-receiver-gateway</a></td>
+<td style="text-align: left;">59783</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="../services/as-task-launcher.html#swagger-documentation">task-launcher</a></td>
+<td style="text-align: left;">59785</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="../services/as-file-sender-gateway.html#swagger-documentation">file-sender-gateway</a></td>
+<td style="text-align: left;">59786</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="../services/as-file-receiver-oem.html#swagger-documentation">file-receiver-oem</a></td>
+<td style="text-align: left;">59787</td>
+</tr>
+</tbody>
+</table>
+<h3 id="retry">Retry<a class="headerlink" href="#retry" title="Permanent link">¶</a></h3>
+<p>On the <strong>Gateway</strong> or <strong>OEM</strong> system, use curl to call the retry endpoint from a Linux terminal:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://&lt;hostname&gt;:&lt;port-number&gt;/api/v1/retry<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span><span class="w"> </span>-d<span class="w"> </span>&lt;payload&gt;
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For retry endpoints that do not have a payload, remove the <code>-H 'Content-Type: application/json' -d &lt;payload&gt;</code> from the command above. </p>
+</div>
+<h3 id="retry-timeout-window">Retry Timeout Window<a class="headerlink" href="#retry-timeout-window" title="Permanent link">¶</a></h3>
+<p>The task launcher has a retry timeout window. This window should be greater than the time it takes to process an input file. </p>
+<p>Change this value in the task-launcher configuration.toml before the service is started or in <a href="http://0.0.0.0:8500/ui/dc1/kv/edgex/appservices/2.0/as-task-launcher/ApplicationSettings/RetryWindow/edit">Consul</a>.</p>
+<p>If the change is made in the configuration.toml, the task-launcher service must be rebuilt: </p>
+<ol>
+<li>
+<p>Run:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>docker-task-launcher
+</code></pre></div>
+</li>
+<li>
+<p>Restart the service.  </p>
+</li>
+</ol>
+<p>If the change is made in Consul, the task-launcher service must be restarted.</p>
+<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">¶</a></h2>
+<h3 id="regenerating-ssh-keys-two-system-only">Regenerating SSH Keys (Two System Only)<a class="headerlink" href="#regenerating-ssh-keys-two-system-only" title="Permanent link">¶</a></h3>
+<p>Any time the ssh keys are regenerated on a two system setup, the public key must be copied back from the Gateway System to the OEM system.
+Once the key is copied over tho the OEM, the OEM services must be rebuilt in order to have a copy of the new key. </p>
+<h3 id="consul">Consul<a class="headerlink" href="#consul" title="Permanent link">¶</a></h3>
+<p>With the implementation of the new security features, Consul requires a security token for user authentication.</p>
+<ol>
+<li>Open <a href="http://localhost:8500">Consul</a> in a browser.</li>
+<li>Generate a token to access Consul and copy it.
+    <div class="highlight"><pre><span></span><code><span class="w">    </span>$<span class="w"> </span>make<span class="w"> </span>get-consul-acl-token
+</code></pre></div></li>
+<li>Click <code>Log in with a different token</code> in Consul and paste the generated token. </li>
+<li>Once authenticated in Consul, it is possible to change configurations for any of the AiCSD services. </li>
+<li>For any settings (apart from Writable settings), the affected service must be restarted in order for the change to be applied.</li>
+</ol>
+<h3 id="server-misbehaving-two-system-setup">Server Misbehaving (Two System Setup)<a class="headerlink" href="#server-misbehaving-two-system-setup" title="Permanent link">¶</a></h3>
+<p>If an error in the logs appears to be something like</p>
+<div class="highlight"><pre><span></span><code>Post<span class="w"> </span><span class="se">\"</span>https://&lt;system_name&gt;:8443/job-repository/api/v1/job<span class="se">\"</span>:<span class="w"> </span>dial<span class="w"> </span>tcp:<span class="w"> </span>lookup<span class="w"> </span>&lt;system_name&gt;<span class="w"> </span>on<span class="w"> </span><span class="m">127</span>.0.0.11:53:<span class="w"> </span>server<span class="w"> </span>misbehaving<span class="s2">"</span>
+</code></pre></div>
+<p>it may be necessary to stop the services, clean-up, and ensure that the hostname can be resolved properly. </p>
+<p>If the hostname is not set properly, it is possible to modify the <code>/etc/hosts</code> file to add the ip address and server name.</p>
+<h3 id="oem-services-hang">OEM Services Hang<a class="headerlink" href="#oem-services-hang" title="Permanent link">¶</a></h3>
+<p>If any of the OEM services (ie app-file-watcher) have an error that looks like:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">level</span><span class="o">=</span>INFO<span class="w"> </span><span class="nv">ts</span><span class="o">=</span><span class="m">2023</span>-06-13T19:10:25.315559848Z<span class="w"> </span><span class="nv">app</span><span class="o">=</span>app-file-watcher<span class="w"> </span><span class="nv">source</span><span class="o">=</span>methods.go:138<span class="w"> </span><span class="nv">msg</span><span class="o">=</span><span class="s2">"using Unix Domain Socket at unix:///tmp/edgex/secrets/spiffe/public/api.sock"</span>
+</code></pre></div>
+<p>then the services may have hung.</p>
+<p>Here are some potential fixes for this issue:</p>
+<ul>
+<li>Check that systems are on the same network by verifying that the Gateway system can ping the IP address of the OEM system.</li>
+<li>Check that the public key <code>edgex-res/id_rsa.pub</code> on the Gateway and <code>edgex-res/remote/sshd-remote/authorized_keys</code> on the OEM file are the same.</li>
+<li>Verify that the <code>TUNNEL_HOST: &lt;OEM_IP_ADDRESS&gt;</code> in the docker-compose-edgex-spiffe-spire.yml address matches the OEM system.</li>
+<li>Ensure that the logs for both the <code>oem-ssh-proxy</code> on the Gateway and the <code>remote-spire-agent</code> on the OEM have the appropriate logs as described in <a href="system-setup.html#build-and-deploy">System Setup</a> </li>
+</ul>
+<h2 id="golang-tool-issues">Golang Tool Issues<a class="headerlink" href="#golang-tool-issues" title="Permanent link">¶</a></h2>
+<p>If you try to run the golang tools like the <code>make auto-verify-clients</code> or <code>make client-update</code> and run into <code>mockery: command not found</code>, there is most likely an issue with environment variables. Similar issue - <code>go-test-report: not found</code> can occur when running <code>make test-report</code>.</p>
+<p>The fix can be found below:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You will need sudo privileges to implement this fix.</p>
+</div>
+<ol>
+<li>
+<p>At the bottom of the <code>$HOME/.bashrc</code> file,  </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can edit the file with 
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span><span class="nv">$HOME</span>/.bashrc
+</code></pre></div></p>
+</div>
+<p>Add the following commands:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">GOROOT</span><span class="o">=</span>/usr/local/go
+<span class="nb">export</span><span class="w"> </span><span class="nv">GOPATH</span><span class="o">=</span><span class="nv">$HOME</span>/go
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$GOPATH</span>/bin:<span class="nv">$GOROOT</span>/bin:<span class="nv">$PATH</span>:<span class="nv">$HOME</span>/bin
+</code></pre></div>
+</li>
+<li>
+<p>Then run the following command to reload the terminal and set the environment variables
+    <div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span><span class="nv">$HOME</span>/.bashrc
+</code></pre></div></p>
+</li>
+<li>
+<p>Try running <code>make auto-verify-clients</code> or <code>make client-update</code> or <code>make test-report</code> again.</p>
+</li>
+</ol>
+<h2 id="dashboards">Dashboards<a class="headerlink" href="#dashboards" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Error or Issue</th>
+<th>Possible Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Dashboards Tab: <code>This site can't be reached</code> and <code>localhost refused to connect.</code></td>
+<td>To make sure monitoring is properly set up, refer to the <a href="../monitoring/overview.html#to-run">Monitoring Overview</a>. For further issues, refer to the documentation above to <a href="#check-logs">Check Logs</a>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Other related issues</td>
+<td>If experiencing additional dashboard issues, refer to the documentation in the <a href="../troubleshooting-tools.html">Tools Troubleshooting</a>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="next-up">Next up<a class="headerlink" href="#next-up" title="Permanent link">¶</a></h2>
+<p>To understand how images are processed, see <a href="../services/general-info.html">General Information</a></p>
+<p>To stop and clean up the services, see <a href="tear-down.html">Tear Down</a></p>
+<p>BSD 3-Clause License: See <a href="../LICENSE.html">License</a>.</p>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "search.suggest", "search.highlight", "navigation.top", "toc.integrate"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+<script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+<script>document$.subscribe(() => {
+            window.update_swagger_ui_iframe_height = function (id) {
+                var iFrameID = document.getElementById(id);
+                if (iFrameID) {
+                    full_height = (iFrameID.contentWindow.document.body.scrollHeight + 80) + "px";
+                    iFrameID.height = full_height;
+                    iFrameID.style.height = full_height;
+                }
+            }
+        
+            let iframe_id_list = []
+            var iframes = document.getElementsByClassName("swagger-ui-iframe");
+            for (var i = 0; i < iframes.length; i++) { 
+                iframe_id_list.push(iframes[i].getAttribute("id"))
+            }
+        
+            let ticking = true;
+            
+            document.addEventListener('scroll', function(e) {
+                if (!ticking) {
+                    window.requestAnimationFrame(()=> {
+                        let half_vh = window.innerHeight/2;
+                        for(var i = 0; i < iframe_id_list.length; i++) {
+                            let element = document.getElementById(iframe_id_list[i])
+                            if(element==null){
+                                return
+                            }
+                            let diff = element.getBoundingClientRect().top
+                            if(element.contentWindow.update_top_val){
+                                element.contentWindow.update_top_val(half_vh - diff)
+                            }
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+        
+            const dark_scheme_name = "slate"
+            
+            window.scheme = document.body.getAttribute("data-md-color-scheme")
+            const options = {
+                attributeFilter: ['data-md-color-scheme'],
+            };
+            function color_scheme_callback(mutations) {
+                for (let mutation of mutations) {
+                    if (mutation.attributeName === "data-md-color-scheme") {
+                        scheme = document.body.getAttribute("data-md-color-scheme")
+                        var iframe_list = document.getElementsByClassName("swagger-ui-iframe")
+                        for(var i = 0; i < iframe_list.length; i++) {
+                            var ele = iframe_list.item(i);
+                            if (ele) {
+                                if (scheme === dark_scheme_name) {
+                                    ele.contentWindow.enable_dark_mode();
+                                } else {
+                                    ele.contentWindow.disable_dark_mode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            observer = new MutationObserver(color_scheme_callback);
+            observer.observe(document.body, options);
+            })</script></body>
+</html>
