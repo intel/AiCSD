@@ -197,7 +197,7 @@ If you're behind a proxy, there may be connectivity issues. Use the following st
 
 ### Troubleshooting
 
-Refer to [Troubleshooting](../troubleshooting-tools.md) if you are seeing issues during setup.
+Refer to [Troubleshooting](../getting-started/troubleshooting.md) for additional assistance.
 
 ### Known Issues
 
