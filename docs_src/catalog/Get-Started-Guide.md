@@ -5,7 +5,7 @@
 
 ## Get Started
 
-A typical setup for the AI Pipeline Connection for Scientific Instrument Data Reference Implementation (or AiCSD) comprises two systems, a Gateway system and an OEM system, communicating with each other via a secure SSH tunnel. Scientific instruments (for example, optical microscopes) are connected to the OEM system and supply the images for processing on the Gateway system.
+A typical setup for the AI Connect for Scientific Data Reference Implementation (or AiCSD) comprises of two systems, a Gateway system and an OEM system, communicating with each other via a secure SSH tunnel. Scientific instruments (for example, optical microscopes) are connected to the OEM system and supply the images for processing on the Gateway system.
 
 This guide demonstrates the reference implementation setup on a single system, which runs the services for both OEM and Gateway. Complete this guide to confirm that your setup is working correctly and try out a basic workflow in the reference implementation.
 
