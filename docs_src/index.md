@@ -31,6 +31,10 @@ Set up a 2-system configuration, an edge system running Ubuntu and OEM equipment
 
 [Get Started](./getting-started/what-to-expect.md){: .md-button .md-button--primary }
 
+!!! Note
+    If coming from the catalog please follow [Getting started Catalog](./catalog/Get-Started-Guide.md)
+
+
 ## Additional Resources
 For additional details, see the [General Information](./services/general-info.md).
 
