@@ -25,7 +25,7 @@ This guide demonstrates the reference implementation setup on a single system, w
 Follow this procedure on the target system to install the package.
 
 1. Download the reference implementation package:  
-[AI Pipeline Connection for Scientific Instrument Data Reference Implementation](https://edgesoftware.intel.com/ai-connect-for-scientific-data-package)
+[AI Connect for Scientific Data Reference Implementation](https://edgesoftware.intel.com/ai-connect-for-scientific-data-package)
 
 2. In Terminal, go to the download directory and unzip the package.
 
